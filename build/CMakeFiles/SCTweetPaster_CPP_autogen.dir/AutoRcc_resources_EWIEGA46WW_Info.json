@@ -1,0 +1,22 @@
+{
+	"BUILD_DIR" : "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetPaster_CPP_autogen",
+	"CMAKE_BINARY_DIR" : "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy",
+	"CMAKE_SOURCE_DIR" : "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy",
+	"INCLUDE_DIR" : "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetPaster_CPP_autogen/include",
+	"INPUTS" : 
+	[
+		"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/icons/favorite.png"
+	],
+	"LOCK_FILE" : "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/CMakeFiles/SCTweetPaster_CPP_autogen.dir/AutoRcc_resources_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "resources" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_resources.cpp",
+	"RCC_EXECUTABLE" : "/home/kosmas/Qt/6.9.0/gcc_64/libexec/rcc",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/CMakeFiles/SCTweetPaster_CPP_autogen.dir/AutoRcc_resources_EWIEGA46WW_Used.txt",
+	"SOURCE" : "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/resources.qrc",
+	"VERBOSITY" : 0
+}
