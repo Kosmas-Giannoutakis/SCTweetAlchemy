@@ -1,0 +1,2 @@
+set(__QT_DEPLOY_TARGET_SCTweetPaster_CPP_FILE /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetPaster_CPP)
+set(__QT_DEPLOY_TARGET_SCTweetPaster_CPP_TYPE EXECUTABLE)
