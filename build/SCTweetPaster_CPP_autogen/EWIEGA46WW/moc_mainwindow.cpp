@@ -50,7 +50,7 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         "event",
         "toggleFavorite",
         "applyFilters",
-        "clearAllFilters"
+        "resetFilters"
     };
 
     QtMocHelpers::UintData qt_methods {
@@ -70,7 +70,7 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         QtMocHelpers::SlotData<void()>(9, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'applyFilters'
         QtMocHelpers::SlotData<void()>(10, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'clearAllFilters'
+        // Slot 'resetFilters'
         QtMocHelpers::SlotData<void()>(11, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
@@ -101,7 +101,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 3: _t->onSearchNavigateKey((*reinterpret_cast< std::add_pointer_t<QKeyEvent*>>(_a[1]))); break;
         case 4: _t->toggleFavorite(); break;
         case 5: _t->applyFilters(); break;
-        case 6: _t->clearAllFilters(); break;
+        case 6: _t->resetFilters(); break;
         default: ;
         }
     }

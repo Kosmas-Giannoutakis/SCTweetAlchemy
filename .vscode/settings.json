@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "*.tidal": "haskell",
+        "string_view": "cpp"
+    }
+}

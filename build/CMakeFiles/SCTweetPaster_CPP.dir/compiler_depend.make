@@ -453,8 +453,6 @@ CMakeFiles/SCTweetPaster_CPP.dir/SCTweetPaster_CPP_autogen/mocs_compilation.cpp.
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qaction.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSet \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qset.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QMap \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qmap.h \
   ../searchlineedit.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QLineEdit \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qlineedit.h \
@@ -954,8 +952,6 @@ CMakeFiles/SCTweetPaster_CPP.dir/main.cpp.o: ../main.cpp \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qaction.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSet \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qset.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QMap \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qmap.h \
   ../searchlineedit.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QLineEdit \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qlineedit.h \
@@ -1451,8 +1447,6 @@ CMakeFiles/SCTweetPaster_CPP.dir/mainwindow.cpp.o: ../mainwindow.cpp \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qaction.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSet \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qset.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QMap \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qmap.h \
   ../searchlineedit.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QLineEdit \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qlineedit.h \
@@ -1699,6 +1693,7 @@ CMakeFiles/SCTweetPaster_CPP.dir/mainwindow.cpp.o: ../mainwindow.cpp \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qlockfile.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qloggingcategory.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qmalloc.h \
+  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qmap.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qmargins.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qmath.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qmessageauthenticationcode.h \
@@ -2253,10 +2248,12 @@ CMakeFiles/SCTweetPaster_CPP.dir/mainwindow.cpp.o: ../mainwindow.cpp \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QMenuBar \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QScrollArea \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QPushButton \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QGroupBox \
+  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QRegularExpression \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QButtonGroup \
+  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QLabel \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSettings \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QVariant
+  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QVariant \
+  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QComboBox
 
 CMakeFiles/SCTweetPaster_CPP.dir/searchlineedit.cpp.o: ../searchlineedit.cpp \
   /usr/include/stdc-predef.h \
@@ -2972,6 +2969,8 @@ CMakeFiles/SCTweetPaster_CPP.dir/searchlineedit.cpp.o: ../searchlineedit.cpp \
 
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QDeadlineTimer:
 
+/home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QMap:
+
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qcalendarwidget.h:
 
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qvariantlist.h:
@@ -3292,8 +3291,6 @@ CMakeFiles/SCTweetPaster_CPP.dir/searchlineedit.cpp.o: ../searchlineedit.cpp \
 
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qcryptographichash.h:
 
-/home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qconcatenatetablesproxymodel.h:
-
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qstringbuilder.h:
 
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/QtGuiDepends:
@@ -3522,6 +3519,8 @@ CMakeFiles/SCTweetPaster_CPP.dir/searchlineedit.cpp.o: ../searchlineedit.cpp \
 
 /usr/include/c++/11/bits/vector.tcc:
 
+/home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QRegularExpression:
+
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qfunctionpointer.h:
 
 /usr/include/c++/11/bits/stl_bvector.h:
@@ -3628,6 +3627,8 @@ CMakeFiles/SCTweetPaster_CPP.dir/searchlineedit.cpp.o: ../searchlineedit.cpp \
 
 /usr/include/c++/11/tr1/exp_integral.tcc:
 
+/home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QComboBox:
+
 /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h:
 
 /usr/include/c++/11/bits/stl_construct.h:
@@ -3699,6 +3700,8 @@ SCTweetPaster_CPP_autogen/EWIEGA46WW/moc_searchlineedit.cpp:
 /usr/lib/gcc/x86_64-linux-gnu/11/include/amxint8intrin.h:
 
 /usr/include/c++/11/bits/stl_algobase.h:
+
+/home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QLabel:
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h:
 
@@ -4400,8 +4403,6 @@ SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.cpp:
 
 /usr/include/c++/11/bits/stl_multimap.h:
 
-/home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QMap:
-
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qstyleplugin.h:
 
 ../main.cpp:
@@ -4423,8 +4424,6 @@ SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.cpp:
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qkeysequence.h:
 
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qicon.h:
-
-/home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QGroupBox:
 
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qopenglcontext.h:
 
@@ -4709,3 +4708,5 @@ SCTweetPaster_CPP_autogen/EWIEGA46WW/moc_mainwindow.cpp:
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qquaternion.h:
 
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qcommandlineoption.h:
+
+/home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qconcatenatetablesproxymodel.h:

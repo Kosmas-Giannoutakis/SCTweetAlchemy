@@ -394,8 +394,6 @@ CMakeFiles/SCTweetPaster_CPP.dir/mainwindow.cpp.o: \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qaction.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSet \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qset.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QMap \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qmap.h \
  /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/searchlineedit.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QLineEdit \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qlineedit.h \
@@ -629,6 +627,7 @@ CMakeFiles/SCTweetPaster_CPP.dir/mainwindow.cpp.o: \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qlockfile.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qloggingcategory.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qmalloc.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qmap.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qmargins.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qmath.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qmessageauthenticationcode.h \
@@ -1180,9 +1179,10 @@ CMakeFiles/SCTweetPaster_CPP.dir/mainwindow.cpp.o: \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/QFontDatabase \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QSplitter \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QMenuBar \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QScrollArea \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QPushButton \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QGroupBox \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QButtonGroup \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSettings \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QVariant
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QVariant \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QComboBox \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QLabel \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QRegularExpression

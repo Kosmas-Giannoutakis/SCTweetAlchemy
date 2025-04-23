@@ -2,7 +2,6 @@
   /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetPaster_CPP_autogen/moc_predefs.h \
   /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/searchlineedit.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QList \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QMap \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QObject \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QRect \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSet \

@@ -71,6 +71,7 @@ include CMakeFiles/SCTweetPaster_CPP.dir/flags.make
 
 SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.cpp: ../resources.qrc
 SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.cpp: CMakeFiles/SCTweetPaster_CPP_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json
+SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.cpp: ../sctweets/SCTweets.json
 SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.cpp: ../icons/favorite.png
 SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.cpp: /home/kosmas/Qt/6.9.0/gcc_64/libexec/rcc
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic RCC for resources.qrc"
