@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     , rightPanel(nullptr)
     , codeTextEdit(nullptr)
     , metadataTextEdit(nullptr)
-    , filterLogicToggle(nullptr) // Init new pointer
+    , filterLogicToggle(nullptr)
     , favoriteFilterButton(nullptr)
     , resetFiltersButton(nullptr)
     , focusSearchAction(nullptr)
@@ -55,8 +55,8 @@ MainWindow::MainWindow(QWidget *parent)
     setupUi();
     setupActions();
     loadFavorites();
-    loadTweets();
-    populateFilterUI(); // Populates the leftmost filter column
+    loadTweets(); // Reads new JSON structure
+    populateFilterUI(); // Uses new data structure
 
     // Connect Signals
     if (tweetListWidget) {
@@ -184,9 +184,9 @@ void MainWindow::setupUi()
     mainSplitter->addWidget(rightPanel);       // Col 3
 
     // Set Initial Splitter Sizes (Adjusted Ratios: 5:1:5)
-    mainSplitter->setStretchFactor(0, 11); // Filter column stretch << WIDER
-    mainSplitter->setStretchFactor(1, 3); // List column stretch   << NARROWER
-    mainSplitter->setStretchFactor(2, 10); // Code/Meta column stretch
+    mainSplitter->setStretchFactor(0, 5); // Filter column stretch << WIDER
+    mainSplitter->setStretchFactor(1, 1); // List column stretch   << NARROWER
+    mainSplitter->setStretchFactor(2, 5); // Code/Meta column stretch
 
     // Overall Window Layout
     QVBoxLayout *centralLayout = new QVBoxLayout;
@@ -200,21 +200,16 @@ void MainWindow::setupUi()
     resize(1600, 850); // Keep overall window size
 }
 
-// --- Load Tweets ---
+// --- Load Tweets (Reads new JSON structure with DEBUGGING) ---
 void MainWindow::loadTweets()
 {
-    QString resourcePath = ":/data/SCTweets.json"; // Path defined in resources.qrc alias
+    QString resourcePath = ":/data/SCTweets.json";
     QFile jsonFile(resourcePath);
     qInfo() << "Attempting to load tweets from resource:" << resourcePath;
 
-    if (!jsonFile.exists()) {
-        qWarning() << "Resource" << resourcePath << "not found.";
-        QMessageBox::critical(this, "Load Error", "Could not find SCTweets.json in application resources.\n" + resourcePath + "\nEnsure resources.qrc is compiled correctly.");
-        return;
-    }
-    if (!jsonFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qWarning() << "Could not open resource" << resourcePath << ":" << jsonFile.errorString();
-        QMessageBox::warning(this, "Load Error", "Could not open resource SCTweets.json:\n" + jsonFile.errorString());
+    if (!jsonFile.exists() || !jsonFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qWarning() << "Failed to open or find resource" << resourcePath;
+        QMessageBox::critical(this, "Load Error", "Could not open application resource:\n" + resourcePath);
         return;
     }
 
@@ -234,7 +229,7 @@ void MainWindow::loadTweets()
     }
 
     QJsonObject rootObj = doc.object();
-    tweets.clear(); // Clear any previous data
+    tweets.clear();
 
     for (auto it = rootObj.constBegin(); it != rootObj.constEnd(); ++it) {
         QString key = it.key();
@@ -243,127 +238,146 @@ void MainWindow::loadTweets()
         QJsonObject tweetObj = value.toObject();
         if (!tweetObj.contains("original") || !tweetObj["original"].isString()) { continue; }
 
-        TweetData td;
+        TweetData td; // Create new data struct instance
         td.name = key;
         td.originalCode = tweetObj["original"].toString();
         td.author = tweetObj.value("author").toString("Unknown");
         td.sourceUrl = tweetObj.value("source_url").toString("");
         td.description = tweetObj.value("description").toString("-");
+        td.publicationDate = tweetObj.value("publication_date").toString("unknown");
+
+        // --- Read Categorized Tags from "classification" object ---
+        if (tweetObj.contains("classification") && tweetObj["classification"].isObject()) {
+            QJsonObject classificationObj = tweetObj["classification"].toObject();
+            // qDebug() << "Tweet [" << key << "]: Found 'classification' object."; // DEBUG
+
+            // Read Sonic Characteristics into td.sonicTags
+            if (classificationObj.contains("sonic_characteristics") && classificationObj["sonic_characteristics"].isArray()) {
+                QJsonArray sonicArray = classificationObj["sonic_characteristics"].toArray();
+                for (const QJsonValue &tagVal : sonicArray) {
+                    if (tagVal.isString()) td.sonicTags.append(tagVal.toString());
+                }
+                 if(td.sonicTags.isEmpty()){
+                     // qDebug() << "Tweet [" << key << "]: 'sonic_characteristics' array was empty."; // DEBUG
+                 } else {
+                    // qDebug() << "Tweet [" << key << "]: Loaded sonic tags:" << td.sonicTags; // DEBUG
+                 }
+            } else {
+                 qDebug() << "Tweet [" << key << "]: Missing or invalid 'sonic_characteristics' array."; // DEBUG
+            }
+
+            // Read Synthesis Techniques into td.techniqueTags
+            if (classificationObj.contains("synthesis_techniques") && classificationObj["synthesis_techniques"].isArray()) {
+                QJsonArray techArray = classificationObj["synthesis_techniques"].toArray();
+                for (const QJsonValue &tagVal : techArray) {
+                    if (tagVal.isString()) td.techniqueTags.append(tagVal.toString());
+                }
+                 if(td.techniqueTags.isEmpty()){
+                     // qDebug() << "Tweet [" << key << "]: 'synthesis_techniques' array was empty."; // DEBUG
+                 } else {
+                    // qDebug() << "Tweet [" << key << "]: Loaded technique tags:" << td.techniqueTags; // DEBUG
+                 }
+            } else {
+                 qDebug() << "Tweet [" << key << "]: Missing or invalid 'synthesis_techniques' array."; // DEBUG
+            }
+        } else {
+            qDebug() << "Tweet [" << key << "]: Missing 'classification' object."; // DEBUG
+        }
+
+
+        // Read original flat tags (optional, for display/fallback)
         if (tweetObj.contains("tags") && tweetObj["tags"].isArray()) {
             QJsonArray tagsArray = tweetObj["tags"].toArray();
-            for (const QJsonValue &tagVal : tagsArray) {
-                if (tagVal.isString()) { td.tags.append(tagVal.toString()); }
-            }
+            for (const QJsonValue &tagVal : tagsArray) { if (tagVal.isString()) td.tags.append(tagVal.toString()); }
         }
-        tweets.append(td);
+
+        tweets.append(td); // Add the populated struct to the main vector
     }
     qInfo() << "Loaded" << tweets.count() << "tweets from JSON resource.";
 }
 
 
-// --- Populate Filter UI Controls (Renamed Buttons, Moved to Top) ---
+// --- Populate Filter UI Controls (Using Categorized Tags) ---
 void MainWindow::populateFilterUI()
 {
-    if (!filterScrollLayout || tweets.isEmpty()) {
-        qWarning() << "Filter layout or tweets missing, cannot populate filters.";
-        return;
-    }
+    if (!filterScrollLayout || tweets.isEmpty()) { /* ... checks ... */ return; }
 
-    // Clear Previous Controls
+    // Clear Previous Controls...
     qDeleteAll(filterScrollWidget->findChildren<QWidget *>(QString(), Qt::FindDirectChildrenOnly));
     authorCheckboxes.clear(); sonicCheckboxes.clear(); techniqueCheckboxes.clear(); ugenCheckboxes.clear();
     filterLogicToggle = nullptr; favoriteFilterButton = nullptr; resetFiltersButton = nullptr;
 
     // --- Prepare Sets for Unique Filter Items ---
-    QSet<QString> authors; QSet<QString> sonics; QSet<QString> techniques; QSet<QString> ugens;
+    QSet<QString> authors;
+    QSet<QString> sonics;       // Populated from td.sonicTags
+    QSet<QString> techniques;   // Populated from td.techniqueTags
+    QSet<QString> ugens;        // Populated from code analysis
+
     // Regexes for UGen Extraction...
     QRegularExpression ugenMethodRegex(R"(\b([A-Z][a-zA-Z0-9]*)(?:\.(?:ar|kr|ir|new)\b|\())");
     QRegularExpression ugenFuncRegex(R"(\b(?:ar|kr|ir|new)\b\s*\(\s*([A-Z][a-zA-Z0-9]*)\b)");
-    // Define Classification Sets...
-    const QSet<QString> sonic_tags = {"drone", "ambient", "noise", "glitch", "percussive", "melodic", "rhythm", "bass", "lead", "pad", "sfx", "sequence", /*"animal",*/ "harmonic", "atonal", "high frequency", "metallic", "wooden", "watery", "airy", "harsh", "gritty", /*"distorted",*/ "vocal-like", "glassy", "digital", "analog-like", "sparse", "dense", "swirling", "pulsing", "environmental", /*"crackle",*/ "sci-fi"};
-    const QSet<QString> technique_tags = {"additive", "subtractive", "fm", "am", "pm", "rm", "waveshaping", "wavetable", "granular", "sampling", "physical modeling", "karplus-strong", "formant", "stochastic", "chaotic", "feedback", "cross synthesis", "vector", "filter", "delay", "buffer", "pattern", "simple", "complex", "evolving", "chiptune"};
-    // Iterate Through Tweets to Extract Filter Items...
-    for (const auto& tweet : tweets) {
+
+    // --- Iterate Through Tweets to Extract Filter Items ---
+    for (const auto& tweet : tweets) { // Iterate through loaded TweetData vector
         authors.insert(tweet.author.isEmpty() ? "Unknown" : tweet.author);
+
+        // Extract UGens from code (remains the same)
         QRegularExpressionMatchIterator i1 = ugenMethodRegex.globalMatch(tweet.originalCode); while (i1.hasNext()) { ugens.insert(i1.next().captured(1)); }
         QRegularExpressionMatchIterator i2 = ugenFuncRegex.globalMatch(tweet.originalCode); while (i2.hasNext()) { ugens.insert(i2.next().captured(1)); }
-        for (const QString& tag : tweet.tags) {
-            QString lowerTag = tag.toLower();
-            if (sonic_tags.contains(lowerTag)) { sonics.insert(tag); }
-            else if (technique_tags.contains(lowerTag)) { techniques.insert(tag); }
-        }
+
+        // --- Collect categorized tags directly from the struct ---
+        for(const QString& tag : tweet.sonicTags) { sonics.insert(tag); }
+        for(const QString& tag : tweet.techniqueTags) { techniques.insert(tag); }
     }
 
     // --- Create Control Buttons (Favorite, Reset, Logic Toggle) FIRST ---
     QWidget* buttonWidget = new QWidget();
     QHBoxLayout* buttonLayout = new QHBoxLayout(buttonWidget);
     buttonLayout->setContentsMargins(0, 0, 0, 4); buttonLayout->setSpacing(6);
-
-    // Filter Logic Toggle Checkbox
     filterLogicToggle = new QCheckBox("Match All", buttonWidget); // RENAMED
     filterLogicToggle->setObjectName("FilterLogicToggle");
-    filterLogicToggle->setToolTip("Check to require ALL selected tags (AND logic).\nUncheck to require ANY selected tag (OR logic)."); // UPDATED TOOLTIP
-    filterLogicToggle->setChecked(true); // Default to AND logic
-    connect(filterLogicToggle, &QCheckBox::checkStateChanged, this, &MainWindow::applyFilters); // Use fixed signal
-
-    // Favorite Button
+    filterLogicToggle->setToolTip("Check to show tweets matching ALL selected criteria.\nUncheck to show tweets matching ANY selected criterion.");
+    filterLogicToggle->setChecked(true); connect(filterLogicToggle, &QCheckBox::checkStateChanged, this, &MainWindow::applyFilters);
     favoriteFilterButton = new QPushButton("Favorites", buttonWidget); // RENAMED
-    favoriteFilterButton->setCheckable(true);
-    favoriteFilterButton->setObjectName("FilterButtonFavorite");
-    connect(favoriteFilterButton, &QPushButton::toggled, this, &MainWindow::applyFilters);
-
-    // Reset Button
+    favoriteFilterButton->setCheckable(true); connect(favoriteFilterButton, &QPushButton::toggled, this, &MainWindow::applyFilters);
     resetFiltersButton = new QPushButton("Reset", buttonWidget); // RENAMED
-    resetFiltersButton->setObjectName("ResetFiltersButton");
-    resetFiltersButton->setToolTip("Reset all filter checkboxes and toggles");
-    connect(resetFiltersButton, &QPushButton::clicked, this, &MainWindow::resetFilters);
-
-    buttonLayout->addWidget(filterLogicToggle);
-    buttonLayout->addStretch(1); // Push Fav/Reset to the right
-    buttonLayout->addWidget(favoriteFilterButton);
-    buttonLayout->addWidget(resetFiltersButton);
-
-    // --- Add Button Widget to the TOP of the scroll layout ---
-    filterScrollLayout->insertWidget(0, buttonWidget); // Insert at the beginning
+    resetFiltersButton->setToolTip("Reset all filter checkboxes and toggles"); connect(resetFiltersButton, &QPushButton::clicked, this, &MainWindow::resetFilters);
+    buttonLayout->addWidget(filterLogicToggle); buttonLayout->addStretch(1);
+    buttonLayout->addWidget(favoriteFilterButton); buttonLayout->addWidget(resetFiltersButton);
+    filterScrollLayout->insertWidget(0, buttonWidget); // Insert buttons at top
 
     // --- Helper Lambda to Create Checkbox Groups ---
     auto createCheckboxGroup = [&](const QString& title, const QSet<QString>& items, QList<QCheckBox*>& checkboxList) {
-        if (items.isEmpty()) return;
+        if (items.isEmpty()) { qDebug() << "No items found for filter group:" << title; return; } // Debug if empty
         QGroupBox *groupBox = new QGroupBox(title);
         QVBoxLayout *groupLayout = new QVBoxLayout(groupBox);
         groupLayout->setContentsMargins(4, 4, 4, 4); groupLayout->setSpacing(4);
-        QStringList sortedItems = items.values();
-        sortedItems.sort(Qt::CaseInsensitive);
-
+        QStringList sortedItems = items.values(); sortedItems.sort(Qt::CaseInsensitive);
         for (const QString& item : sortedItems) {
             QCheckBox *checkbox = new QCheckBox(item);
             checkbox->setObjectName("FilterCheck_" + title.simplified().replace(" ", "_") + "_" + item);
             connect(checkbox, &QCheckBox::checkStateChanged, this, &MainWindow::applyFilters); // Use fixed signal
-            groupLayout->addWidget(checkbox);
-            checkboxList.append(checkbox);
+            groupLayout->addWidget(checkbox); checkboxList.append(checkbox);
         }
         groupLayout->addStretch(1);
-        // --- Add groupbox BELOW buttons ---
-        filterScrollLayout->addWidget(groupBox); // Append to the layout
+        filterScrollLayout->addWidget(groupBox); // Add groupbox below buttons
     };
 
     // --- Create Checkbox Groups (Specific Order) ---
     createCheckboxGroup("Author", authors, authorCheckboxes);
-    createCheckboxGroup("Sonic Characteristic", sonics, sonicCheckboxes);
-    createCheckboxGroup("Synthesis Technique", techniques, techniqueCheckboxes);
-    createCheckboxGroup("UGen", ugens, ugenCheckboxes);
+    createCheckboxGroup("Sonic Characteristic", sonics, sonicCheckboxes);       // Uses collected sonicTags
+    createCheckboxGroup("Synthesis Technique", techniques, techniqueCheckboxes); // Uses collected techniqueTags
+    createCheckboxGroup("UGen", ugens, ugenCheckboxes);                            // Uses collected ugens
 
     // --- Add Stretch at the very bottom ---
-    // Ensure stretch is the last item
     QLayoutItem *lastItem = filterScrollLayout->itemAt(filterScrollLayout->count() - 1);
-    if (!lastItem || !lastItem->spacerItem()) {
-         filterScrollLayout->addStretch(1);
-    }
+    if (!lastItem || !lastItem->spacerItem()) { filterScrollLayout->addStretch(1); }
 
+    qDebug() << "Populated Filters - Authors:" << authors.size() << "Sonics:" << sonics.size() << "Techniques:" << techniques.size() << "UGens:" << ugens.size();
     qInfo() << "Populated filter UI with checkboxes.";
 }
 
-// --- Apply Filters Based on Checkbox States (Switchable AND/OR Logic) ---
+// --- Apply Filters Based on Checkbox States (Reads Categorized Tags) ---
 void MainWindow::applyFilters()
 {
     if (!tweetListWidget) return;
@@ -374,7 +388,7 @@ void MainWindow::applyFilters()
     // Get Checked Items
     auto getChecked = [](const QList<QCheckBox*>& list) -> QStringList {
         QStringList checked;
-        for (const QCheckBox* checkbox : list) { if (checkbox->isChecked()) { checked.append(checkbox->text()); } }
+        for (const QCheckBox* checkbox : list) { if (checkbox && checkbox->isChecked()) { checked.append(checkbox->text()); } }
         return checked;
     };
     QStringList checkedAuthors = getChecked(authorCheckboxes);
@@ -386,7 +400,7 @@ void MainWindow::applyFilters()
     bool useAndLogic = filterLogicToggle ? filterLogicToggle->isChecked() : true;
 
     // Get Other Filters
-    bool favoritesOnly = (favoriteFilterButton && favoriteFilterButton->isChecked());
+    bool favoritesOnly = favoriteFilterButton ? favoriteFilterButton->isChecked() : false;
     QString searchText = searchLineEdit ? searchLineEdit->text() : QString();
 
     // Pre-compile Regexes for checked UGens
@@ -399,23 +413,19 @@ void MainWindow::applyFilters()
         }
     }
 
-    qDebug() << "Applying filters [" << (useAndLogic ? "AND" : "OR") << " logic] - Authors:" << checkedAuthors
+    qDebug() << "Applying filters [" << (useAndLogic ? "AND" : "OR") << " logic] - Authors:" << checkedAuthors // ... debug output ...
              << "Sonics:" << checkedSonics << "Techniques:" << checkedTechniques << "UGens:" << checkedUgens
              << "FavsOnly:" << favoritesOnly << "Search:" << searchText;
 
     // Iterate Through Tweets and Check Filters
     QStringList namesToAdd;
-    for (const auto& tweet : tweets) {
-        bool passesFilter = true; // Start assuming it passes global filters
+    for (const auto& tweet : tweets) { // tweet is the updated TweetData struct
+        bool passesFilter = true;
 
-        // 1. Global Search (Always AND)
-        if (!searchText.isEmpty() && !tweet.name.contains(searchText, Qt::CaseInsensitive)) {
-            passesFilter = false;
-        }
-        // 2. Favorite Filter (Always AND)
-        if (passesFilter && favoritesOnly && !isFavorite(tweet.name)) {
-            passesFilter = false;
-        }
+        // 1. Global Search...
+        if (!searchText.isEmpty() && !tweet.name.contains(searchText, Qt::CaseInsensitive)) passesFilter = false;
+        // 2. Favorite Filter...
+        if (passesFilter && favoritesOnly && !isFavorite(tweet.name)) passesFilter = false;
 
         // Proceed to tag filters only if passed global filters
         if (passesFilter) {
@@ -424,63 +434,65 @@ void MainWindow::applyFilters()
             if (anyCheckboxesSelected) {
                 if (useAndLogic) {
                     // --- AND Logic ---
-                    // Check Authors (Must match ALL selected)
+                    // Check Authors
                     if (!checkedAuthors.isEmpty()) {
+                         bool matchAll = true;
                          for (const QString& reqAuthor : checkedAuthors) {
                              bool currentAuthorMatch = (reqAuthor == "Unknown") ? tweet.author.isEmpty() : (tweet.author == reqAuthor);
-                             if (!currentAuthorMatch) { passesFilter = false; break; }
+                             if (!currentAuthorMatch) { matchAll = false; break; }
                          }
+                         if (!matchAll) passesFilter = false;
                     }
-                    // Check UGens (Must match ALL selected)
+                    // Check UGens
                     if (passesFilter && !checkedUgens.isEmpty()) {
-                        for (int i = 0; i < checkedUgens.size(); ++i) {
+                         bool matchAll = true;
+                         for (int i = 0; i < checkedUgens.size(); ++i) {
+                            if (i >= ugenMethodCheckRegexes.size() || i >= ugenFuncCheckRegexes.size()) { qWarning() << "Regex list size mismatch!"; passesFilter = false; break; }
                             bool ugenFound = ugenMethodCheckRegexes[i].match(tweet.originalCode).hasMatch() || ugenFuncCheckRegexes[i].match(tweet.originalCode).hasMatch();
-                            if (!ugenFound) { passesFilter = false; break; }
+                            if (!ugenFound) { matchAll = false; break; }
                         }
+                         if (!matchAll) passesFilter = false;
                     }
-                    // Check Sonics (Must match ALL selected)
+                    // Check Sonics (Use tweet.sonicTags)
                     if (passesFilter && !checkedSonics.isEmpty()) {
                          for (const QString& reqSonic : checkedSonics) {
-                            bool found = false; for(const QString& t : tweet.tags) if (t.compare(reqSonic, Qt::CaseInsensitive) == 0) { found = true; break; }
-                            if (!found) { passesFilter = false; break; }
+                            if (!tweet.sonicTags.contains(reqSonic, Qt::CaseInsensitive)) { passesFilter = false; break; }
                          }
                     }
-                    // Check Techniques (Must match ALL selected)
+                    // Check Techniques (Use tweet.techniqueTags)
                     if (passesFilter && !checkedTechniques.isEmpty()) {
                          for (const QString& reqTechnique : checkedTechniques) {
-                            bool found = false; for(const QString& t : tweet.tags) if (t.compare(reqTechnique, Qt::CaseInsensitive) == 0) { found = true; break; }
-                            if (!found) { passesFilter = false; break; }
+                            if (!tweet.techniqueTags.contains(reqTechnique, Qt::CaseInsensitive)) { passesFilter = false; break; }
                          }
                     }
                 } else {
                     // --- OR Logic ---
                     bool orMatchFound = false;
-                    // Check Authors (Match ANY selected)
+                    // Check Authors
                     if (!checkedAuthors.isEmpty()) {
                          for (const QString& reqAuthor : checkedAuthors) {
                              bool currentAuthorMatch = (reqAuthor == "Unknown") ? tweet.author.isEmpty() : (tweet.author == reqAuthor);
                              if (currentAuthorMatch) { orMatchFound = true; break; }
                          }
                     }
-                    // Check UGens (Match ANY selected)
+                    // Check UGens
                     if (!orMatchFound && !checkedUgens.isEmpty()) {
-                        for (int i = 0; i < checkedUgens.size(); ++i) {
-                            bool ugenFound = ugenMethodCheckRegexes[i].match(tweet.originalCode).hasMatch() || ugenFuncCheckRegexes[i].match(tweet.originalCode).hasMatch();
-                            if (ugenFound) { orMatchFound = true; break; }
-                        }
-                    }
-                    // Check Sonics (Match ANY selected)
-                    if (!orMatchFound && !checkedSonics.isEmpty()) {
-                         for (const QString& reqSonic : checkedSonics) {
-                            for(const QString& t : tweet.tags) if (t.compare(reqSonic, Qt::CaseInsensitive) == 0) { orMatchFound = true; break; }
-                            if (orMatchFound) break;
+                         for (int i = 0; i < checkedUgens.size(); ++i) {
+                             if (i >= ugenMethodCheckRegexes.size() || i >= ugenFuncCheckRegexes.size()) { qWarning() << "Regex list size mismatch!"; break; }
+                             bool ugenFound = ugenMethodCheckRegexes[i].match(tweet.originalCode).hasMatch() || ugenFuncCheckRegexes[i].match(tweet.originalCode).hasMatch();
+                             if (ugenFound) { orMatchFound = true; break; }
                          }
                     }
-                    // Check Techniques (Match ANY selected)
+                    // Check Sonics (Use tweet.sonicTags)
+                    if (!orMatchFound && !checkedSonics.isEmpty()) {
+                         for (const QString& reqSonic : checkedSonics) {
+                             if (tweet.sonicTags.contains(reqSonic, Qt::CaseInsensitive)) { orMatchFound = true; break; }
+                         }
+                    }
+                    // Check Techniques (Use tweet.techniqueTags)
                     if (!orMatchFound && !checkedTechniques.isEmpty()) {
                          for (const QString& reqTechnique : checkedTechniques) {
-                            for(const QString& t : tweet.tags) if (t.compare(reqTechnique, Qt::CaseInsensitive) == 0) { orMatchFound = true; break; }
-                            if (orMatchFound) break;
+                             if (tweet.techniqueTags.contains(reqTechnique, Qt::CaseInsensitive)) { orMatchFound = true; break; }
                          }
                     }
                     // If no OR match was found across all active categories, it fails
@@ -507,7 +519,6 @@ void MainWindow::applyFilters()
     qInfo() << "Filters applied [" << (useAndLogic ? "AND" : "OR") << " logic], list count:" << tweetListWidget->count();
 }
 
-
 // --- Slot for Arrow Key Navigation from Search Field ---
 void MainWindow::onSearchNavigateKey(QKeyEvent *event)
 {
@@ -520,16 +531,43 @@ void MainWindow::onSearchNavigateKey(QKeyEvent *event)
 // --- Slot for Search Text Changes ---
 void MainWindow::onSearchTextChanged(const QString &searchText) { applyFilters(); }
 
-// --- Display Metadata ---
+// --- Display Metadata (UPDATED for new structure) ---
 void MainWindow::displayMetadata(const TweetData& tweet)
 {
     if (!metadataTextEdit) return;
     QString metadataString;
     metadataString += "Author: " + tweet.author + "\n";
     metadataString += "Source: " + (!tweet.sourceUrl.isEmpty() ? tweet.sourceUrl : QStringLiteral("N/A")) + "\n";
-    metadataString += "Description: " + tweet.description + "\n";
-    metadataString += "Tags (Raw): " + (tweet.tags.isEmpty() ? QStringLiteral("None") : tweet.tags.join(", ")) + "\n"; // Show original tags
-    metadataString += QStringLiteral("Favorite: ");
+    metadataString += "Publication Date: " + tweet.publicationDate + "\n"; // Display date
+    metadataString += "Description: " + tweet.description + "\n\n"; // Add space before tags
+
+    // Display Categorized Tags nicely
+    if (!tweet.sonicTags.isEmpty()) {
+        metadataString += "Sonic Characteristics: " + tweet.sonicTags.join(", ") + "\n"; // <<< Display sonicTags
+    }
+    if (!tweet.techniqueTags.isEmpty()) {
+        metadataString += "Synthesis Techniques: " + tweet.techniqueTags.join(", ") + "\n"; // <<< Display techniqueTags
+    }
+
+    // Display remaining raw tags if they exist and weren't categorized AND not already displayed
+    if (!tweet.tags.isEmpty()) {
+       QStringList miscTags;
+       QSet<QString> displayedTags; // Keep track of tags already shown
+       for(const QString& tag : tweet.sonicTags) displayedTags.insert(tag.toLower());
+       for(const QString& tag : tweet.techniqueTags) displayedTags.insert(tag.toLower());
+
+       for(const QString& rawTag : tweet.tags) {
+           if (!displayedTags.contains(rawTag.toLower())) {
+               miscTags.append(rawTag);
+           }
+       }
+
+       if (!miscTags.isEmpty()) {
+           metadataString += "Tags (Other): " + miscTags.join(", ") + "\n";
+       }
+    }
+
+    metadataString += "\nFavorite: "; // Add space before favorite
     metadataString += (isFavorite(tweet.name) ? QStringLiteral("Yes") : QStringLiteral("No"));
     metadataString += QLatin1Char('\n');
     metadataTextEdit->setText(metadataString);
@@ -541,7 +579,7 @@ void MainWindow::displayCode(const TweetData* tweet)
     if (!codeTextEdit || !metadataTextEdit) return;
     if (tweet) {
         codeTextEdit->setText(tweet->originalCode);
-        displayMetadata(*tweet);
+        displayMetadata(*tweet); // Calls the updated displayMetadata
     } else {
         codeTextEdit->clear(); codeTextEdit->setPlaceholderText("Select a Tweet or adjust filters.");
         metadataTextEdit->clear(); metadataTextEdit->setPlaceholderText("Select a Tweet to view its metadata.");

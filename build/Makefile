@@ -117,85 +117,85 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named SCTweetPaster_CPP
+# Target rules for targets named SCTweetAlchemy_CPP
 
 # Build rule for target.
-SCTweetPaster_CPP: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 SCTweetPaster_CPP
-.PHONY : SCTweetPaster_CPP
+SCTweetAlchemy_CPP: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 SCTweetAlchemy_CPP
+.PHONY : SCTweetAlchemy_CPP
 
 # fast build rule for target.
-SCTweetPaster_CPP/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP.dir/build.make CMakeFiles/SCTweetPaster_CPP.dir/build
-.PHONY : SCTweetPaster_CPP/fast
+SCTweetAlchemy_CPP/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/build
+.PHONY : SCTweetAlchemy_CPP/fast
 
 #=============================================================================
-# Target rules for targets named SCTweetPaster_CPP_autogen
+# Target rules for targets named SCTweetAlchemy_CPP_autogen
 
 # Build rule for target.
-SCTweetPaster_CPP_autogen: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 SCTweetPaster_CPP_autogen
-.PHONY : SCTweetPaster_CPP_autogen
+SCTweetAlchemy_CPP_autogen: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 SCTweetAlchemy_CPP_autogen
+.PHONY : SCTweetAlchemy_CPP_autogen
 
 # fast build rule for target.
-SCTweetPaster_CPP_autogen/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP_autogen.dir/build.make CMakeFiles/SCTweetPaster_CPP_autogen.dir/build
-.PHONY : SCTweetPaster_CPP_autogen/fast
+SCTweetAlchemy_CPP_autogen/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP_autogen.dir/build.make CMakeFiles/SCTweetAlchemy_CPP_autogen.dir/build
+.PHONY : SCTweetAlchemy_CPP_autogen/fast
 
-SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.o: SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.o
-.PHONY : SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.o
-
-# target to build an object file
-SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP.dir/build.make CMakeFiles/SCTweetPaster_CPP.dir/SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.o
-.PHONY : SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.o
-
-SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.i: SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.i
-.PHONY : SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.i
-
-# target to preprocess a source file
-SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP.dir/build.make CMakeFiles/SCTweetPaster_CPP.dir/SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.i
-.PHONY : SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.i
-
-SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.s: SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.s
-.PHONY : SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.s
-
-# target to generate assembly for a file
-SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP.dir/build.make CMakeFiles/SCTweetPaster_CPP.dir/SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.s
-.PHONY : SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.s
-
-SCTweetPaster_CPP_autogen/mocs_compilation.o: SCTweetPaster_CPP_autogen/mocs_compilation.cpp.o
-.PHONY : SCTweetPaster_CPP_autogen/mocs_compilation.o
+SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.o: SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.o
+.PHONY : SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.o
 
 # target to build an object file
-SCTweetPaster_CPP_autogen/mocs_compilation.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP.dir/build.make CMakeFiles/SCTweetPaster_CPP.dir/SCTweetPaster_CPP_autogen/mocs_compilation.cpp.o
-.PHONY : SCTweetPaster_CPP_autogen/mocs_compilation.cpp.o
+SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.o
+.PHONY : SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.o
 
-SCTweetPaster_CPP_autogen/mocs_compilation.i: SCTweetPaster_CPP_autogen/mocs_compilation.cpp.i
-.PHONY : SCTweetPaster_CPP_autogen/mocs_compilation.i
+SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.i: SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.i
+.PHONY : SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.i
 
 # target to preprocess a source file
-SCTweetPaster_CPP_autogen/mocs_compilation.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP.dir/build.make CMakeFiles/SCTweetPaster_CPP.dir/SCTweetPaster_CPP_autogen/mocs_compilation.cpp.i
-.PHONY : SCTweetPaster_CPP_autogen/mocs_compilation.cpp.i
+SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.i
+.PHONY : SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.i
 
-SCTweetPaster_CPP_autogen/mocs_compilation.s: SCTweetPaster_CPP_autogen/mocs_compilation.cpp.s
-.PHONY : SCTweetPaster_CPP_autogen/mocs_compilation.s
+SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.s: SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.s
+.PHONY : SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.s
 
 # target to generate assembly for a file
-SCTweetPaster_CPP_autogen/mocs_compilation.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP.dir/build.make CMakeFiles/SCTweetPaster_CPP.dir/SCTweetPaster_CPP_autogen/mocs_compilation.cpp.s
-.PHONY : SCTweetPaster_CPP_autogen/mocs_compilation.cpp.s
+SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.s
+.PHONY : SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.s
+
+SCTweetAlchemy_CPP_autogen/mocs_compilation.o: SCTweetAlchemy_CPP_autogen/mocs_compilation.cpp.o
+.PHONY : SCTweetAlchemy_CPP_autogen/mocs_compilation.o
+
+# target to build an object file
+SCTweetAlchemy_CPP_autogen/mocs_compilation.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/mocs_compilation.cpp.o
+.PHONY : SCTweetAlchemy_CPP_autogen/mocs_compilation.cpp.o
+
+SCTweetAlchemy_CPP_autogen/mocs_compilation.i: SCTweetAlchemy_CPP_autogen/mocs_compilation.cpp.i
+.PHONY : SCTweetAlchemy_CPP_autogen/mocs_compilation.i
+
+# target to preprocess a source file
+SCTweetAlchemy_CPP_autogen/mocs_compilation.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/mocs_compilation.cpp.i
+.PHONY : SCTweetAlchemy_CPP_autogen/mocs_compilation.cpp.i
+
+SCTweetAlchemy_CPP_autogen/mocs_compilation.s: SCTweetAlchemy_CPP_autogen/mocs_compilation.cpp.s
+.PHONY : SCTweetAlchemy_CPP_autogen/mocs_compilation.s
+
+# target to generate assembly for a file
+SCTweetAlchemy_CPP_autogen/mocs_compilation.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/mocs_compilation.cpp.s
+.PHONY : SCTweetAlchemy_CPP_autogen/mocs_compilation.cpp.s
 
 main.o: main.cpp.o
 .PHONY : main.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP.dir/build.make CMakeFiles/SCTweetPaster_CPP.dir/main.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -203,7 +203,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP.dir/build.make CMakeFiles/SCTweetPaster_CPP.dir/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -211,7 +211,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP.dir/build.make CMakeFiles/SCTweetPaster_CPP.dir/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 mainwindow.o: mainwindow.cpp.o
@@ -219,7 +219,7 @@ mainwindow.o: mainwindow.cpp.o
 
 # target to build an object file
 mainwindow.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP.dir/build.make CMakeFiles/SCTweetPaster_CPP.dir/mainwindow.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/mainwindow.cpp.o
 .PHONY : mainwindow.cpp.o
 
 mainwindow.i: mainwindow.cpp.i
@@ -227,7 +227,7 @@ mainwindow.i: mainwindow.cpp.i
 
 # target to preprocess a source file
 mainwindow.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP.dir/build.make CMakeFiles/SCTweetPaster_CPP.dir/mainwindow.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/mainwindow.cpp.i
 .PHONY : mainwindow.cpp.i
 
 mainwindow.s: mainwindow.cpp.s
@@ -235,7 +235,7 @@ mainwindow.s: mainwindow.cpp.s
 
 # target to generate assembly for a file
 mainwindow.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP.dir/build.make CMakeFiles/SCTweetPaster_CPP.dir/mainwindow.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/mainwindow.cpp.s
 .PHONY : mainwindow.cpp.s
 
 searchlineedit.o: searchlineedit.cpp.o
@@ -243,7 +243,7 @@ searchlineedit.o: searchlineedit.cpp.o
 
 # target to build an object file
 searchlineedit.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP.dir/build.make CMakeFiles/SCTweetPaster_CPP.dir/searchlineedit.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/searchlineedit.cpp.o
 .PHONY : searchlineedit.cpp.o
 
 searchlineedit.i: searchlineedit.cpp.i
@@ -251,7 +251,7 @@ searchlineedit.i: searchlineedit.cpp.i
 
 # target to preprocess a source file
 searchlineedit.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP.dir/build.make CMakeFiles/SCTweetPaster_CPP.dir/searchlineedit.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/searchlineedit.cpp.i
 .PHONY : searchlineedit.cpp.i
 
 searchlineedit.s: searchlineedit.cpp.s
@@ -259,7 +259,7 @@ searchlineedit.s: searchlineedit.cpp.s
 
 # target to generate assembly for a file
 searchlineedit.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP.dir/build.make CMakeFiles/SCTweetPaster_CPP.dir/searchlineedit.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/searchlineedit.cpp.s
 .PHONY : searchlineedit.cpp.s
 
 # Help Target
@@ -270,14 +270,14 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... SCTweetPaster_CPP_autogen"
-	@echo "... SCTweetPaster_CPP"
-	@echo "... SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.o"
-	@echo "... SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.i"
-	@echo "... SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.s"
-	@echo "... SCTweetPaster_CPP_autogen/mocs_compilation.o"
-	@echo "... SCTweetPaster_CPP_autogen/mocs_compilation.i"
-	@echo "... SCTweetPaster_CPP_autogen/mocs_compilation.s"
+	@echo "... SCTweetAlchemy_CPP_autogen"
+	@echo "... SCTweetAlchemy_CPP"
+	@echo "... SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.o"
+	@echo "... SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.i"
+	@echo "... SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.s"
+	@echo "... SCTweetAlchemy_CPP_autogen/mocs_compilation.o"
+	@echo "... SCTweetAlchemy_CPP_autogen/mocs_compilation.i"
+	@echo "... SCTweetAlchemy_CPP_autogen/mocs_compilation.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

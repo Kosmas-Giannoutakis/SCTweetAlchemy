@@ -63,7 +63,7 @@ CMAKE_BINARY_DIR = /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/SCTweetPaster_CPP.dir/all
+all: CMakeFiles/SCTweetAlchemy_CPP.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -71,61 +71,61 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/SCTweetPaster_CPP.dir/clean
-clean: CMakeFiles/SCTweetPaster_CPP_autogen.dir/clean
+clean: CMakeFiles/SCTweetAlchemy_CPP.dir/clean
+clean: CMakeFiles/SCTweetAlchemy_CPP_autogen.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/SCTweetPaster_CPP.dir
+# Target rules for target CMakeFiles/SCTweetAlchemy_CPP.dir
 
 # All Build rule for target.
-CMakeFiles/SCTweetPaster_CPP.dir/all: CMakeFiles/SCTweetPaster_CPP_autogen.dir/all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP.dir/build.make CMakeFiles/SCTweetPaster_CPP.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP.dir/build.make CMakeFiles/SCTweetPaster_CPP.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Built target SCTweetPaster_CPP"
-.PHONY : CMakeFiles/SCTweetPaster_CPP.dir/all
+CMakeFiles/SCTweetAlchemy_CPP.dir/all: CMakeFiles/SCTweetAlchemy_CPP_autogen.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Built target SCTweetAlchemy_CPP"
+.PHONY : CMakeFiles/SCTweetAlchemy_CPP.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/SCTweetPaster_CPP.dir/rule: cmake_check_build_system
+CMakeFiles/SCTweetAlchemy_CPP.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/CMakeFiles 8
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/SCTweetPaster_CPP.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/SCTweetAlchemy_CPP.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/CMakeFiles 0
-.PHONY : CMakeFiles/SCTweetPaster_CPP.dir/rule
+.PHONY : CMakeFiles/SCTweetAlchemy_CPP.dir/rule
 
 # Convenience name for target.
-SCTweetPaster_CPP: CMakeFiles/SCTweetPaster_CPP.dir/rule
-.PHONY : SCTweetPaster_CPP
+SCTweetAlchemy_CPP: CMakeFiles/SCTweetAlchemy_CPP.dir/rule
+.PHONY : SCTweetAlchemy_CPP
 
 # clean rule for target.
-CMakeFiles/SCTweetPaster_CPP.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP.dir/build.make CMakeFiles/SCTweetPaster_CPP.dir/clean
-.PHONY : CMakeFiles/SCTweetPaster_CPP.dir/clean
+CMakeFiles/SCTweetAlchemy_CPP.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/clean
+.PHONY : CMakeFiles/SCTweetAlchemy_CPP.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/SCTweetPaster_CPP_autogen.dir
+# Target rules for target CMakeFiles/SCTweetAlchemy_CPP_autogen.dir
 
 # All Build rule for target.
-CMakeFiles/SCTweetPaster_CPP_autogen.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP_autogen.dir/build.make CMakeFiles/SCTweetPaster_CPP_autogen.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP_autogen.dir/build.make CMakeFiles/SCTweetPaster_CPP_autogen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/CMakeFiles --progress-num=8 "Built target SCTweetPaster_CPP_autogen"
-.PHONY : CMakeFiles/SCTweetPaster_CPP_autogen.dir/all
+CMakeFiles/SCTweetAlchemy_CPP_autogen.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP_autogen.dir/build.make CMakeFiles/SCTweetAlchemy_CPP_autogen.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP_autogen.dir/build.make CMakeFiles/SCTweetAlchemy_CPP_autogen.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/CMakeFiles --progress-num=8 "Built target SCTweetAlchemy_CPP_autogen"
+.PHONY : CMakeFiles/SCTweetAlchemy_CPP_autogen.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/SCTweetPaster_CPP_autogen.dir/rule: cmake_check_build_system
+CMakeFiles/SCTweetAlchemy_CPP_autogen.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/CMakeFiles 1
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/SCTweetPaster_CPP_autogen.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/SCTweetAlchemy_CPP_autogen.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/CMakeFiles 0
-.PHONY : CMakeFiles/SCTweetPaster_CPP_autogen.dir/rule
+.PHONY : CMakeFiles/SCTweetAlchemy_CPP_autogen.dir/rule
 
 # Convenience name for target.
-SCTweetPaster_CPP_autogen: CMakeFiles/SCTweetPaster_CPP_autogen.dir/rule
-.PHONY : SCTweetPaster_CPP_autogen
+SCTweetAlchemy_CPP_autogen: CMakeFiles/SCTweetAlchemy_CPP_autogen.dir/rule
+.PHONY : SCTweetAlchemy_CPP_autogen
 
 # clean rule for target.
-CMakeFiles/SCTweetPaster_CPP_autogen.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetPaster_CPP_autogen.dir/build.make CMakeFiles/SCTweetPaster_CPP_autogen.dir/clean
-.PHONY : CMakeFiles/SCTweetPaster_CPP_autogen.dir/clean
+CMakeFiles/SCTweetAlchemy_CPP_autogen.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP_autogen.dir/build.make CMakeFiles/SCTweetAlchemy_CPP_autogen.dir/clean
+.PHONY : CMakeFiles/SCTweetAlchemy_CPP_autogen.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

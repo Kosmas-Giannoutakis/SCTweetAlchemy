@@ -16,7 +16,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 # --- Add Executable ---
-add_executable(SCTweetPaster_CPP
+add_executable(SCTweetAlchemy_CPP
     main.cpp
     mainwindow.h
     mainwindow.cpp
@@ -26,7 +26,7 @@ add_executable(SCTweetPaster_CPP
 )
 
 # --- Link Libraries ---
-target_link_libraries(SCTweetPaster_CPP PRIVATE Qt6::Widgets)
+target_link_libraries(SCTweetAlchemy_CPP PRIVATE Qt6::Widgets)
 
 # --- Optional: Define location of SCTweets.json ---
 # This is tricky. Simplest for now: assume it's copied next to the executable.

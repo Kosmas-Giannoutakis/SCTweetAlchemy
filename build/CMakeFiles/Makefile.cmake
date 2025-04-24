@@ -312,8 +312,8 @@ set(CMAKE_MAKEFILE_OUTPUTS
 
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
-  "CMakeFiles/SCTweetPaster_CPP_autogen.dir/AutogenInfo.json"
-  "CMakeFiles/SCTweetPaster_CPP_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json"
+  "CMakeFiles/SCTweetAlchemy_CPP_autogen.dir/AutogenInfo.json"
+  "CMakeFiles/SCTweetAlchemy_CPP_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json"
   ".qt/QtDeploySupport.cmake"
   ".qt/QtDeployTargets.cmake"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
@@ -321,6 +321,6 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/SCTweetPaster_CPP.dir/DependInfo.cmake"
-  "CMakeFiles/SCTweetPaster_CPP_autogen.dir/DependInfo.cmake"
+  "CMakeFiles/SCTweetAlchemy_CPP.dir/DependInfo.cmake"
+  "CMakeFiles/SCTweetAlchemy_CPP_autogen.dir/DependInfo.cmake"
   )
