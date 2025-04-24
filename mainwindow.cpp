@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "searchlineedit.h"
 
-#include <QtWidgets> // Includes common Qt Widget classes
+#include <QtWidgets>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -13,55 +13,52 @@
 #include <QSplitter>
 #include <QMenuBar>
 #include <QKeyEvent>
-// #include <QScrollArea> // No longer needed after layout change
-#include <QPushButton>
-// #include <QGroupBox> // No longer needed for filters
-#include <QButtonGroup>
-#include <QSet>
-#include <QSettings>
-#include <QVariant>
-#include <algorithm>
-#include <QComboBox>
+#include <QScrollArea>
+#include <QGroupBox>
+#include <QCheckBox>
 #include <QLabel>
-#include <QRegularExpression> // Needed for UGen extraction
+#include <QRegularExpression>
+#include <QSet> // Include QSet
 
 
 // --- Constructor ---
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , searchLineEdit(nullptr)
+    , mainSplitter(nullptr)
+    , filterPanel(nullptr)
+    , filterScrollArea(nullptr)
+    , filterScrollWidget(nullptr)
+    , filterScrollLayout(nullptr)
     , tweetListWidget(nullptr)
+    , rightPanel(nullptr)
     , codeTextEdit(nullptr)
     , metadataTextEdit(nullptr)
-    , filterWidget(nullptr)
-    , authorComboBox(nullptr)
-    , ugenComboBox(nullptr)
-    , sonicComboBox(nullptr)
-    , complexityComboBox(nullptr)
+    , filterLogicToggle(nullptr) // Init new pointer
     , favoriteFilterButton(nullptr)
-    , favoritesButtonGroup(nullptr)
-    , resetFiltersButton(nullptr) // Initialize reset button pointer
-    , authorLabel(nullptr)
-    , ugenLabel(nullptr)
-    , sonicLabel(nullptr)
-    , complexityLabel(nullptr)
-    , favoriteLabel(nullptr)
+    , resetFiltersButton(nullptr)
     , focusSearchAction(nullptr)
     , toggleFavoriteAction(nullptr)
 {
-    // --- Settings Initialization ---
-    QCoreApplication::setOrganizationName("Kosmas"); // Example org name
-    QCoreApplication::setApplicationName("SCTweetAlchemy"); // Example app name
-    settings = new QSettings(this); // Parented to MainWindow for auto-deletion
+    // Clear checkbox lists initially
+    authorCheckboxes.clear();
+    sonicCheckboxes.clear();
+    techniqueCheckboxes.clear();
+    ugenCheckboxes.clear();
 
-    // --- Setup Steps ---
-    setupUi();        // Create the UI layout
-    setupActions();   // Create Ctrl+F, Ctrl+D actions
-    loadFavorites();  // Load saved favorites from settings
-    loadTweets();     // Load tweet data from JSON resource
-    populateFilterUI(); // Create filter controls based on loaded tweets
+    // Settings Initialization
+    QCoreApplication::setOrganizationName("Kosmas");
+    QCoreApplication::setApplicationName("SCTweetAlchemy");
+    settings = new QSettings(this);
 
-    // --- Connect Signals to Slots ---
+    // Setup Steps
+    setupUi();
+    setupActions();
+    loadFavorites();
+    loadTweets();
+    populateFilterUI(); // Populates the leftmost filter column
+
+    // Connect Signals
     if (tweetListWidget) {
         connect(tweetListWidget, &QListWidget::currentItemChanged,
                 this, &MainWindow::onTweetSelectionChanged);
@@ -72,177 +69,138 @@ MainWindow::MainWindow(QWidget *parent)
         connect(searchLineEdit, &SearchLineEdit::navigationKeyPressed,
                 this, &MainWindow::onSearchNavigateKey);
     }
-    // Connections for ComboBoxes, Favorite button, and Reset button are done in populateFilterUI
+    // Connections for checkboxes, favorite button, reset button, logic toggle are done in populateFilterUI
 
-    // --- Initial State ---
-    applyFilters(); // Populate the list based on default filters
+    // Initial State
+    applyFilters();
 
     if (tweetListWidget && tweetListWidget->count() > 0) {
-       tweetListWidget->setCurrentRow(0); // Select the first item if list is not empty
+       tweetListWidget->setCurrentRow(0);
     } else {
-        // Handle empty list case (no tweets loaded or none match default filters)
         if(codeTextEdit) codeTextEdit->setPlaceholderText("No tweets found or match filters.");
         if(metadataTextEdit) metadataTextEdit->setPlaceholderText("");
-         onTweetSelectionChanged(); // Explicitly clear panes if list is empty initially
+         onTweetSelectionChanged();
     }
 
-    // Give initial focus to the list widget for keyboard navigation
     if(tweetListWidget) {
         tweetListWidget->setFocus();
     }
 }
 
 // --- Destructor ---
-MainWindow::~MainWindow()
-{
-    // No explicit deletion needed for widgets/objects parented to 'this' (MainWindow)
-    // QSettings is also parented.
-}
+MainWindow::~MainWindow() { }
 
 // --- Action Setup ---
 void MainWindow::setupActions()
 {
-    // --- Focus Search Action (Ctrl+F) ---
     if (searchLineEdit) {
         focusSearchAction = new QAction("Focus Search", this);
-        focusSearchAction->setShortcut(QKeySequence::Find); // Standard Ctrl+F shortcut
+        focusSearchAction->setShortcut(QKeySequence::Find);
         focusSearchAction->setToolTip("Focus the search field (Ctrl+F)");
         connect(focusSearchAction, &QAction::triggered, this, &MainWindow::focusSearchField);
-        this->addAction(focusSearchAction); // Add action globally to the window
+        this->addAction(focusSearchAction);
     } else {
         qWarning() << "Search Line Edit is null, cannot create focus search action.";
     }
 
-    // --- Toggle Favorite Action (Ctrl+D) ---
     toggleFavoriteAction = new QAction("Toggle Favorite", this);
-    toggleFavoriteAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_D)); // Custom shortcut Ctrl+D
+    toggleFavoriteAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_D));
     toggleFavoriteAction->setToolTip("Mark/Unmark selected tweet in list as favorite (Ctrl+D)");
     connect(toggleFavoriteAction, &QAction::triggered, this, &MainWindow::toggleFavorite);
-    this->addAction(toggleFavoriteAction); // Add action globally to the window
-
-    /* Optional: Add actions to Menus if you have a MenuBar
-    QMenu *editMenu = menuBar()->addMenu("&Edit");
-    if(focusSearchAction) editMenu->addAction(focusSearchAction);
-
-    QMenu *tweetMenu = menuBar()->addMenu("&Tweet");
-    tweetMenu->addAction(toggleFavoriteAction);
-    */
+    this->addAction(toggleFavoriteAction);
 }
 
 // --- Slot to Focus Search Field ---
 void MainWindow::focusSearchField()
 {
     if (searchLineEdit) {
-        searchLineEdit->setFocus(); // Set keyboard focus
-        searchLineEdit->selectAll(); // Optional: Select existing text for easy replacement
+        searchLineEdit->setFocus();
+        searchLineEdit->selectAll();
     }
 }
 
-// --- Helper to Create Right Panel (Code + Metadata) ---
+// --- Helper to Create Right Panel ---
 QWidget* MainWindow::createRightPanel()
 {
-    // --- Create Code Panel with Title ---
     QWidget* codePanel = new QWidget(this);
     QVBoxLayout* codeLayout = new QVBoxLayout(codePanel);
-    codeLayout->setContentsMargins(0, 2, 0, 0); // Adjust margins
-    codeLayout->setSpacing(3);                 // Adjust spacing
-
+    codeLayout->setContentsMargins(0, 2, 0, 0); codeLayout->setSpacing(3);
     QLabel* codeTitleLabel = new QLabel("Code", codePanel);
-    QFont titleFont = codeTitleLabel->font();
-    titleFont.setBold(true);
+    QFont titleFont = codeTitleLabel->font(); titleFont.setBold(true);
     codeTitleLabel->setFont(titleFont);
-
-    codeTextEdit = new QTextEdit(this); // Initialize member variable
-    codeTextEdit->setReadOnly(true);
-    codeTextEdit->setLineWrapMode(QTextEdit::WidgetWidth); // Enable line wrapping
-    codeTextEdit->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont)); // Use monospace font
+    codeTextEdit = new QTextEdit(this);
+    codeTextEdit->setReadOnly(true); codeTextEdit->setLineWrapMode(QTextEdit::WidgetWidth);
+    codeTextEdit->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
     codeTextEdit->setObjectName("codeTextEdit");
+    codeLayout->addWidget(codeTitleLabel); codeLayout->addWidget(codeTextEdit);
 
-    codeLayout->addWidget(codeTitleLabel);
-    codeLayout->addWidget(codeTextEdit);
-
-    // --- Create Metadata Panel with Title ---
     QWidget* metadataPanel = new QWidget(this);
     QVBoxLayout* metadataLayout = new QVBoxLayout(metadataPanel);
-    metadataLayout->setContentsMargins(0, 2, 0, 0); // Adjust margins
-    metadataLayout->setSpacing(3);                 // Adjust spacing
-
+    metadataLayout->setContentsMargins(0, 2, 0, 0); metadataLayout->setSpacing(3);
     QLabel* metadataTitleLabel = new QLabel("Metadata", metadataPanel);
-    metadataTitleLabel->setFont(titleFont); // Reuse bold font
+    metadataTitleLabel->setFont(titleFont);
+    metadataTextEdit = new QTextEdit(this);
+    metadataTextEdit->setReadOnly(true); metadataTextEdit->setObjectName("metadataTextEdit");
+    metadataLayout->addWidget(metadataTitleLabel); metadataLayout->addWidget(metadataTextEdit);
 
-    metadataTextEdit = new QTextEdit(this); // Initialize member variable
-    metadataTextEdit->setReadOnly(true);
-    metadataTextEdit->setObjectName("metadataTextEdit");
-    // metadataTextEdit->setLineWrapMode(QTextEdit::WidgetWidth); // Optional wrapping for metadata
-
-    metadataLayout->addWidget(metadataTitleLabel);
-    metadataLayout->addWidget(metadataTextEdit);
-
-    // --- Use a Splitter for the Panels ---
     QSplitter *splitter = new QSplitter(Qt::Vertical, this);
-    splitter->addWidget(codePanel);     // Add panel containing title and text
-    splitter->addWidget(metadataPanel); // Add panel containing title and text
-
-    // --- Set Initial Splitter Sizes ---
-    splitter->setStretchFactor(0, 4); // Give code panel more initial space
-    splitter->setStretchFactor(1, 1);
-
-    return splitter; // Return the containing splitter
+    splitter->addWidget(codePanel); splitter->addWidget(metadataPanel);
+    splitter->setStretchFactor(0, 4); splitter->setStretchFactor(1, 1);
+    return splitter;
 }
 
-// --- Setup Overall UI Layout ---
+// --- Setup Overall UI Layout (Adjusted Splitter Ratios 5:1:5) ---
 void MainWindow::setupUi()
 {
-    // --- Top Search Bar (Global) ---
     searchLineEdit = new SearchLineEdit(this);
     searchLineEdit->setPlaceholderText("Search Tweets (Global)...");
-    searchLineEdit->setClearButtonEnabled(true); // Show clear button when text exists
+    searchLineEdit->setClearButtonEnabled(true);
 
-    // --- Filter Controls Container ---
-    filterWidget = new QWidget(this);
-    QHBoxLayout *filterLayout = new QHBoxLayout(filterWidget);
-    filterLayout->setContentsMargins(2, 2, 2, 2);
-    filterLayout->setSpacing(5);
-    // Filter controls (labels, combos, buttons) are added in populateFilterUI
+    // Column 1: Filter Panel
+    filterPanel = new QWidget(this);
+    QVBoxLayout* filterPanelLayout = new QVBoxLayout(filterPanel);
+    filterPanelLayout->setContentsMargins(0,0,0,0); filterPanelLayout->setSpacing(0);
+    filterScrollArea = new QScrollArea(filterPanel);
+    filterScrollArea->setWidgetResizable(true); filterScrollArea->setFrameShape(QFrame::NoFrame);
+    filterScrollWidget = new QWidget();
+    filterScrollLayout = new QVBoxLayout(filterScrollWidget);
+    filterScrollLayout->setContentsMargins(5, 5, 5, 5); filterScrollLayout->setSpacing(6);
+    // Stretch will be added last in populateFilterUI
+    filterScrollArea->setWidget(filterScrollWidget);
+    filterPanelLayout->addWidget(filterScrollArea);
 
-    // --- Tweet List ---
+    // Column 2: Tweet List
     tweetListWidget = new QListWidget(this);
     tweetListWidget->setObjectName("tweetListWidget");
 
-    // --- Left Panel (Filters + List) ---
-    QWidget *leftPanel = new QWidget(this);
-    QVBoxLayout *leftPanelLayout = new QVBoxLayout(leftPanel);
-    leftPanelLayout->setContentsMargins(0, 0, 0, 0);
-    leftPanelLayout->setSpacing(5);
-    leftPanelLayout->addWidget(filterWidget);      // Filters at top of left panel
-    leftPanelLayout->addWidget(tweetListWidget);   // List below filters
+    // Column 3: Code/Metadata Panel
+    rightPanel = createRightPanel();
 
-    // --- Right Panel (Code + Metadata) ---
-    QWidget *rightPanel = createRightPanel(); // Create panel with titles
+    // Main Horizontal Splitter
+    mainSplitter = new QSplitter(Qt::Horizontal, this);
+    mainSplitter->setObjectName("mainSplitter");
+    mainSplitter->addWidget(filterPanel);      // Col 1
+    mainSplitter->addWidget(tweetListWidget);  // Col 2
+    mainSplitter->addWidget(rightPanel);       // Col 3
 
-    // --- Main Content Splitter ---
-    QSplitter *mainContentSplitter = new QSplitter(Qt::Horizontal, this);
-    mainContentSplitter->addWidget(leftPanel);     // Left side (Filters + List)
-    mainContentSplitter->addWidget(rightPanel);    // Right side (Code + Metadata)
-    mainContentSplitter->setStretchFactor(0, 1); // Set initial proportions (adjust as needed)
-    mainContentSplitter->setStretchFactor(1, 3);
+    // Set Initial Splitter Sizes (Adjusted Ratios: 5:1:5)
+    mainSplitter->setStretchFactor(0, 11); // Filter column stretch << WIDER
+    mainSplitter->setStretchFactor(1, 3); // List column stretch   << NARROWER
+    mainSplitter->setStretchFactor(2, 10); // Code/Meta column stretch
 
-    // --- Overall Window Layout ---
+    // Overall Window Layout
     QVBoxLayout *centralLayout = new QVBoxLayout;
-    centralLayout->addWidget(searchLineEdit);       // Global search at top
-    centralLayout->addWidget(mainContentSplitter); // Main content area below
-
-    // --- Set Central Widget ---
+    centralLayout->addWidget(searchLineEdit);
+    centralLayout->addWidget(mainSplitter);
     QWidget *centralWidget = new QWidget(this);
     centralWidget->setLayout(centralLayout);
     setCentralWidget(centralWidget);
 
-    // --- Window Properties ---
     setWindowTitle("SCTweetAlchemy Paster");
-    resize(1100, 850); // Set larger initial window size
+    resize(1600, 850); // Keep overall window size
 }
 
-// --- Load Tweets from JSON Resource ---
+// --- Load Tweets ---
 void MainWindow::loadTweets()
 {
     QString resourcePath = ":/data/SCTweets.json"; // Path defined in resources.qrc alias
@@ -278,14 +236,11 @@ void MainWindow::loadTweets()
     QJsonObject rootObj = doc.object();
     tweets.clear(); // Clear any previous data
 
-    // Iterate through the JSON object and populate the tweets vector
     for (auto it = rootObj.constBegin(); it != rootObj.constEnd(); ++it) {
-        QString key = it.key(); // Tweet name (e.g., "bass_glitch")
+        QString key = it.key();
         QJsonValue value = it.value();
-        if (!value.isObject()) { continue; } // Skip if not a valid tweet object
-
+        if (!value.isObject()) { continue; }
         QJsonObject tweetObj = value.toObject();
-        // Basic validation: Ensure at least the 'original' code exists
         if (!tweetObj.contains("original") || !tweetObj["original"].isString()) { continue; }
 
         TweetData td;
@@ -294,14 +249,10 @@ void MainWindow::loadTweets()
         td.author = tweetObj.value("author").toString("Unknown");
         td.sourceUrl = tweetObj.value("source_url").toString("");
         td.description = tweetObj.value("description").toString("-");
-
-        // Parse tags array
         if (tweetObj.contains("tags") && tweetObj["tags"].isArray()) {
             QJsonArray tagsArray = tweetObj["tags"].toArray();
             for (const QJsonValue &tagVal : tagsArray) {
-                if (tagVal.isString()) {
-                    td.tags.append(tagVal.toString());
-                }
+                if (tagVal.isString()) { td.tags.append(tagVal.toString()); }
             }
         }
         tweets.append(td);
@@ -309,449 +260,373 @@ void MainWindow::loadTweets()
     qInfo() << "Loaded" << tweets.count() << "tweets from JSON resource.";
 }
 
-// --- Populate Filter UI Controls ---
+
+// --- Populate Filter UI Controls (Renamed Buttons, Moved to Top) ---
 void MainWindow::populateFilterUI()
 {
-    if (!filterWidget || tweets.isEmpty()) return; // Safety checks
-
-    // Get the layout of the filter container widget
-    QHBoxLayout *layout = qobject_cast<QHBoxLayout*>(filterWidget->layout());
-    if (!layout) { // Should exist from setupUi, but create if missing
-        layout = new QHBoxLayout(filterWidget);
-        qWarning() << "Filter widget layout was missing, created new one.";
+    if (!filterScrollLayout || tweets.isEmpty()) {
+        qWarning() << "Filter layout or tweets missing, cannot populate filters.";
+        return;
     }
 
-    // --- Clear previous filter UI elements ---
-    // Delete direct child widgets of filterWidget to remove old controls
-    qDeleteAll(filterWidget->findChildren<QWidget *>(QString(), Qt::FindDirectChildrenOnly));
-    // Reset pointers to UI elements (Qt handles deletion via parentage)
-    authorComboBox = nullptr;
-    ugenComboBox = nullptr;
-    sonicComboBox = nullptr;
-    complexityComboBox = nullptr;
-    favoriteFilterButton = nullptr;
-    favoritesButtonGroup = nullptr;
-    resetFiltersButton = nullptr;
-    authorLabel = nullptr;
-    ugenLabel = nullptr;
-    sonicLabel = nullptr;
-    complexityLabel = nullptr;
-    favoriteLabel = nullptr;
+    // Clear Previous Controls
+    qDeleteAll(filterScrollWidget->findChildren<QWidget *>(QString(), Qt::FindDirectChildrenOnly));
+    authorCheckboxes.clear(); sonicCheckboxes.clear(); techniqueCheckboxes.clear(); ugenCheckboxes.clear();
+    filterLogicToggle = nullptr; favoriteFilterButton = nullptr; resetFiltersButton = nullptr;
 
     // --- Prepare Sets for Unique Filter Items ---
-    QSet<QString> authors;
-    QSet<QString> ugens; // Will be populated from code analysis
-    QSet<QString> sonics; // Populated from JSON tags
-    QSet<QString> complexities; // Populated from JSON tags
-
-    // --- Regular Expressions for UGen Extraction ---
-    // Pattern 1: UgenName.method or UgenName(
+    QSet<QString> authors; QSet<QString> sonics; QSet<QString> techniques; QSet<QString> ugens;
+    // Regexes for UGen Extraction...
     QRegularExpression ugenMethodRegex(R"(\b([A-Z][a-zA-Z0-9]*)(?:\.(?:ar|kr|ir|new)\b|\())");
-    // Pattern 2: method(UgenName, ...) or method(UgenName)
     QRegularExpression ugenFuncRegex(R"(\b(?:ar|kr|ir|new)\b\s*\(\s*([A-Z][a-zA-Z0-9]*)\b)");
-
-    // --- Iterate Through Tweets to Extract Filter Items ---
+    // Define Classification Sets...
+    const QSet<QString> sonic_tags = {"drone", "ambient", "noise", "glitch", "percussive", "melodic", "rhythm", "bass", "lead", "pad", "sfx", "sequence", /*"animal",*/ "harmonic", "atonal", "high frequency", "metallic", "wooden", "watery", "airy", "harsh", "gritty", /*"distorted",*/ "vocal-like", "glassy", "digital", "analog-like", "sparse", "dense", "swirling", "pulsing", "environmental", /*"crackle",*/ "sci-fi"};
+    const QSet<QString> technique_tags = {"additive", "subtractive", "fm", "am", "pm", "rm", "waveshaping", "wavetable", "granular", "sampling", "physical modeling", "karplus-strong", "formant", "stochastic", "chaotic", "feedback", "cross synthesis", "vector", "filter", "delay", "buffer", "pattern", "simple", "complex", "evolving", "chiptune"};
+    // Iterate Through Tweets to Extract Filter Items...
     for (const auto& tweet : tweets) {
-        // Add author to set
         authors.insert(tweet.author.isEmpty() ? "Unknown" : tweet.author);
-
-        // Extract UGens from code using both regex patterns
-        QRegularExpressionMatchIterator i1 = ugenMethodRegex.globalMatch(tweet.originalCode);
-        while (i1.hasNext()) {
-            QRegularExpressionMatch match = i1.next();
-            QString potentialUgen = match.captured(1);
-            if (!potentialUgen.isEmpty()) ugens.insert(potentialUgen);
-        }
-        QRegularExpressionMatchIterator i2 = ugenFuncRegex.globalMatch(tweet.originalCode);
-        while (i2.hasNext()) {
-            QRegularExpressionMatch match = i2.next();
-            QString potentialUgen = match.captured(1);
-            if (!potentialUgen.isEmpty()) ugens.insert(potentialUgen);
-        }
-
-        // Classify JSON tags into Sonic and Complexity/Tag categories
+        QRegularExpressionMatchIterator i1 = ugenMethodRegex.globalMatch(tweet.originalCode); while (i1.hasNext()) { ugens.insert(i1.next().captured(1)); }
+        QRegularExpressionMatchIterator i2 = ugenFuncRegex.globalMatch(tweet.originalCode); while (i2.hasNext()) { ugens.insert(i2.next().captured(1)); }
         for (const QString& tag : tweet.tags) {
             QString lowerTag = tag.toLower();
-            // Define classification rules (adjust as needed)
-            if (lowerTag == "drone" || lowerTag == "ambient" || lowerTag == "noise" || lowerTag == "glitch" || lowerTag == "percussive" || lowerTag == "melodic" || lowerTag == "texture" || lowerTag == "rhythm" || lowerTag == "bass" || lowerTag == "lead" || lowerTag == "pad" || lowerTag == "sfx" || lowerTag == "sequence" || lowerTag == "animal" || lowerTag == "space" || lowerTag == "harmonic" || lowerTag == "atonal") {
-                sonics.insert(tag);
-            }
-            else if (lowerTag == "simple" || lowerTag == "complex" || lowerTag == "one-liner" || lowerTag == "generative" || lowerTag == "feedback" || lowerTag == "filter" || lowerTag == "delay" || lowerTag == "reverb" || lowerTag == "random" || lowerTag == "pattern" || lowerTag == "buffer" || lowerTag == "chaos" || lowerTag == "pitchshift" || lowerTag == "granular") {
-                 complexities.insert(tag); // Consider renaming this category label later if needed
-            }
-             // Don't add tags to 'ugens' set here; it's populated from code only.
+            if (sonic_tags.contains(lowerTag)) { sonics.insert(tag); }
+            else if (technique_tags.contains(lowerTag)) { techniques.insert(tag); }
         }
     }
 
-    // --- Helper Lambda to Create Label + ComboBox Pairs ---
-    auto createFilterCombo = [&](const QString& labelText, const QSet<QString>& items, QComboBox*& comboBoxPtr, QLabel*& labelPtr) {
-        if (items.isEmpty()) { // Don't create if no items found for this category
-            comboBoxPtr = nullptr;
-            labelPtr = nullptr;
-            return;
-        }
-        // Create label and combo box, parented to filterWidget
-        labelPtr = new QLabel(labelText + ":", filterWidget);
-        comboBoxPtr = new QComboBox(filterWidget);
-        comboBoxPtr->setObjectName("FilterCombo_" + labelText.simplified().replace(" ", "_")); // For styling/testing
+    // --- Create Control Buttons (Favorite, Reset, Logic Toggle) FIRST ---
+    QWidget* buttonWidget = new QWidget();
+    QHBoxLayout* buttonLayout = new QHBoxLayout(buttonWidget);
+    buttonLayout->setContentsMargins(0, 0, 0, 4); buttonLayout->setSpacing(6);
 
-        // Sort items for display
+    // Filter Logic Toggle Checkbox
+    filterLogicToggle = new QCheckBox("Match All", buttonWidget); // RENAMED
+    filterLogicToggle->setObjectName("FilterLogicToggle");
+    filterLogicToggle->setToolTip("Check to require ALL selected tags (AND logic).\nUncheck to require ANY selected tag (OR logic)."); // UPDATED TOOLTIP
+    filterLogicToggle->setChecked(true); // Default to AND logic
+    connect(filterLogicToggle, &QCheckBox::checkStateChanged, this, &MainWindow::applyFilters); // Use fixed signal
+
+    // Favorite Button
+    favoriteFilterButton = new QPushButton("Favorites", buttonWidget); // RENAMED
+    favoriteFilterButton->setCheckable(true);
+    favoriteFilterButton->setObjectName("FilterButtonFavorite");
+    connect(favoriteFilterButton, &QPushButton::toggled, this, &MainWindow::applyFilters);
+
+    // Reset Button
+    resetFiltersButton = new QPushButton("Reset", buttonWidget); // RENAMED
+    resetFiltersButton->setObjectName("ResetFiltersButton");
+    resetFiltersButton->setToolTip("Reset all filter checkboxes and toggles");
+    connect(resetFiltersButton, &QPushButton::clicked, this, &MainWindow::resetFilters);
+
+    buttonLayout->addWidget(filterLogicToggle);
+    buttonLayout->addStretch(1); // Push Fav/Reset to the right
+    buttonLayout->addWidget(favoriteFilterButton);
+    buttonLayout->addWidget(resetFiltersButton);
+
+    // --- Add Button Widget to the TOP of the scroll layout ---
+    filterScrollLayout->insertWidget(0, buttonWidget); // Insert at the beginning
+
+    // --- Helper Lambda to Create Checkbox Groups ---
+    auto createCheckboxGroup = [&](const QString& title, const QSet<QString>& items, QList<QCheckBox*>& checkboxList) {
+        if (items.isEmpty()) return;
+        QGroupBox *groupBox = new QGroupBox(title);
+        QVBoxLayout *groupLayout = new QVBoxLayout(groupBox);
+        groupLayout->setContentsMargins(4, 4, 4, 4); groupLayout->setSpacing(4);
         QStringList sortedItems = items.values();
         sortedItems.sort(Qt::CaseInsensitive);
 
-        // Add default "All" item and the sorted list
-        comboBoxPtr->addItem("All"); // Index 0 is "All"
-        comboBoxPtr->addItems(sortedItems);
-
-        // Connect signal to update filters when selection changes
-        connect(comboBoxPtr, QOverload<int>::of(&QComboBox::currentIndexChanged),
-                this, &MainWindow::applyFilters);
-
-        // Add label and combo box to the filter layout
-        layout->addWidget(labelPtr);
-        layout->addWidget(comboBoxPtr);
+        for (const QString& item : sortedItems) {
+            QCheckBox *checkbox = new QCheckBox(item);
+            checkbox->setObjectName("FilterCheck_" + title.simplified().replace(" ", "_") + "_" + item);
+            connect(checkbox, &QCheckBox::checkStateChanged, this, &MainWindow::applyFilters); // Use fixed signal
+            groupLayout->addWidget(checkbox);
+            checkboxList.append(checkbox);
+        }
+        groupLayout->addStretch(1);
+        // --- Add groupbox BELOW buttons ---
+        filterScrollLayout->addWidget(groupBox); // Append to the layout
     };
 
-    // --- Create Filter Controls using the Lambda ---
-    createFilterCombo("Author", authors, authorComboBox, authorLabel);
-    createFilterCombo("UGen", ugens, ugenComboBox, ugenLabel);
-    createFilterCombo("Sonic", sonics, sonicComboBox, sonicLabel);
-    createFilterCombo("Tag", complexities, complexityComboBox, complexityLabel); // "Tag" label for complexity category
+    // --- Create Checkbox Groups (Specific Order) ---
+    createCheckboxGroup("Author", authors, authorCheckboxes);
+    createCheckboxGroup("Sonic Characteristic", sonics, sonicCheckboxes);
+    createCheckboxGroup("Synthesis Technique", techniques, techniqueCheckboxes);
+    createCheckboxGroup("UGen", ugens, ugenCheckboxes);
 
-    // --- Create Favorite Filter Button ---
-    favoriteLabel = new QLabel("Show:", filterWidget);
-    favoriteFilterButton = new QPushButton("Favorites Only", filterWidget);
-    favoriteFilterButton->setCheckable(true); // Make it a toggle button
-    favoriteFilterButton->setObjectName("FilterButton_Favorite");
-    // Use a button group for easier state management (optional for single button)
-    favoritesButtonGroup = new QButtonGroup(filterWidget);
-    favoritesButtonGroup->setExclusive(false); // Allow unchecking
-    favoritesButtonGroup->addButton(favoriteFilterButton);
-    // Connect toggle signal to update filters
-    connect(favoriteFilterButton, &QPushButton::toggled, this, &MainWindow::applyFilters);
+    // --- Add Stretch at the very bottom ---
+    // Ensure stretch is the last item
+    QLayoutItem *lastItem = filterScrollLayout->itemAt(filterScrollLayout->count() - 1);
+    if (!lastItem || !lastItem->spacerItem()) {
+         filterScrollLayout->addStretch(1);
+    }
 
-    // --- Create Reset Button ---
-    resetFiltersButton = new QPushButton("Reset Filters", filterWidget);
-    resetFiltersButton->setObjectName("ResetFiltersButton");
-    resetFiltersButton->setToolTip("Reset all dropdown filters and favorite toggle");
-    // Connect click signal to the reset slot
-    connect(resetFiltersButton, &QPushButton::clicked, this, &MainWindow::resetFilters);
-
-    // --- Add Buttons to Layout ---
-    layout->addStretch(1); // Add stretchable space to push buttons to the right
-    layout->addWidget(favoriteLabel);
-    layout->addWidget(favoriteFilterButton);
-    layout->addWidget(resetFiltersButton);
-
-
-    qInfo() << "Populated filter UI. Found" << ugens.count() << "unique potential UGens.";
+    qInfo() << "Populated filter UI with checkboxes.";
 }
 
-// --- Apply Filters Based on Current Control States ---
+// --- Apply Filters Based on Checkbox States (Switchable AND/OR Logic) ---
 void MainWindow::applyFilters()
 {
-    if (!tweetListWidget) return; // Safety check
+    if (!tweetListWidget) return;
 
-    // Store current selection to try and restore it after repopulating
     QString previousSelectionText = tweetListWidget->currentItem() ? tweetListWidget->currentItem()->text() : "";
+    tweetListWidget->clear();
 
-    tweetListWidget->clear(); // Clear the list before applying filters
+    // Get Checked Items
+    auto getChecked = [](const QList<QCheckBox*>& list) -> QStringList {
+        QStringList checked;
+        for (const QCheckBox* checkbox : list) { if (checkbox->isChecked()) { checked.append(checkbox->text()); } }
+        return checked;
+    };
+    QStringList checkedAuthors = getChecked(authorCheckboxes);
+    QStringList checkedSonics = getChecked(sonicCheckboxes);
+    QStringList checkedTechniques = getChecked(techniqueCheckboxes);
+    QStringList checkedUgens = getChecked(ugenCheckboxes);
 
-    // --- Get Active Filter Values ---
-    QString authorFilter = (authorComboBox && authorComboBox->currentIndex() > 0)
-                               ? authorComboBox->currentText() // Get selected text if not "All"
-                               : QString(); // Empty string means no filter applied for this category
-    QString ugenFilter = (ugenComboBox && ugenComboBox->currentIndex() > 0)
-                             ? ugenComboBox->currentText()
-                             : QString();
-    QString sonicFilter = (sonicComboBox && sonicComboBox->currentIndex() > 0)
-                              ? sonicComboBox->currentText()
-                              : QString();
-    QString tagFilter = (complexityComboBox && complexityComboBox->currentIndex() > 0)
-                             ? complexityComboBox->currentText()
-                             : QString();
+    // Get Filter Logic State
+    bool useAndLogic = filterLogicToggle ? filterLogicToggle->isChecked() : true;
+
+    // Get Other Filters
     bool favoritesOnly = (favoriteFilterButton && favoriteFilterButton->isChecked());
     QString searchText = searchLineEdit ? searchLineEdit->text() : QString();
 
-    // --- Pre-compile Regexes for UGen Check (if needed) ---
-    QRegularExpression ugenMethodCheckRegex;
-    QRegularExpression ugenFuncCheckRegex;
-    if (!ugenFilter.isEmpty()) {
-        QString escapedUgen = QRegularExpression::escape(ugenFilter); // Handle special chars in UGen names
-        ugenMethodCheckRegex.setPattern(QString(R"(\b%1\b(?:\.(?:ar|kr|ir|new)\b|\())").arg(escapedUgen));
-        ugenFuncCheckRegex.setPattern(QString(R"(\b(?:ar|kr|ir|new)\b\s*\(\s*%1\b)").arg(escapedUgen));
+    // Pre-compile Regexes for checked UGens
+    QList<QRegularExpression> ugenMethodCheckRegexes; QList<QRegularExpression> ugenFuncCheckRegexes;
+    if (!checkedUgens.isEmpty()) {
+        for(const QString& ugen : checkedUgens) {
+            QString escapedUgen = QRegularExpression::escape(ugen);
+            ugenMethodCheckRegexes.append(QRegularExpression(QString(R"(\b%1\b(?:\.(?:ar|kr|ir|new)\b|\())").arg(escapedUgen)));
+            ugenFuncCheckRegexes.append(QRegularExpression(QString(R"(\b(?:ar|kr|ir|new)\b\s*\(\s*%1\b)").arg(escapedUgen)));
+        }
     }
 
-    // --- Log Current Filters (for debugging) ---
-    qDebug() << "Applying filters:"
-             << "Search:" << searchText
-             << "Author:" << (authorFilter.isEmpty() ? "All" : authorFilter)
-             << "UGen:" << (ugenFilter.isEmpty() ? "All" : ugenFilter)
-             << "Sonic:" << (sonicFilter.isEmpty() ? "All" : sonicFilter)
-             << "Tag:" << (tagFilter.isEmpty() ? "All" : tagFilter)
-             << "FavsOnly:" << favoritesOnly;
+    qDebug() << "Applying filters [" << (useAndLogic ? "AND" : "OR") << " logic] - Authors:" << checkedAuthors
+             << "Sonics:" << checkedSonics << "Techniques:" << checkedTechniques << "UGens:" << checkedUgens
+             << "FavsOnly:" << favoritesOnly << "Search:" << searchText;
 
-    // --- Iterate Through All Tweets and Check Filters ---
-    QStringList namesToAdd; // List to hold names of tweets that pass filters
+    // Iterate Through Tweets and Check Filters
+    QStringList namesToAdd;
     for (const auto& tweet : tweets) {
-        bool passesFilter = true; // Assume passes initially
+        bool passesFilter = true; // Start assuming it passes global filters
 
-        // Apply Global Search Filter
-        if (passesFilter && !searchText.isEmpty() && !tweet.name.contains(searchText, Qt::CaseInsensitive)) {
-             passesFilter = false;
-        }
-        // Apply Author Filter
-        if (passesFilter && !authorFilter.isEmpty()) {
-             if (authorFilter == "Unknown" && !tweet.author.isEmpty()) passesFilter = false;
-             else if (authorFilter != "Unknown" && tweet.author != authorFilter) passesFilter = false;
-        }
-        // Apply UGen Filter (check code using pre-compiled regexes)
-        if (passesFilter && !ugenFilter.isEmpty()) {
-            bool foundMethodSyntax = ugenMethodCheckRegex.match(tweet.originalCode).hasMatch();
-            bool foundFuncSyntax = ugenFuncCheckRegex.match(tweet.originalCode).hasMatch();
-            if (!foundMethodSyntax && !foundFuncSyntax) { // Must match at least one syntax
-                passesFilter = false;
-            }
-        }
-        // Apply Sonic Filter (check JSON tags)
-        if (passesFilter && !sonicFilter.isEmpty() && !tweet.tags.contains(sonicFilter, Qt::CaseInsensitive)) {
+        // 1. Global Search (Always AND)
+        if (!searchText.isEmpty() && !tweet.name.contains(searchText, Qt::CaseInsensitive)) {
             passesFilter = false;
         }
-         // Apply Tag Filter (check JSON tags)
-        if (passesFilter && !tagFilter.isEmpty() && !tweet.tags.contains(tagFilter, Qt::CaseInsensitive)) {
-            passesFilter = false;
-        }
-        // Apply Favorite Filter
+        // 2. Favorite Filter (Always AND)
         if (passesFilter && favoritesOnly && !isFavorite(tweet.name)) {
             passesFilter = false;
         }
 
-        // If tweet passed all active filters, add its name to the list
+        // Proceed to tag filters only if passed global filters
         if (passesFilter) {
-            namesToAdd.append(tweet.name);
-        }
+            bool anyCheckboxesSelected = !checkedAuthors.isEmpty() || !checkedSonics.isEmpty() || !checkedTechniques.isEmpty() || !checkedUgens.isEmpty();
+
+            if (anyCheckboxesSelected) {
+                if (useAndLogic) {
+                    // --- AND Logic ---
+                    // Check Authors (Must match ALL selected)
+                    if (!checkedAuthors.isEmpty()) {
+                         for (const QString& reqAuthor : checkedAuthors) {
+                             bool currentAuthorMatch = (reqAuthor == "Unknown") ? tweet.author.isEmpty() : (tweet.author == reqAuthor);
+                             if (!currentAuthorMatch) { passesFilter = false; break; }
+                         }
+                    }
+                    // Check UGens (Must match ALL selected)
+                    if (passesFilter && !checkedUgens.isEmpty()) {
+                        for (int i = 0; i < checkedUgens.size(); ++i) {
+                            bool ugenFound = ugenMethodCheckRegexes[i].match(tweet.originalCode).hasMatch() || ugenFuncCheckRegexes[i].match(tweet.originalCode).hasMatch();
+                            if (!ugenFound) { passesFilter = false; break; }
+                        }
+                    }
+                    // Check Sonics (Must match ALL selected)
+                    if (passesFilter && !checkedSonics.isEmpty()) {
+                         for (const QString& reqSonic : checkedSonics) {
+                            bool found = false; for(const QString& t : tweet.tags) if (t.compare(reqSonic, Qt::CaseInsensitive) == 0) { found = true; break; }
+                            if (!found) { passesFilter = false; break; }
+                         }
+                    }
+                    // Check Techniques (Must match ALL selected)
+                    if (passesFilter && !checkedTechniques.isEmpty()) {
+                         for (const QString& reqTechnique : checkedTechniques) {
+                            bool found = false; for(const QString& t : tweet.tags) if (t.compare(reqTechnique, Qt::CaseInsensitive) == 0) { found = true; break; }
+                            if (!found) { passesFilter = false; break; }
+                         }
+                    }
+                } else {
+                    // --- OR Logic ---
+                    bool orMatchFound = false;
+                    // Check Authors (Match ANY selected)
+                    if (!checkedAuthors.isEmpty()) {
+                         for (const QString& reqAuthor : checkedAuthors) {
+                             bool currentAuthorMatch = (reqAuthor == "Unknown") ? tweet.author.isEmpty() : (tweet.author == reqAuthor);
+                             if (currentAuthorMatch) { orMatchFound = true; break; }
+                         }
+                    }
+                    // Check UGens (Match ANY selected)
+                    if (!orMatchFound && !checkedUgens.isEmpty()) {
+                        for (int i = 0; i < checkedUgens.size(); ++i) {
+                            bool ugenFound = ugenMethodCheckRegexes[i].match(tweet.originalCode).hasMatch() || ugenFuncCheckRegexes[i].match(tweet.originalCode).hasMatch();
+                            if (ugenFound) { orMatchFound = true; break; }
+                        }
+                    }
+                    // Check Sonics (Match ANY selected)
+                    if (!orMatchFound && !checkedSonics.isEmpty()) {
+                         for (const QString& reqSonic : checkedSonics) {
+                            for(const QString& t : tweet.tags) if (t.compare(reqSonic, Qt::CaseInsensitive) == 0) { orMatchFound = true; break; }
+                            if (orMatchFound) break;
+                         }
+                    }
+                    // Check Techniques (Match ANY selected)
+                    if (!orMatchFound && !checkedTechniques.isEmpty()) {
+                         for (const QString& reqTechnique : checkedTechniques) {
+                            for(const QString& t : tweet.tags) if (t.compare(reqTechnique, Qt::CaseInsensitive) == 0) { orMatchFound = true; break; }
+                            if (orMatchFound) break;
+                         }
+                    }
+                    // If no OR match was found across all active categories, it fails
+                    if (!orMatchFound) { passesFilter = false; }
+                } // End OR Logic
+            } // End if (anyCheckboxesSelected)
+        } // End if (passes global filters)
+
+        // --- Add if Passed All Filters ---
+        if (passesFilter) { namesToAdd.append(tweet.name); }
     }
 
-    // --- Populate List Widget with Filtered Results ---
-    namesToAdd.sort(Qt::CaseInsensitive); // Sort names alphabetically
-    QListWidgetItem* itemToSelect = nullptr; // Pointer to restore selection
+    // Populate List Widget
+    namesToAdd.sort(Qt::CaseInsensitive);
+    QListWidgetItem* itemToSelect = nullptr;
     for (const QString &name : namesToAdd) {
-        QListWidgetItem* newItem = new QListWidgetItem(name, tweetListWidget); // Create item, parented to list
-        // Add favorite icon if applicable
-        if (isFavorite(name)) {
-             newItem->setIcon(QIcon::fromTheme("emblem-favorite", QIcon(":/icons/favorite.png"))); // Use theme icon or fallback
-        }
-        // Check if this is the item that was previously selected
-        if (name == previousSelectionText) {
-            itemToSelect = newItem;
-        }
+        QListWidgetItem* newItem = new QListWidgetItem(name, tweetListWidget);
+        if (isFavorite(name)) { newItem->setIcon(QIcon::fromTheme("emblem-favorite", QIcon(":/icons/favorite.png"))); }
+        if (name == previousSelectionText) { itemToSelect = newItem; }
     }
-
-    // --- Restore Selection or Select First/None ---
-    if (itemToSelect) {
-        tweetListWidget->setCurrentItem(itemToSelect); // Restore previous selection
-    } else if (tweetListWidget->count() > 0) {
-        tweetListWidget->setCurrentRow(0); // Select first item if list not empty
-    } else {
-         displayCode(nullptr); // Clear code/meta panes if list is now empty
-    }
-
-     qInfo() << "Filters applied, list count:" << tweetListWidget->count();
+    if (itemToSelect) { tweetListWidget->setCurrentItem(itemToSelect); }
+    else if (tweetListWidget->count() > 0) { tweetListWidget->setCurrentRow(0); }
+    else { displayCode(nullptr); }
+    qInfo() << "Filters applied [" << (useAndLogic ? "AND" : "OR") << " logic], list count:" << tweetListWidget->count();
 }
+
 
 // --- Slot for Arrow Key Navigation from Search Field ---
 void MainWindow::onSearchNavigateKey(QKeyEvent *event)
 {
-    // If Down or Up pressed in search field, focus the list widget
     if (tweetListWidget && tweetListWidget->count() > 0) {
-        tweetListWidget->setFocus(); // Give focus to the list
-        // Select first item if nothing is currently selected in the list
-        if (!tweetListWidget->currentItem()) {
-            tweetListWidget->setCurrentRow(0);
-        }
-        // QListWidget handles subsequent Up/Down navigation internally
+        tweetListWidget->setFocus();
+        if (!tweetListWidget->currentItem()) { tweetListWidget->setCurrentRow(0); }
     }
 }
 
 // --- Slot for Search Text Changes ---
-void MainWindow::onSearchTextChanged(const QString &searchText)
-{
-    // Re-apply all filters whenever the global search text changes
-    applyFilters();
-}
+void MainWindow::onSearchTextChanged(const QString &searchText) { applyFilters(); }
 
-// --- Display Metadata in the Text Edit ---
+// --- Display Metadata ---
 void MainWindow::displayMetadata(const TweetData& tweet)
 {
-    if (!metadataTextEdit) return; // Safety check
-
+    if (!metadataTextEdit) return;
     QString metadataString;
     metadataString += "Author: " + tweet.author + "\n";
     metadataString += "Source: " + (!tweet.sourceUrl.isEmpty() ? tweet.sourceUrl : QStringLiteral("N/A")) + "\n";
     metadataString += "Description: " + tweet.description + "\n";
-    metadataString += "Tags: " + (tweet.tags.isEmpty() ? QStringLiteral("None") : tweet.tags.join(", ")) + "\n";
+    metadataString += "Tags (Raw): " + (tweet.tags.isEmpty() ? QStringLiteral("None") : tweet.tags.join(", ")) + "\n"; // Show original tags
     metadataString += QStringLiteral("Favorite: ");
     metadataString += (isFavorite(tweet.name) ? QStringLiteral("Yes") : QStringLiteral("No"));
     metadataString += QLatin1Char('\n');
-
     metadataTextEdit->setText(metadataString);
 }
 
-// --- Display Code (or clear) in the Text Edit ---
-void MainWindow::displayCode(const TweetData* tweet) {
-    if (!codeTextEdit || !metadataTextEdit) return; // Safety checks
-
-    if (tweet) { // If a valid tweet pointer is passed
-        codeTextEdit->setText(tweet->originalCode); // Display code
-        displayMetadata(*tweet); // Display metadata (dereference pointer)
-    } else { // If null pointer (e.g., no selection, empty list)
-        codeTextEdit->clear(); // Clear code area
-        codeTextEdit->setPlaceholderText("Select a Tweet or adjust filters."); // Show placeholder text
-        metadataTextEdit->clear(); // Clear metadata area
-        metadataTextEdit->setPlaceholderText("Select a Tweet to view its metadata."); // Show placeholder text
+// --- Display Code ---
+void MainWindow::displayCode(const TweetData* tweet)
+{
+    if (!codeTextEdit || !metadataTextEdit) return;
+    if (tweet) {
+        codeTextEdit->setText(tweet->originalCode);
+        displayMetadata(*tweet);
+    } else {
+        codeTextEdit->clear(); codeTextEdit->setPlaceholderText("Select a Tweet or adjust filters.");
+        metadataTextEdit->clear(); metadataTextEdit->setPlaceholderText("Select a Tweet to view its metadata.");
     }
 }
 
-// --- Load Favorites from Settings ---
-void MainWindow::loadFavorites() {
+// --- Favorites Management ---
+void MainWindow::loadFavorites()
+{
     if(!settings) return;
-    // Retrieve "favorites" value, defaulting to empty list if not found
     QStringList favList = settings->value("favorites", QStringList()).toStringList();
-    // Construct the QSet from the loaded list
     favoriteTweetNames = QSet<QString>(favList.begin(), favList.end());
     qInfo() << "Loaded" << favoriteTweetNames.count() << "favorites.";
 }
 
-// --- Save Favorites to Settings ---
-void MainWindow::saveFavorites() {
-    if(!settings) return;
-    // Convert the QSet back to a QStringList for storing
+void MainWindow::saveFavorites()
+{
+     if(!settings) return;
     settings->setValue("favorites", QStringList(favoriteTweetNames.begin(), favoriteTweetNames.end()));
     qInfo() << "Saved" << favoriteTweetNames.count() << "favorites.";
-    settings->sync(); // Ensure data is written to persistent storage
+    settings->sync();
 }
 
-// --- Check if a Tweet is a Favorite ---
-bool MainWindow::isFavorite(const QString& tweetName) const {
-    return favoriteTweetNames.contains(tweetName);
-}
+bool MainWindow::isFavorite(const QString& tweetName) const { return favoriteTweetNames.contains(tweetName); }
 
-// --- Toggle Favorite Status of Selected Tweet ---
-void MainWindow::toggleFavorite() {
-    if (!tweetListWidget) return; // Safety check
-    QListWidgetItem* currentItem = tweetListWidget->currentItem(); // Get selected list item
-    if (!currentItem) {
-         qWarning() << "Cannot toggle favorite: No item selected in list.";
-         return; // Do nothing if no item is selected
-    }
-
-    QString tweetName = currentItem->text(); // Get the name from the list item
-
-    // Find the corresponding TweetData object (needed for metadata refresh)
+void MainWindow::toggleFavorite()
+{
+    if (!tweetListWidget) return;
+    QListWidgetItem* currentItem = tweetListWidget->currentItem();
+    if (!currentItem) { qWarning() << "Cannot toggle favorite: No item selected."; return; }
+    QString tweetName = currentItem->text();
     const TweetData* currentTweetData = nullptr;
-     for (const auto& tweet : tweets) {
-        if (tweet.name == tweetName) {
-            currentTweetData = &tweet;
-            break;
-        }
-    }
-     if (!currentTweetData) {
-          qWarning() << "Cannot toggle favorite: Could not find data for" << tweetName;
-          return; // Should not happen if list populated correctly
-     }
+    for (const auto& tweet : tweets) { if (tweet.name == tweetName) { currentTweetData = &tweet; break; } }
+    if (!currentTweetData) { qWarning() << "Cannot toggle favorite: Data not found for" << tweetName; return; }
 
-    // Add/Remove from the favorites set and update icon
     bool wasFavorite = isFavorite(tweetName);
     if (wasFavorite) {
-        favoriteTweetNames.remove(tweetName);
-        currentItem->setIcon(QIcon()); // Remove icon
+        favoriteTweetNames.remove(tweetName); currentItem->setIcon(QIcon());
         qInfo() << "Removed favorite:" << tweetName;
     } else {
         favoriteTweetNames.insert(tweetName);
-        // Set icon (using theme icon with fallback)
         currentItem->setIcon(QIcon::fromTheme("emblem-favorite", QIcon(":/icons/favorite.png")));
         qInfo() << "Added favorite:" << tweetName;
     }
-
-    saveFavorites(); // Persist the change
-
-    // Refresh the metadata display to show updated favorite status
+    saveFavorites();
     displayMetadata(*currentTweetData);
-
-    // If the "Favorites Only" filter is active and we *removed* a favorite,
-    // we need to re-apply filters to potentially remove the item from the list.
-    if (wasFavorite && favoriteFilterButton && favoriteFilterButton->isChecked()) {
-        applyFilters();
-    }
-    // No need to refresh list if adding a favorite while Favs Only is active
+    if (wasFavorite && favoriteFilterButton && favoriteFilterButton->isChecked()) { applyFilters(); }
 }
 
 // --- Slot for List Selection Changes ---
 void MainWindow::onTweetSelectionChanged()
 {
-    // Ensure widgets exist
-    if (!tweetListWidget || !codeTextEdit || !metadataTextEdit) {
-         // Clear displays if widgets are missing (shouldn't happen in normal operation)
-         if(codeTextEdit) codeTextEdit->clear();
-         if(metadataTextEdit) metadataTextEdit->clear();
-         return;
-    }
-
-    QListWidgetItem *currentItem = tweetListWidget->currentItem(); // Get currently selected item
-    if (!currentItem) {
-        displayCode(nullptr); // No selection, clear code/meta panes
-        return;
-    }
-
-    QString selectedName = currentItem->text(); // Get name of selected tweet
+    if (!tweetListWidget || !codeTextEdit || !metadataTextEdit) { return; }
+    QListWidgetItem *currentItem = tweetListWidget->currentItem();
+    if (!currentItem) { displayCode(nullptr); return; }
+    QString selectedName = currentItem->text();
     const TweetData* foundTweet = nullptr;
-
-    // Find the corresponding TweetData in our master list
-    for (const auto& tweet : tweets) {
-        if (tweet.name == selectedName) {
-            foundTweet = &tweet;
-            break;
-        }
-    }
-
-    // Display the found tweet's code/meta (or clear if somehow not found)
+    for (const auto& tweet : tweets) { if (tweet.name == selectedName) { foundTweet = &tweet; break; } }
     displayCode(foundTweet);
 }
 
-// --- Reset Filters Slot ---
+// --- Reset Filters Slot (Also reset logic toggle) ---
 void MainWindow::resetFilters()
 {
     qInfo() << "Resetting filters...";
+    QList<QCheckBox*> allCheckboxes = authorCheckboxes + sonicCheckboxes + techniqueCheckboxes + ugenCheckboxes;
 
-    // Block signals to prevent multiple applyFilters calls
-    bool authorBlocked = authorComboBox ? authorComboBox->signalsBlocked() : false;
-    bool ugenBlocked = ugenComboBox ? ugenComboBox->signalsBlocked() : false;
-    bool sonicBlocked = sonicComboBox ? sonicComboBox->signalsBlocked() : false;
-    bool complexityBlocked = complexityComboBox ? complexityComboBox->signalsBlocked() : false;
+    // Block signals
     bool favBlocked = favoriteFilterButton ? favoriteFilterButton->signalsBlocked() : false;
-
-    if (authorComboBox) authorComboBox->blockSignals(true);
-    if (ugenComboBox) ugenComboBox->blockSignals(true);
-    if (sonicComboBox) sonicComboBox->blockSignals(true);
-    if (complexityComboBox) complexityComboBox->blockSignals(true);
+    bool logicBlocked = filterLogicToggle ? filterLogicToggle->signalsBlocked() : false;
     if (favoriteFilterButton) favoriteFilterButton->blockSignals(true);
+    if (filterLogicToggle) filterLogicToggle->blockSignals(true);
+    for (QCheckBox* checkbox : allCheckboxes) { checkbox->blockSignals(true); }
 
-    // Set ComboBoxes to index 0 ("All")
-    if (authorComboBox) authorComboBox->setCurrentIndex(0);
-    if (ugenComboBox) ugenComboBox->setCurrentIndex(0);
-    if (sonicComboBox) sonicComboBox->setCurrentIndex(0);
-    if (complexityComboBox) complexityComboBox->setCurrentIndex(0);
-
-    // Uncheck Favorite button
+    // Uncheck all tag checkboxes
+    for (QCheckBox* checkbox : allCheckboxes) { checkbox->setChecked(false); }
+    // Reset favorite button
     if (favoriteFilterButton) favoriteFilterButton->setChecked(false);
+    // Reset logic toggle (default to AND)
+    if (filterLogicToggle) filterLogicToggle->setChecked(true); // Default to AND
 
     // Unblock signals
-    if (authorComboBox) authorComboBox->blockSignals(authorBlocked);
-    if (ugenComboBox) ugenComboBox->blockSignals(ugenBlocked);
-    if (sonicComboBox) sonicComboBox->blockSignals(sonicBlocked);
-    if (complexityComboBox) complexityComboBox->blockSignals(complexityBlocked);
     if (favoriteFilterButton) favoriteFilterButton->blockSignals(favBlocked);
+    if (filterLogicToggle) filterLogicToggle->blockSignals(logicBlocked);
+    for (QCheckBox* checkbox : allCheckboxes) { checkbox->blockSignals(false); }
 
-    // Apply the cleared filters manually once
-    applyFilters();
+    applyFilters(); // Apply cleared filters
 }

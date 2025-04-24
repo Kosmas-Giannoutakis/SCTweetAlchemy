@@ -395,6 +395,8 @@ CMakeFiles/SCTweetPaster_CPP.dir/SCTweetPaster_CPP_autogen/mocs_compilation.cpp.
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qaction.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSet \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qset.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QList \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qlist.h \
  /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetPaster_CPP_autogen/EWIEGA46WW/../../../searchlineedit.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QLineEdit \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qlineedit.h \
@@ -421,7 +423,6 @@ CMakeFiles/SCTweetPaster_CPP.dir/SCTweetPaster_CPP_autogen/mocs_compilation.cpp.
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qinputdevice.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qscreen.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QList \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qlist.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QObject \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qobject.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QRect \

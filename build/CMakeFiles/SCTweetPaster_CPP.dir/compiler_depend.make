@@ -453,6 +453,8 @@ CMakeFiles/SCTweetPaster_CPP.dir/SCTweetPaster_CPP_autogen/mocs_compilation.cpp.
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qaction.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSet \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qset.h \
+  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QList \
+  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qlist.h \
   ../searchlineedit.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QLineEdit \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qlineedit.h \
@@ -479,7 +481,6 @@ CMakeFiles/SCTweetPaster_CPP.dir/SCTweetPaster_CPP_autogen/mocs_compilation.cpp.
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qinputdevice.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qscreen.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QList \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qlist.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QObject \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qobject.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QRect \
@@ -952,6 +953,8 @@ CMakeFiles/SCTweetPaster_CPP.dir/main.cpp.o: ../main.cpp \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qaction.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSet \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qset.h \
+  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QList \
+  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qlist.h \
   ../searchlineedit.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QLineEdit \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qlineedit.h \
@@ -978,7 +981,6 @@ CMakeFiles/SCTweetPaster_CPP.dir/main.cpp.o: ../main.cpp \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qinputdevice.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qscreen.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QList \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qlist.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QObject \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qobject.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QRect \
@@ -1447,6 +1449,8 @@ CMakeFiles/SCTweetPaster_CPP.dir/mainwindow.cpp.o: ../mainwindow.cpp \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qaction.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSet \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qset.h \
+  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QList \
+  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qlist.h \
   ../searchlineedit.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QLineEdit \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qlineedit.h \
@@ -1473,7 +1477,6 @@ CMakeFiles/SCTweetPaster_CPP.dir/mainwindow.cpp.o: ../mainwindow.cpp \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qinputdevice.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qscreen.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QList \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qlist.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QObject \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qobject.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QRect \
@@ -2247,13 +2250,10 @@ CMakeFiles/SCTweetPaster_CPP.dir/mainwindow.cpp.o: ../mainwindow.cpp \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QSplitter \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QMenuBar \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QScrollArea \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QPushButton \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QRegularExpression \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QButtonGroup \
+  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QGroupBox \
+  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QCheckBox \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QLabel \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSettings \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QVariant \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QComboBox
+  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QRegularExpression
 
 CMakeFiles/SCTweetPaster_CPP.dir/searchlineedit.cpp.o: ../searchlineedit.cpp \
   /usr/include/stdc-predef.h \
@@ -2733,7 +2733,7 @@ CMakeFiles/SCTweetPaster_CPP.dir/searchlineedit.cpp.o: ../searchlineedit.cpp \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qguiapplication_platform.h
 
 
-/home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSettings:
+/home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QCheckBox:
 
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QScrollArea:
 
@@ -3239,8 +3239,6 @@ CMakeFiles/SCTweetPaster_CPP.dir/searchlineedit.cpp.o: ../searchlineedit.cpp \
 
 /usr/include/c++/11/bits/ostream.tcc:
 
-/home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QPushButton:
-
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qtemporaryfile.h:
 
 /usr/include/c++/11/bits/basic_ios.tcc:
@@ -3328,8 +3326,6 @@ CMakeFiles/SCTweetPaster_CPP.dir/searchlineedit.cpp.o: ../searchlineedit.cpp \
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qcbormap.h:
 
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qfunctionaltools_impl.h:
-
-/home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QButtonGroup:
 
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qfontvariableaxis.h:
 
@@ -3626,8 +3622,6 @@ CMakeFiles/SCTweetPaster_CPP.dir/searchlineedit.cpp.o: ../searchlineedit.cpp \
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QLineEdit:
 
 /usr/include/c++/11/tr1/exp_integral.tcc:
-
-/home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QComboBox:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h:
 
@@ -4425,6 +4419,8 @@ SCTweetPaster_CPP_autogen/EWIEGA46WW/qrc_resources.cpp:
 
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qicon.h:
 
+/home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QGroupBox:
+
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qopenglcontext.h:
 
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qtransform.h:
@@ -4547,6 +4543,10 @@ SCTweetPaster_CPP_autogen/EWIEGA46WW/moc_mainwindow.cpp:
 
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSet:
 
+/usr/lib/gcc/x86_64-linux-gnu/11/include/rtmintrin.h:
+
+/home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QList:
+
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qlabel.h:
 
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qtextdocumentfragment.h:
@@ -4600,10 +4600,6 @@ SCTweetPaster_CPP_autogen/EWIEGA46WW/moc_mainwindow.cpp:
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qiodevice.h:
 
 /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qeventpoint.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/rtmintrin.h:
-
-/home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QList:
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/ctype_base.h:
 

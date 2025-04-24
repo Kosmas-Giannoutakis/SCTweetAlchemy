@@ -8,6 +8,7 @@
 #include <QKeySequence>
 #include <QAction>
 #include <QSet>
+#include <QList> // Include QList
 
 #include "searchlineedit.h" // Include custom search line edit
 
@@ -15,15 +16,16 @@
 class QListWidget;
 class QTextEdit;
 class QPushButton;
-class QButtonGroup;
 class QVBoxLayout;
 class QHBoxLayout;
 class QWidget;
 class QSplitter;
 class QSettings;
 class QKeyEvent;
-class QComboBox;
 class QLabel;
+class QScrollArea;
+class QGroupBox;
+class QCheckBox;
 
 // Data structure for holding tweet information
 struct TweetData {
@@ -32,7 +34,7 @@ struct TweetData {
     QString author;
     QString sourceUrl;
     QString description;
-    QStringList tags;
+    QStringList tags; // Keep original flat tags for now, classification happens in C++
 };
 
 // Main application window class
@@ -60,7 +62,7 @@ private:
     void setupUi(); // Sets up the main user interface layout and widgets
     void setupActions(); // Creates QAction objects for shortcuts (Find, Favorite)
     void loadTweets(); // Loads tweet data from the JSON resource file
-    void populateFilterUI(); // Dynamically creates filter controls (ComboBoxes, button)
+    void populateFilterUI(); // Dynamically creates filter controls (checkboxes, buttons)
     void displayMetadata(const TweetData& tweet); // Displays metadata for the selected tweet
     void displayCode(const TweetData* tweet); // Displays code for the selected tweet (or clears if null)
 
@@ -70,29 +72,29 @@ private:
     bool isFavorite(const QString& tweetName) const; // Checks if a tweet name is in the favorites set
 
     // UI element pointers
-    SearchLineEdit *searchLineEdit; // Custom search input field
-    QListWidget    *tweetListWidget; // List displaying tweet names
-    QTextEdit      *codeTextEdit; // Text area for displaying tweet code
-    QTextEdit      *metadataTextEdit; // Text area for displaying tweet metadata
+    SearchLineEdit *searchLineEdit; // Top global search
+    QSplitter      *mainSplitter;      // Main Horizontal Splitter (Filters | List | Code/Meta)
+    QWidget        *filterPanel;       // Leftmost panel holding the filter scroll area
+    QScrollArea    *filterScrollArea;  // Scroll area for filters
+    QWidget        *filterScrollWidget; // Widget inside the scroll area
+    QVBoxLayout    *filterScrollLayout; // Layout for the scroll widget
+    QListWidget    *tweetListWidget; // Middle panel: List of tweets
+    QWidget        *rightPanel;        // Rightmost panel (Code/Meta - created by helper)
+    QTextEdit      *codeTextEdit;      // Belongs to rightPanel
+    QTextEdit      *metadataTextEdit;  // Belongs to rightPanel
 
-    // --- Filter UI Elements ---
-    QWidget     *filterWidget; // Container widget for filter controls
-    QComboBox *authorComboBox; // Dropdown for Author filter
-    QComboBox *ugenComboBox; // Dropdown for UGen filter (extracted from code)
-    QComboBox *sonicComboBox; // Dropdown for Sonic Characteristic filter (from tags)
-    QComboBox *complexityComboBox; // Dropdown for other Tags (from tags)
-    QPushButton* favoriteFilterButton; // Checkable button for "Favorites Only" filter
-    QButtonGroup *favoritesButtonGroup; // Manages the favorite button state
-    QPushButton* resetFiltersButton; // Button to reset all filters
+    // Keep track of all created checkboxes for easy access
+    QList<QCheckBox *> authorCheckboxes;
+    QList<QCheckBox *> sonicCheckboxes;
+    QList<QCheckBox *> techniqueCheckboxes;
+    QList<QCheckBox *> ugenCheckboxes;
 
-    // Labels for filter controls (optional, for clarity)
-    QLabel* authorLabel;
-    QLabel* ugenLabel;
-    QLabel* sonicLabel;
-    QLabel* complexityLabel;
-    QLabel* favoriteLabel;
+    // Control Buttons
+    QCheckBox    *filterLogicToggle;  // Toggle for AND/OR logic
+    QPushButton  *favoriteFilterButton;
+    QPushButton  *resetFiltersButton;
 
-    // Helper function for creating the right panel (Code + Metadata)
+    // Helper function for creating the right panel
     QWidget* createRightPanel();
 
     // Actions for shortcuts

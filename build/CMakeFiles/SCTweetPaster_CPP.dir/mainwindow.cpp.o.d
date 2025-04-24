@@ -394,6 +394,8 @@ CMakeFiles/SCTweetPaster_CPP.dir/mainwindow.cpp.o: \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qaction.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSet \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qset.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QList \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qlist.h \
  /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/searchlineedit.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QLineEdit \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qlineedit.h \
@@ -420,7 +422,6 @@ CMakeFiles/SCTweetPaster_CPP.dir/mainwindow.cpp.o: \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qinputdevice.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qscreen.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QList \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qlist.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QObject \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qobject.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QRect \
@@ -1179,10 +1180,8 @@ CMakeFiles/SCTweetPaster_CPP.dir/mainwindow.cpp.o: \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/QFontDatabase \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QSplitter \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QMenuBar \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QPushButton \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QButtonGroup \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSettings \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QVariant \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QComboBox \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QScrollArea \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QGroupBox \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QCheckBox \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QLabel \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QRegularExpression
