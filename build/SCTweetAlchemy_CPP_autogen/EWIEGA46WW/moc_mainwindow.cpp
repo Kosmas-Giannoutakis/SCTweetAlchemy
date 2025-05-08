@@ -7,7 +7,6 @@
 *****************************************************************************/
 
 #include "../../../mainwindow.h"
-#include <QtGui/qtextcursor.h>
 #include <QtCore/qmetatype.h>
 
 #include <QtCore/qtmochelpers.h>
@@ -42,36 +41,60 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         "MainWindow",
         "onTweetSelectionChanged",
         "",
+        "QListWidgetItem*",
+        "current",
+        "previous",
         "onSearchTextChanged",
-        "searchText",
-        "focusSearchField",
+        "text",
         "onSearchNavigateKey",
         "QKeyEvent*",
         "event",
-        "toggleFavorite",
-        "applyFilters",
-        "resetFilters"
+        "focusSearchField",
+        "toggleCurrentTweetFavorite",
+        "onTweetItemDoubleClicked",
+        "item",
+        "handleRepositoryLoadError",
+        "title",
+        "message",
+        "handleTweetsLoaded",
+        "count",
+        "handleFavoritesChanged",
+        "applyAllFilters"
     };
 
     QtMocHelpers::UintData qt_methods {
         // Slot 'onTweetSelectionChanged'
-        QtMocHelpers::SlotData<void()>(1, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void(QListWidgetItem *, QListWidgetItem *)>(1, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { 0x80000000 | 3, 4 }, { 0x80000000 | 3, 5 },
+        }}),
         // Slot 'onSearchTextChanged'
-        QtMocHelpers::SlotData<void(const QString &)>(3, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { QMetaType::QString, 4 },
+        QtMocHelpers::SlotData<void(const QString &)>(6, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::QString, 7 },
+        }}),
+        // Slot 'onSearchNavigateKey'
+        QtMocHelpers::SlotData<void(QKeyEvent *)>(8, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { 0x80000000 | 9, 10 },
         }}),
         // Slot 'focusSearchField'
-        QtMocHelpers::SlotData<void()>(5, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onSearchNavigateKey'
-        QtMocHelpers::SlotData<void(QKeyEvent *)>(6, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { 0x80000000 | 7, 8 },
-        }}),
-        // Slot 'toggleFavorite'
-        QtMocHelpers::SlotData<void()>(9, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'applyFilters'
-        QtMocHelpers::SlotData<void()>(10, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'resetFilters'
         QtMocHelpers::SlotData<void()>(11, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'toggleCurrentTweetFavorite'
+        QtMocHelpers::SlotData<void()>(12, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onTweetItemDoubleClicked'
+        QtMocHelpers::SlotData<void(QListWidgetItem *)>(13, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { 0x80000000 | 3, 14 },
+        }}),
+        // Slot 'handleRepositoryLoadError'
+        QtMocHelpers::SlotData<void(const QString &, const QString &)>(15, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::QString, 16 }, { QMetaType::QString, 17 },
+        }}),
+        // Slot 'handleTweetsLoaded'
+        QtMocHelpers::SlotData<void(int)>(18, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::Int, 19 },
+        }}),
+        // Slot 'handleFavoritesChanged'
+        QtMocHelpers::SlotData<void()>(20, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'applyAllFilters'
+        QtMocHelpers::SlotData<void()>(21, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -95,13 +118,16 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
     auto *_t = static_cast<MainWindow *>(_o);
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: _t->onTweetSelectionChanged(); break;
+        case 0: _t->onTweetSelectionChanged((*reinterpret_cast< std::add_pointer_t<QListWidgetItem*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QListWidgetItem*>>(_a[2]))); break;
         case 1: _t->onSearchTextChanged((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 2: _t->focusSearchField(); break;
-        case 3: _t->onSearchNavigateKey((*reinterpret_cast< std::add_pointer_t<QKeyEvent*>>(_a[1]))); break;
-        case 4: _t->toggleFavorite(); break;
-        case 5: _t->applyFilters(); break;
-        case 6: _t->resetFilters(); break;
+        case 2: _t->onSearchNavigateKey((*reinterpret_cast< std::add_pointer_t<QKeyEvent*>>(_a[1]))); break;
+        case 3: _t->focusSearchField(); break;
+        case 4: _t->toggleCurrentTweetFavorite(); break;
+        case 5: _t->onTweetItemDoubleClicked((*reinterpret_cast< std::add_pointer_t<QListWidgetItem*>>(_a[1]))); break;
+        case 6: _t->handleRepositoryLoadError((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
+        case 7: _t->handleTweetsLoaded((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 8: _t->handleFavoritesChanged(); break;
+        case 9: _t->applyAllFilters(); break;
         default: ;
         }
     }
@@ -126,14 +152,14 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 7)
+        if (_id < 10)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 7;
+        _id -= 10;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 7)
+        if (_id < 10)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 7;
+        _id -= 10;
     }
     return _id;
 }

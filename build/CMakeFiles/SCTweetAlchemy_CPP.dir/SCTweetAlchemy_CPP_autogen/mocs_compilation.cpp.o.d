@@ -1,12 +1,12 @@
 CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/mocs_compilation.cpp.o: \
  /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/mocs_compilation.cpp \
  /usr/include/stdc-predef.h \
- /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/moc_mainwindow.cpp \
- /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/../../../mainwindow.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QMainWindow \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qmainwindow.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qtguiglobal.h \
+ /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/moc_favoritesmanager.cpp \
+ /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/../../../favoritesmanager.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QObject \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qobject.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qobjectdefs.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qnamespace.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qglobal.h \
  /usr/include/c++/11/type_traits \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
@@ -185,14 +185,6 @@ CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/mocs_compilation.cp
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qtresource.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qttranslation.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qversiontagging.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qtgui-config.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qtguiexports.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qtwidgets-config.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qtwidgetsexports.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qwidget.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qwindowdefs.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qobjectdefs.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qnamespace.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qcompare.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qstdlibdetection.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qcomparehelpers.h \
@@ -235,7 +227,6 @@ CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/mocs_compilation.cp
  /usr/include/c++/11/bits/shared_ptr_atomic.h \
  /usr/include/c++/11/backward/auto_ptr.h \
  /usr/include/c++/11/pstl/glue_memory_defs.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qobject.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qstring.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qchar.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qstringview.h \
@@ -324,6 +315,27 @@ CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/mocs_compilation.cp
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qbindingstorage.h \
  /usr/include/c++/11/chrono /usr/include/c++/11/ratio \
  /usr/include/c++/11/ctime \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSet \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qset.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qhash.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QString \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qstring.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qtmochelpers.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qtmocconstants.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/q20algorithm.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/q23type_traits.h \
+ /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/moc_filterpanelwidget.cpp \
+ /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/../../../filterpanelwidget.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QWidget \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qwidget.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qtguiglobal.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qtgui-config.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qtguiexports.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qtwidgets-config.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qtwidgetsexports.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qwindowdefs.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qobject.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qmargins.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/q23utility.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/q20utility.h \
@@ -370,7 +382,6 @@ CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/mocs_compilation.cp
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qmap.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qshareddata_impl.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qset.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qhash.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qvarlengtharray.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qpalette.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qbrush.h \
@@ -382,21 +393,20 @@ CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/mocs_compilation.cp
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qsizepolicy.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qcursor.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qbitmap.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qtabwidget.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QString \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qstring.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QVector \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qvector.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QStringList \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qstringlist.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/QKeySequence \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qkeysequence.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/QAction \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qaction.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSet \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qset.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QList \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qlist.h \
+ /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/moc_mainwindow.cpp \
+ /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/../../../mainwindow.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QMainWindow \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qmainwindow.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qwidget.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qtabwidget.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QVector \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qvector.h \
+ /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/../../../tweetdata.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QStringList \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qstringlist.h \
+ /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/moc_searchlineedit.cpp \
  /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/../../../searchlineedit.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QLineEdit \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qlineedit.h \
@@ -424,7 +434,6 @@ CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/mocs_compilation.cp
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qscreen.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QList \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QObject \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qobject.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QRect \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qrect.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSize \
@@ -440,9 +449,5 @@ CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/mocs_compilation.cp
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qinputmethod.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qlocale.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qguiapplication_platform.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qtmochelpers.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qtmocconstants.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/q20algorithm.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/q23type_traits.h \
- /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/moc_searchlineedit.cpp \
- /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/../../../searchlineedit.h
+ /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/moc_tweetrepository.cpp \
+ /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/../../../tweetrepository.h

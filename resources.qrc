@@ -1,9 +1,8 @@
-<RCC>
+ <RCC>
     <qresource prefix="/">
-        <!-- The alias remains the same, used by C++ code -->
         <file alias="data/SCTweets.json">sctweets/SCTweets.json</file>
-                                     <!-- ^^^^^^^^ Change this path -->
-        <file alias="icons/favorite.png">icons/favorite.png</file>
-        <!-- Assuming icons folder -->
+        <!-- You can remove the old favorite.png line if you only use the star -->
+        <!-- <file alias="icons/favorite.png">icons/favorite.png</file> --> 
+        <file alias="icons/star_filled.png">icons/star_filled.png</file> 
     </qresource>
 </RCC>

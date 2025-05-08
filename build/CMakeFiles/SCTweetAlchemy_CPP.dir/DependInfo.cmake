@@ -10,9 +10,13 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp" "CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.o" "gcc" "CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.o.d"
   "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/mocs_compilation.cpp" "CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/mocs_compilation.cpp.o" "gcc" "CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/mocs_compilation.cpp.o.d"
+  "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/favoritesmanager.cpp" "CMakeFiles/SCTweetAlchemy_CPP.dir/favoritesmanager.cpp.o" "gcc" "CMakeFiles/SCTweetAlchemy_CPP.dir/favoritesmanager.cpp.o.d"
+  "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/filterpanelwidget.cpp" "CMakeFiles/SCTweetAlchemy_CPP.dir/filterpanelwidget.cpp.o" "gcc" "CMakeFiles/SCTweetAlchemy_CPP.dir/filterpanelwidget.cpp.o.d"
   "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/main.cpp" "CMakeFiles/SCTweetAlchemy_CPP.dir/main.cpp.o" "gcc" "CMakeFiles/SCTweetAlchemy_CPP.dir/main.cpp.o.d"
   "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/mainwindow.cpp" "CMakeFiles/SCTweetAlchemy_CPP.dir/mainwindow.cpp.o" "gcc" "CMakeFiles/SCTweetAlchemy_CPP.dir/mainwindow.cpp.o.d"
   "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/searchlineedit.cpp" "CMakeFiles/SCTweetAlchemy_CPP.dir/searchlineedit.cpp.o" "gcc" "CMakeFiles/SCTweetAlchemy_CPP.dir/searchlineedit.cpp.o.d"
+  "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/tweetfilterengine.cpp" "CMakeFiles/SCTweetAlchemy_CPP.dir/tweetfilterengine.cpp.o" "gcc" "CMakeFiles/SCTweetAlchemy_CPP.dir/tweetfilterengine.cpp.o.d"
+  "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/tweetrepository.cpp" "CMakeFiles/SCTweetAlchemy_CPP.dir/tweetrepository.cpp.o" "gcc" "CMakeFiles/SCTweetAlchemy_CPP.dir/tweetrepository.cpp.o.d"
   )
 
 # Targets to which this target links.

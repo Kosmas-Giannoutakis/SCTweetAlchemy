@@ -18,10 +18,13 @@ set(CMAKE_AUTORCC ON)
 # --- Add Executable ---
 add_executable(SCTweetAlchemy_CPP
     main.cpp
-    mainwindow.h
-    mainwindow.cpp
-    searchlineedit.h
-    searchlineedit.cpp
+    searchlineedit.h searchlineedit.cpp
+    tweetdata.h 
+    tweetrepository.h tweetrepository.cpp
+    favoritesmanager.h favoritesmanager.cpp
+    filterpanelwidget.h filterpanelwidget.cpp
+    tweetfilterengine.h tweetfilterengine.cpp
+    mainwindow.h mainwindow.cpp
     resources.qrc
 )
 

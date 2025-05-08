@@ -1,12 +1,6 @@
 /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/moc_mainwindow.cpp: /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/mainwindow.h \
   /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/moc_predefs.h \
-  /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/searchlineedit.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QList \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QObject \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QRect \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSet \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSize \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSizeF \
+  /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/tweetdata.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QString \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QStringList \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QVector \
@@ -17,7 +11,6 @@
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/q20type_traits.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/q20utility.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/q23utility.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qabstracteventdispatcher.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qalgorithms.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qanystringview.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qarraydata.h \
@@ -27,7 +20,6 @@
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qatomic.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qatomic_cxx11.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qbasicatomic.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qbasictimer.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qbindingstorage.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qbytearray.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qbytearrayalgorithms.h \
@@ -44,16 +36,10 @@
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qcontainerinfo.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qcontainertools_impl.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qcontiguouscache.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qcoreapplication.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qcoreapplication_platform.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qcoreevent.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qdarwinhelpers.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qdatastream.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qdeadlinetimer.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qdebug.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qelapsedtimer.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qendian.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qeventloop.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qexceptionhandling.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qflags.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qfloat16.h \
@@ -65,14 +51,12 @@
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qglobalstatic.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qhash.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qhashfunctions.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qiodevice.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qiodevicebase.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qiterable.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qiterator.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qlatin1stringview.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qline.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qlist.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qlocale.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qlogging.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qmalloc.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qmap.h \
@@ -82,7 +66,6 @@
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qmetatype.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qminmax.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qnamespace.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qnativeinterface.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qnumeric.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qobject.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qobject_impl.h \
@@ -140,7 +123,6 @@
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qtversionchecks.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qtypeinfo.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qtypes.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qurl.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qutf8stringview.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qvariant.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qvarlengtharray.h \
@@ -148,55 +130,32 @@
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qversiontagging.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qxptype_traits.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qyieldcpu.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/QAction \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/QKeyEvent \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/QKeySequence \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/QTransform \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qaction.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qbitmap.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qbrush.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qcolor.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qcursor.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qevent.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qeventpoint.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qfont.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qfontinfo.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qfontmetrics.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qfontvariableaxis.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qguiapplication.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qguiapplication_platform.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qicon.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qimage.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qinputdevice.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qinputmethod.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qkeysequence.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qpaintdevice.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qpalette.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qpen.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qpixelformat.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qpixmap.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qpointingdevice.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qpolygon.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qregion.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qrgb.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qrgba64.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qscreen.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qscreen_platform.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qtextcursor.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qtextdocument.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qtextformat.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qtextoption.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qtgui-config.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qtguiexports.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qtguiglobal.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qtransform.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qvector2d.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qvectornd.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qwindowdefs.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QLineEdit \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QMainWindow \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qframe.h \
-  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qlineedit.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qmainwindow.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qsizepolicy.h \
   /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qtabwidget.h \

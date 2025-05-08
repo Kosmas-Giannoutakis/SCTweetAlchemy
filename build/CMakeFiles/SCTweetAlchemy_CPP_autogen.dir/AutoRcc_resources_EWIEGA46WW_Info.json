@@ -8,7 +8,7 @@
 	"INPUTS" : 
 	[
 		"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/sctweets/SCTweets.json",
-		"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/icons/favorite.png"
+		"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/icons/star_filled.png"
 	],
 	"LOCK_FILE" : "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/CMakeFiles/SCTweetAlchemy_CPP_autogen.dir/AutoRcc_resources_EWIEGA46WW_Lock.lock",
 	"MULTI_CONFIG" : false,

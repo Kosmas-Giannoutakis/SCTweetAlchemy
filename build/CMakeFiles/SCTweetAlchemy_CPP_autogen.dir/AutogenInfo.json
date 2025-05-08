@@ -409,6 +409,18 @@
 	"HEADERS" : 
 	[
 		[
+			"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/favoritesmanager.h",
+			"MU",
+			"EWIEGA46WW/moc_favoritesmanager.cpp",
+			null
+		],
+		[
+			"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/filterpanelwidget.h",
+			"MU",
+			"EWIEGA46WW/moc_filterpanelwidget.cpp",
+			null
+		],
+		[
 			"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/mainwindow.h",
 			"MU",
 			"EWIEGA46WW/moc_mainwindow.cpp",
@@ -418,6 +430,24 @@
 			"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/searchlineedit.h",
 			"MU",
 			"EWIEGA46WW/moc_searchlineedit.cpp",
+			null
+		],
+		[
+			"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/tweetdata.h",
+			"MU",
+			"EWIEGA46WW/moc_tweetdata.cpp",
+			null
+		],
+		[
+			"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/tweetfilterengine.h",
+			"MU",
+			"EWIEGA46WW/moc_tweetfilterengine.cpp",
+			null
+		],
+		[
+			"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/tweetrepository.h",
+			"MU",
+			"EWIEGA46WW/moc_tweetrepository.cpp",
 			null
 		]
 	],
@@ -480,6 +510,16 @@
 	"SOURCES" : 
 	[
 		[
+			"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/favoritesmanager.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/filterpanelwidget.cpp",
+			"MU",
+			null
+		],
+		[
 			"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/main.cpp",
 			"MU",
 			null
@@ -491,6 +531,16 @@
 		],
 		[
 			"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/searchlineedit.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/tweetfilterengine.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/tweetrepository.cpp",
 			"MU",
 			null
 		]

@@ -382,62 +382,25 @@ CMakeFiles/SCTweetAlchemy_CPP.dir/main.cpp.o: \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qcursor.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qbitmap.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qtabwidget.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QString \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qstring.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QVector \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qvector.h \
+ /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/tweetdata.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QString \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qstring.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QStringList \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qstringlist.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/QKeySequence \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qkeysequence.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/QAction \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qaction.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSet \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qset.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QList \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qlist.h \
- /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/searchlineedit.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QLineEdit \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qlineedit.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qframe.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qtextcursor.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qtextdocument.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qurl.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qtextformat.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qpen.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qtextoption.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/QKeyEvent \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qevent.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QApplication \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qapplication.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qcoreapplication.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qcoreevent.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qbasictimer.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qabstracteventdispatcher.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qeventloop.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qdeadlinetimer.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qelapsedtimer.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qiodevice.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qeventpoint.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qvector2d.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qvectornd.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qpointingdevice.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qinputdevice.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qscreen.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QList \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QObject \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qobject.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QRect \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qrect.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSize \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qsize.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSizeF \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/QTransform \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qtransform.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qnativeinterface.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qscreen_platform.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qguiapplication.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qcoreapplication.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qcoreapplication_platform.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qguiapplication.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qinputmethod.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qlocale.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qguiapplication_platform.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QApplication \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qapplication.h
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qguiapplication_platform.h

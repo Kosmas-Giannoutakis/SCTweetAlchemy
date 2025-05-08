@@ -2,111 +2,76 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QString>
 #include <QVector>
-#include <QStringList>
-#include <QKeySequence>
-#include <QAction>
-#include <QSet>
-#include <QList>
+#include "tweetdata.h"
 
-#include "searchlineedit.h"
-
-// Forward declarations
+QT_BEGIN_NAMESPACE
 class QListWidget;
 class QTextEdit;
-class QPushButton;
-class QVBoxLayout;
-class QHBoxLayout;
-class QWidget;
 class QSplitter;
+class QAction;
 class QSettings;
+class QListWidgetItem;
 class QKeyEvent;
-class QLabel;
-class QScrollArea;
-class QGroupBox;
-class QCheckBox;
+QT_END_NAMESPACE
 
-// Data structure for holding tweet information (UPDATED)
-struct TweetData {
-    QString name;
-    QString originalCode;
-    QString author;
-    QString sourceUrl;
-    QString description;
-    QString publicationDate; // <<< ADDED
-    QStringList tags; // Keep original flat tags for raw display/misc use
-    // --- NEW: Store categorized tags ---
-    QStringList sonicTags;
-    QStringList techniqueTags;
-    // ----------------------------------
-};
+class SearchLineEdit;
+class TweetRepository;
+class FavoritesManager;
+class FilterPanelWidget;
+class TweetFilterEngine;
 
-// Main application window class
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 private slots:
-    void onTweetSelectionChanged();
-    void onSearchTextChanged(const QString &searchText);
-    void focusSearchField();
+    void onTweetSelectionChanged(QListWidgetItem *current, QListWidgetItem *previous);
+    void onSearchTextChanged(const QString &text);
     void onSearchNavigateKey(QKeyEvent *event);
-    void toggleFavorite();
-    void applyFilters();
-    void resetFilters();
+    void focusSearchField();
+    void toggleCurrentTweetFavorite(); // Keeps existing Ctrl+D functionality
+    void onTweetItemDoubleClicked(QListWidgetItem *item); // *** NEW SLOT ***
+
+    void handleRepositoryLoadError(const QString& title, const QString& message);
+    void handleTweetsLoaded(int count);
+    void handleFavoritesChanged();
+    void applyAllFilters();
 
 private:
     void setupUi();
+    void setupModelsAndManagers();
     void setupActions();
-    void loadTweets(); // Logic updated to parse new JSON structure
-    void populateFilterUI(); // Logic updated to use categorized tags
-    void displayMetadata(const TweetData& tweet); // Logic updated to show new fields
-    void displayCode(const TweetData* tweet);
+    void connectSignals();
 
-    // Favorites management
-    void loadFavorites();
-    void saveFavorites();
-    bool isFavorite(const QString& tweetName) const;
-
-    // UI element pointers
-    SearchLineEdit *searchLineEdit;
-    QSplitter      *mainSplitter;
-    QWidget        *filterPanel;
-    QScrollArea    *filterScrollArea;
-    QWidget        *filterScrollWidget;
-    QVBoxLayout    *filterScrollLayout;
-    QListWidget    *tweetListWidget;
-    QWidget        *rightPanel;
-    QTextEdit      *codeTextEdit;
-    QTextEdit      *metadataTextEdit;
-
-    // Checkbox lists (Names remain the same)
-    QList<QCheckBox *> authorCheckboxes;
-    QList<QCheckBox *> sonicCheckboxes;
-    QList<QCheckBox *> techniqueCheckboxes;
-    QList<QCheckBox *> ugenCheckboxes;
-
-    // Control Buttons
-    QCheckBox    *filterLogicToggle;
-    QPushButton  *favoriteFilterButton;
-    QPushButton  *resetFiltersButton;
-
-    // Helper function for creating the right panel
+    void displayTweetDetails(const TweetData* tweet);
+    void populateTweetList(const QVector<const TweetData*>& tweetsToDisplay);
+    void updateFavoriteIcon(QListWidgetItem* item, const QString& tweetId); // Will be modified
     QWidget* createRightPanel();
+    void toggleFavoriteStatus(const QString& tweetId); // *** NEW HELPER METHOD ***
 
-    // Actions for shortcuts
-    QAction *focusSearchAction;
-    QAction *toggleFavoriteAction;
 
-    // Data storage
-    QVector<TweetData> tweets; // Holds instances of the updated struct
-    QSet<QString>      favoriteTweetNames;
-    QSettings         *settings;
+    SearchLineEdit *m_searchLineEdit;
+    QSplitter *m_mainSplitter;
+    FilterPanelWidget *m_filterPanelWidget;
+    QListWidget *m_tweetListWidget;
+    QWidget *m_rightPanel;
+    QTextEdit *m_codeTextEdit;
+    QTextEdit *m_metadataTextEdit;
+
+    QAction *m_focusSearchAction;
+    QAction *m_toggleFavoriteAction;
+
+    QSettings *m_settings;
+    TweetRepository *m_tweetRepository;
+    FavoritesManager *m_favoritesManager;
+    TweetFilterEngine *m_tweetFilterEngine;
+
+    QVector<const TweetData*> m_currentlyDisplayedTweets;
 };
 
 #endif // MAINWINDOW_H

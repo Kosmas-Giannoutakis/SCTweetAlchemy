@@ -161,7 +161,7 @@ CMAKE_OBJCOPY:FILEPATH=/usr/bin/objcopy
 CMAKE_OBJDUMP:FILEPATH=/usr/bin/objdump
 
 //No help, variable specified on the command line.
-CMAKE_PREFIX_PATH:UNINITIALIZED=~/Qt/6.9.0/gcc_64
+CMAKE_PREFIX_PATH:UNINITIALIZED=/home/kosmas/Qt/6.9.0/gcc_64
 
 //Value Computed by CMake
 CMAKE_PROJECT_DESCRIPTION:STATIC=

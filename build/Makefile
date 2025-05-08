@@ -190,6 +190,54 @@ SCTweetAlchemy_CPP_autogen/mocs_compilation.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/mocs_compilation.cpp.s
 .PHONY : SCTweetAlchemy_CPP_autogen/mocs_compilation.cpp.s
 
+favoritesmanager.o: favoritesmanager.cpp.o
+.PHONY : favoritesmanager.o
+
+# target to build an object file
+favoritesmanager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/favoritesmanager.cpp.o
+.PHONY : favoritesmanager.cpp.o
+
+favoritesmanager.i: favoritesmanager.cpp.i
+.PHONY : favoritesmanager.i
+
+# target to preprocess a source file
+favoritesmanager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/favoritesmanager.cpp.i
+.PHONY : favoritesmanager.cpp.i
+
+favoritesmanager.s: favoritesmanager.cpp.s
+.PHONY : favoritesmanager.s
+
+# target to generate assembly for a file
+favoritesmanager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/favoritesmanager.cpp.s
+.PHONY : favoritesmanager.cpp.s
+
+filterpanelwidget.o: filterpanelwidget.cpp.o
+.PHONY : filterpanelwidget.o
+
+# target to build an object file
+filterpanelwidget.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/filterpanelwidget.cpp.o
+.PHONY : filterpanelwidget.cpp.o
+
+filterpanelwidget.i: filterpanelwidget.cpp.i
+.PHONY : filterpanelwidget.i
+
+# target to preprocess a source file
+filterpanelwidget.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/filterpanelwidget.cpp.i
+.PHONY : filterpanelwidget.cpp.i
+
+filterpanelwidget.s: filterpanelwidget.cpp.s
+.PHONY : filterpanelwidget.s
+
+# target to generate assembly for a file
+filterpanelwidget.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/filterpanelwidget.cpp.s
+.PHONY : filterpanelwidget.cpp.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -262,6 +310,54 @@ searchlineedit.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/searchlineedit.cpp.s
 .PHONY : searchlineedit.cpp.s
 
+tweetfilterengine.o: tweetfilterengine.cpp.o
+.PHONY : tweetfilterengine.o
+
+# target to build an object file
+tweetfilterengine.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/tweetfilterengine.cpp.o
+.PHONY : tweetfilterengine.cpp.o
+
+tweetfilterengine.i: tweetfilterengine.cpp.i
+.PHONY : tweetfilterengine.i
+
+# target to preprocess a source file
+tweetfilterengine.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/tweetfilterengine.cpp.i
+.PHONY : tweetfilterengine.cpp.i
+
+tweetfilterengine.s: tweetfilterengine.cpp.s
+.PHONY : tweetfilterengine.s
+
+# target to generate assembly for a file
+tweetfilterengine.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/tweetfilterengine.cpp.s
+.PHONY : tweetfilterengine.cpp.s
+
+tweetrepository.o: tweetrepository.cpp.o
+.PHONY : tweetrepository.o
+
+# target to build an object file
+tweetrepository.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/tweetrepository.cpp.o
+.PHONY : tweetrepository.cpp.o
+
+tweetrepository.i: tweetrepository.cpp.i
+.PHONY : tweetrepository.i
+
+# target to preprocess a source file
+tweetrepository.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/tweetrepository.cpp.i
+.PHONY : tweetrepository.cpp.i
+
+tweetrepository.s: tweetrepository.cpp.s
+.PHONY : tweetrepository.s
+
+# target to generate assembly for a file
+tweetrepository.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/tweetrepository.cpp.s
+.PHONY : tweetrepository.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -278,6 +374,12 @@ help:
 	@echo "... SCTweetAlchemy_CPP_autogen/mocs_compilation.o"
 	@echo "... SCTweetAlchemy_CPP_autogen/mocs_compilation.i"
 	@echo "... SCTweetAlchemy_CPP_autogen/mocs_compilation.s"
+	@echo "... favoritesmanager.o"
+	@echo "... favoritesmanager.i"
+	@echo "... favoritesmanager.s"
+	@echo "... filterpanelwidget.o"
+	@echo "... filterpanelwidget.i"
+	@echo "... filterpanelwidget.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
@@ -287,6 +389,12 @@ help:
 	@echo "... searchlineedit.o"
 	@echo "... searchlineedit.i"
 	@echo "... searchlineedit.s"
+	@echo "... tweetfilterengine.o"
+	@echo "... tweetfilterengine.i"
+	@echo "... tweetfilterengine.s"
+	@echo "... tweetrepository.o"
+	@echo "... tweetrepository.i"
+	@echo "... tweetrepository.s"
 .PHONY : help
 
 
