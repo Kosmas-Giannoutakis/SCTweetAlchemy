@@ -16,6 +16,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/SCTweetAlchemy_CPP.dir/mainwindow.cpp.o.d"
   "CMakeFiles/SCTweetAlchemy_CPP.dir/searchlineedit.cpp.o"
   "CMakeFiles/SCTweetAlchemy_CPP.dir/searchlineedit.cpp.o.d"
+  "CMakeFiles/SCTweetAlchemy_CPP.dir/tweeteditdialog.cpp.o"
+  "CMakeFiles/SCTweetAlchemy_CPP.dir/tweeteditdialog.cpp.o.d"
   "CMakeFiles/SCTweetAlchemy_CPP.dir/tweetfilterengine.cpp.o"
   "CMakeFiles/SCTweetAlchemy_CPP.dir/tweetfilterengine.cpp.o.d"
   "CMakeFiles/SCTweetAlchemy_CPP.dir/tweetrepository.cpp.o"

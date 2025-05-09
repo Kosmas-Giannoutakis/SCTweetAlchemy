@@ -44,7 +44,8 @@ template <> constexpr inline auto TweetRepository::qt_create_metaobjectdata<qt_m
         "title",
         "message",
         "tweetsLoaded",
-        "count"
+        "count",
+        "tweetsModified"
     };
 
     QtMocHelpers::UintData qt_methods {
@@ -56,6 +57,8 @@ template <> constexpr inline auto TweetRepository::qt_create_metaobjectdata<qt_m
         QtMocHelpers::SignalData<void(int)>(5, 2, QMC::AccessPublic, QMetaType::Void, {{
             { QMetaType::Int, 6 },
         }}),
+        // Signal 'tweetsModified'
+        QtMocHelpers::SignalData<void()>(7, 2, QMC::AccessPublic, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -81,6 +84,7 @@ void TweetRepository::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int 
         switch (_id) {
         case 0: _t->loadError((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
         case 1: _t->tweetsLoaded((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 2: _t->tweetsModified(); break;
         default: ;
         }
     }
@@ -88,6 +92,8 @@ void TweetRepository::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int 
         if (QtMocHelpers::indexOfMethod<void (TweetRepository::*)(const QString & , const QString & )>(_a, &TweetRepository::loadError, 0))
             return;
         if (QtMocHelpers::indexOfMethod<void (TweetRepository::*)(int )>(_a, &TweetRepository::tweetsLoaded, 1))
+            return;
+        if (QtMocHelpers::indexOfMethod<void (TweetRepository::*)()>(_a, &TweetRepository::tweetsModified, 2))
             return;
     }
 }
@@ -111,14 +117,14 @@ int TweetRepository::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 2)
+        if (_id < 3)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 2;
+        _id -= 3;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 2)
+        if (_id < 3)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 2;
+        _id -= 3;
     }
     return _id;
 }
@@ -133,5 +139,11 @@ void TweetRepository::loadError(const QString & _t1, const QString & _t2)
 void TweetRepository::tweetsLoaded(int _t1)
 {
     QMetaObject::activate<void>(this, &staticMetaObject, 1, nullptr, _t1);
+}
+
+// SIGNAL 2
+void TweetRepository::tweetsModified()
+{
+    QMetaObject::activate(this, &staticMetaObject, 2, nullptr);
 }
 QT_WARNING_POP

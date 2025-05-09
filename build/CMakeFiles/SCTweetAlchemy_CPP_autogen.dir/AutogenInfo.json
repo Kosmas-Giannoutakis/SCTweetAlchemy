@@ -439,6 +439,12 @@
 			null
 		],
 		[
+			"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/tweeteditdialog.h",
+			"MU",
+			"EWIEGA46WW/moc_tweeteditdialog.cpp",
+			null
+		],
+		[
 			"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/tweetfilterengine.h",
 			"MU",
 			"EWIEGA46WW/moc_tweetfilterengine.cpp",
@@ -531,6 +537,11 @@
 		],
 		[
 			"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/searchlineedit.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/tweeteditdialog.cpp",
 			"MU",
 			null
 		],

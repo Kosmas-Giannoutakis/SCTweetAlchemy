@@ -53,13 +53,22 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         "toggleCurrentTweetFavorite",
         "onTweetItemDoubleClicked",
         "item",
+        "onTweetListContextMenuRequested",
+        "pos",
+        "applyAllFilters",
         "handleRepositoryLoadError",
         "title",
         "message",
         "handleTweetsLoaded",
         "count",
         "handleFavoritesChanged",
-        "applyAllFilters"
+        "handleTweetsModified",
+        "onFileNewTweet",
+        "onFileSaveAllChanges",
+        "onEditTweet",
+        "onEditDeleteTweet",
+        "onEditCopyCode",
+        "onHelpAbout"
     };
 
     QtMocHelpers::UintData qt_methods {
@@ -83,18 +92,36 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         QtMocHelpers::SlotData<void(QListWidgetItem *)>(13, 2, QMC::AccessPrivate, QMetaType::Void, {{
             { 0x80000000 | 3, 14 },
         }}),
+        // Slot 'onTweetListContextMenuRequested'
+        QtMocHelpers::SlotData<void(const QPoint &)>(15, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::QPoint, 16 },
+        }}),
+        // Slot 'applyAllFilters'
+        QtMocHelpers::SlotData<void()>(17, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'handleRepositoryLoadError'
-        QtMocHelpers::SlotData<void(const QString &, const QString &)>(15, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { QMetaType::QString, 16 }, { QMetaType::QString, 17 },
+        QtMocHelpers::SlotData<void(const QString &, const QString &)>(18, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::QString, 19 }, { QMetaType::QString, 20 },
         }}),
         // Slot 'handleTweetsLoaded'
-        QtMocHelpers::SlotData<void(int)>(18, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { QMetaType::Int, 19 },
+        QtMocHelpers::SlotData<void(int)>(21, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::Int, 22 },
         }}),
         // Slot 'handleFavoritesChanged'
-        QtMocHelpers::SlotData<void()>(20, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'applyAllFilters'
-        QtMocHelpers::SlotData<void()>(21, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(23, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'handleTweetsModified'
+        QtMocHelpers::SlotData<void()>(24, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onFileNewTweet'
+        QtMocHelpers::SlotData<void()>(25, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onFileSaveAllChanges'
+        QtMocHelpers::SlotData<void()>(26, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onEditTweet'
+        QtMocHelpers::SlotData<void()>(27, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onEditDeleteTweet'
+        QtMocHelpers::SlotData<void()>(28, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onEditCopyCode'
+        QtMocHelpers::SlotData<void()>(29, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onHelpAbout'
+        QtMocHelpers::SlotData<void()>(30, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -124,10 +151,18 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 3: _t->focusSearchField(); break;
         case 4: _t->toggleCurrentTweetFavorite(); break;
         case 5: _t->onTweetItemDoubleClicked((*reinterpret_cast< std::add_pointer_t<QListWidgetItem*>>(_a[1]))); break;
-        case 6: _t->handleRepositoryLoadError((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
-        case 7: _t->handleTweetsLoaded((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
-        case 8: _t->handleFavoritesChanged(); break;
-        case 9: _t->applyAllFilters(); break;
+        case 6: _t->onTweetListContextMenuRequested((*reinterpret_cast< std::add_pointer_t<QPoint>>(_a[1]))); break;
+        case 7: _t->applyAllFilters(); break;
+        case 8: _t->handleRepositoryLoadError((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
+        case 9: _t->handleTweetsLoaded((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 10: _t->handleFavoritesChanged(); break;
+        case 11: _t->handleTweetsModified(); break;
+        case 12: _t->onFileNewTweet(); break;
+        case 13: _t->onFileSaveAllChanges(); break;
+        case 14: _t->onEditTweet(); break;
+        case 15: _t->onEditDeleteTweet(); break;
+        case 16: _t->onEditCopyCode(); break;
+        case 17: _t->onHelpAbout(); break;
         default: ;
         }
     }
@@ -152,14 +187,14 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 10)
+        if (_id < 18)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 10;
+        _id -= 18;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 10)
+        if (_id < 18)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 10;
+        _id -= 18;
     }
     return _id;
 }

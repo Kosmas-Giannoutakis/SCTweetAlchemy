@@ -3,4 +3,5 @@
 #include "EWIEGA46WW/moc_filterpanelwidget.cpp"
 #include "EWIEGA46WW/moc_mainwindow.cpp"
 #include "EWIEGA46WW/moc_searchlineedit.cpp"
+#include "EWIEGA46WW/moc_tweeteditdialog.cpp"
 #include "EWIEGA46WW/moc_tweetrepository.cpp"

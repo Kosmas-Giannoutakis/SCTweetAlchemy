@@ -449,5 +449,9 @@ CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/mocs_compilation.cp
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qinputmethod.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qlocale.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/qguiapplication_platform.h \
+ /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/moc_tweeteditdialog.cpp \
+ /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/../../../tweeteditdialog.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QDialog \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qdialog.h \
  /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/moc_tweetrepository.cpp \
  /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/../../../tweetrepository.h

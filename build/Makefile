@@ -310,6 +310,30 @@ searchlineedit.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/searchlineedit.cpp.s
 .PHONY : searchlineedit.cpp.s
 
+tweeteditdialog.o: tweeteditdialog.cpp.o
+.PHONY : tweeteditdialog.o
+
+# target to build an object file
+tweeteditdialog.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/tweeteditdialog.cpp.o
+.PHONY : tweeteditdialog.cpp.o
+
+tweeteditdialog.i: tweeteditdialog.cpp.i
+.PHONY : tweeteditdialog.i
+
+# target to preprocess a source file
+tweeteditdialog.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/tweeteditdialog.cpp.i
+.PHONY : tweeteditdialog.cpp.i
+
+tweeteditdialog.s: tweeteditdialog.cpp.s
+.PHONY : tweeteditdialog.s
+
+# target to generate assembly for a file
+tweeteditdialog.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/tweeteditdialog.cpp.s
+.PHONY : tweeteditdialog.cpp.s
+
 tweetfilterengine.o: tweetfilterengine.cpp.o
 .PHONY : tweetfilterengine.o
 
@@ -389,6 +413,9 @@ help:
 	@echo "... searchlineedit.o"
 	@echo "... searchlineedit.i"
 	@echo "... searchlineedit.s"
+	@echo "... tweeteditdialog.o"
+	@echo "... tweeteditdialog.i"
+	@echo "... tweeteditdialog.s"
 	@echo "... tweetfilterengine.o"
 	@echo "... tweetfilterengine.i"
 	@echo "... tweetfilterengine.s"

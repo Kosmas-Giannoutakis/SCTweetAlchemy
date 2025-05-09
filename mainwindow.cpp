@@ -1,25 +1,15 @@
 #include "mainwindow.h"
-#include "searchlineedit.h"   // Custom QLineEdit
+#include "searchlineedit.h"
 #include "tweetrepository.h"
 #include "favoritesmanager.h"
 #include "filterpanelwidget.h"
 #include "tweetfilterengine.h"
+#include "tweeteditdialog.h" // Include the new dialog
 
-#include <QtWidgets> // Includes most Qt Widget classes
-#include <QJsonDocument> // For completeness, though now in repository
-#include <QJsonObject>   // For completeness
-#include <QJsonArray>    // For completeness
-#include <QFile>         // For completeness
-#include <QDir>          // If ever needed for file paths
-#include <QMessageBox>
-#include <QDebug>
-#include <QFontDatabase>
-#include <QKeySequence> // For QKeySequence::Find
-#include <QScrollArea>  // Though now part of FilterPanelWidget
-#include <QGroupBox>    // Though now part of FilterPanelWidget
-#include <QCheckBox>    // Though now part of FilterPanelWidget
-#include <QLabel>       // For panel titles
-#include <QListWidgetItem>
+#include <QtWidgets>
+#include <QStandardPaths> // For writable location
+#include <QDir>           // For directory operations
+#include <QClipboard>     // For copy to clipboard
 
 // --- Constructor ---
 MainWindow::MainWindow(QWidget *parent)
@@ -31,136 +21,135 @@ MainWindow::MainWindow(QWidget *parent)
     , m_rightPanel(nullptr)
     , m_codeTextEdit(nullptr)
     , m_metadataTextEdit(nullptr)
-    , m_focusSearchAction(nullptr)
-    , m_toggleFavoriteAction(nullptr)
+    , m_focusSearchAction(nullptr) // Will be created in setupActions/setupMenuBar
+    , m_toggleFavoriteAction(nullptr) // Will be created in setupActions/setupMenuBar
     , m_settings(nullptr)
     , m_tweetRepository(nullptr)
     , m_favoritesManager(nullptr)
     , m_tweetFilterEngine(nullptr)
+    , m_menuBar(nullptr)
+    , m_fileMenu(nullptr)
+    , m_editMenu(nullptr)
+    , m_helpMenu(nullptr)
+    , m_newTweetAction(nullptr)
+    , m_saveAllAction(nullptr)
+    , m_exitAction(nullptr)
+    , m_editTweetAction(nullptr)
+    , m_deleteTweetAction(nullptr)
+    , m_copyCodeAction(nullptr)
+    , m_aboutAction(nullptr)
 {
     QCoreApplication::setOrganizationName("Kosmas");
     QCoreApplication::setApplicationName("SCTweetAlchemy");
-    m_settings = new QSettings(this); // MainWindow owns QSettings
+    m_settings = new QSettings(this);
 
     setupModelsAndManagers();
-    setupUi();
-    setupActions();
+    setupUi(); // Sets up central widget, splitters etc.
+    setupActions(); // Sets up QActions (some might be used in menu)
+    setupMenuBar(); // Sets up the menu bar and connects actions
     connectSignals();
 
-    // Initial data load and UI population
-    if (m_tweetRepository->loadTweets()) { // Default path is in repository
-        // tweetsLoaded signal will trigger initial filter population and application
-    } else {
-        // Error already handled by signal/slot from repository
-        if(m_codeTextEdit) m_codeTextEdit->setPlaceholderText("Failed to load tweets.");
+    // Initial data load: Try user file first, then resource
+    QString userTweetPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    if (!userTweetPath.isEmpty()) { // Ensure AppDataLocation is valid
+        QDir appDataDir(userTweetPath);
+        if (!appDataDir.exists()) {
+            appDataDir.mkpath("."); // Create if it doesn't exist
+        }
+        userTweetPath += "/SCTweets_user.json"; // Construct full path
+    } else { // Fallback if AppDataLocation is empty (rare)
+        userTweetPath = QDir::homePath() + "/.SCTweetAlchemy/SCTweets_user.json";
+        QDir(QDir::homePath() + "/.SCTweetAlchemy").mkpath(".");
+    }
+
+
+    QFile userFile(userTweetPath);
+    bool loadedSuccessfully = false;
+    if (userFile.exists()) {
+        qInfo() << "Attempting to load tweets from user file:" << userTweetPath;
+        if (m_tweetRepository->loadTweets(userTweetPath)) {
+            loadedSuccessfully = true;
+        } else {
+            qWarning() << "Failed to load from user file, attempting resource.";
+        }
+    }
+
+    if (!loadedSuccessfully) {
+        qInfo() << "Attempting to load tweets from resource.";
+        if (m_tweetRepository->loadTweets()) { // Default resource path
+            loadedSuccessfully = true;
+        }
+    }
+
+    if (!loadedSuccessfully && m_tweetRepository->getAllTweets().isEmpty()) {
+        // If both loads failed or resulted in no tweets, show placeholder
+        if(m_codeTextEdit) m_codeTextEdit->setPlaceholderText("No tweets found or failed to load all sources.");
         if(m_metadataTextEdit) m_metadataTextEdit->setPlaceholderText("");
     }
+    // The tweetsLoaded signal (if successful load) will handle initial population
+
      if(m_tweetListWidget) {
-        m_tweetListWidget->setFocus(); // Set initial focus
+        m_tweetListWidget->setFocus();
     }
+    updateActionStates(); // Set initial enabled/disabled state of actions
 }
 
 // --- Destructor ---
-MainWindow::~MainWindow()
-{
-    // QSettings is child of MainWindow, Qt handles it.
-    // Managers are children of MainWindow, Qt handles them if parented.
-    // UI elements are children, Qt handles them.
+MainWindow::~MainWindow() {
+    // On close, ensure any pending tweet changes are saved
+    if (m_tweetRepository) {
+        // Only save if the current path is NOT a read-only resource path
+        if (!m_tweetRepository->getCurrentResourcePath().startsWith(":/")) {
+             qInfo() << "Saving tweets on exit to:" << m_tweetRepository->getCurrentResourcePath();
+             m_tweetRepository->saveTweetsToResource(); 
+        } else {
+             qInfo() << "Not saving on exit as current data source is a read-only resource:" << m_tweetRepository->getCurrentResourcePath();
+        }
+    }
+    // Other objects with `this` as parent will be auto-deleted by Qt
 }
 
 void MainWindow::setupModelsAndManagers()
 {
     m_tweetRepository = new TweetRepository(this);
-    m_favoritesManager = new FavoritesManager(m_settings, this); // Pass QSettings
-    m_tweetFilterEngine = new TweetFilterEngine(); // No parent, doesn't need Qt's memory management if simple
+    m_favoritesManager = new FavoritesManager(m_settings, this);
+    m_tweetFilterEngine = new TweetFilterEngine(); // No parent, simple utility
 }
 
-// --- Action Setup ---
-void MainWindow::setupActions()
-{
-    m_focusSearchAction = new QAction("Focus Search", this);
-    m_focusSearchAction->setShortcut(QKeySequence::Find);
-    m_focusSearchAction->setToolTip("Focus the search field (Ctrl+F)");
-    this->addAction(m_focusSearchAction); // Add to window for shortcut to work globally
-
-    m_toggleFavoriteAction = new QAction("Toggle Favorite", this);
-    m_toggleFavoriteAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_D));
-    m_toggleFavoriteAction->setToolTip("Mark/Unmark selected tweet in list as favorite (Ctrl+D)");
-    this->addAction(m_toggleFavoriteAction);
-}
-
-// --- Setup Overall UI Layout ---
+// --- Setup Overall UI Layout (Central Widget, Splitters) ---
 void MainWindow::setupUi()
 {
     m_searchLineEdit = new SearchLineEdit(this);
     m_searchLineEdit->setPlaceholderText("Search Tweets (Global)...");
     m_searchLineEdit->setClearButtonEnabled(true);
 
-    m_filterPanelWidget = new FilterPanelWidget(this); // Create our custom filter panel
+    m_filterPanelWidget = new FilterPanelWidget(this);
 
     m_tweetListWidget = new QListWidget(this);
     m_tweetListWidget->setObjectName("tweetListWidget");
+    m_tweetListWidget->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    m_rightPanel = createRightPanel(); // Helper to create code/metadata views
+    m_rightPanel = createRightPanel();
 
     m_mainSplitter = new QSplitter(Qt::Horizontal, this);
     m_mainSplitter->setObjectName("mainSplitter");
-    m_mainSplitter->addWidget(m_filterPanelWidget); // Col 1 (index 0)
-    m_mainSplitter->addWidget(m_tweetListWidget);   // Col 2 (index 1)
-    m_mainSplitter->addWidget(m_rightPanel);        // Col 3 (index 2)
+    m_mainSplitter->addWidget(m_filterPanelWidget);
+    m_mainSplitter->addWidget(m_tweetListWidget);
+    m_mainSplitter->addWidget(m_rightPanel);
 
-    // Set Stretch Factors to control relative sizes
-    // Higher number = takes more space proportionally
-    // Making first column wider, second narrower, third stays relatively large.
-    m_mainSplitter->setStretchFactor(0, 2); // Filter panel (index 0) - Wider
-    m_mainSplitter->setStretchFactor(1, 2); // List column (index 1) - Narrower
-    m_mainSplitter->setStretchFactor(2, 5); // Code/Meta column (index 2) - Stays wide
-
-    // Optional: Set initial absolute sizes.
-    // If you use setSizes, the values should ideally reflect the stretch factor proportions.
-    // For a total width of 11 stretch units (5+1+5):
-    // Filter Panel: 5/11, List: 1/11, Right Panel: 5/11
-    // We can try to apply these based on the initial window width.
-    // However, relying purely on stretch factors and size hints often works well too.
-    // You can experiment by commenting/uncommenting and adjusting the setSizes block.
-    
-    // Example of setting initial sizes proportionally:
-    // QList<int> initialSizes;
-    // int currentWindowWidth = this->width(); // MainWindow's current width
-    // if (currentWindowWidth > 600) { // Only apply if window is reasonably sized
-    //     initialSizes << (currentWindowWidth * 5 / 11)
-    //                    << (currentWindowWidth * 1 / 11)
-    //                    << (currentWindowWidth * 5 / 11);
-    //     m_mainSplitter->setSizes(initialSizes);
-    // }
-    // For now, let's rely mainly on stretch factors and the widgets' size hints for initial sizing.
-    // The splitter will distribute space according to stretch factors after initial layout.
-    // If you find the initial layout too cramped or too spread out *before any user resize*,
-    // then re-introduce and adjust setSizes. A common approach is to set fixed or minimum
-    // widths for some columns and let others stretch.
-
-    // If you want the filter panel to have a more fixed initial width,
-    // and the list to be narrow, you could do:
-    // QList<int> sizes;
-    // sizes << 350; // Desired initial width for filter panel
-    // sizes << 150; // Desired initial width for tweet list
-    // sizes << this->width() - 350 - 150; // Remaining for right panel
-    // if (this->width() > 600 && (sizes.at(2) > 100) ) { // Basic sanity check
-    //    m_mainSplitter->setSizes(sizes);
-    // }
-    // Then the stretch factors would primarily govern how they behave on resize.
-
+    m_mainSplitter->setStretchFactor(0, 2);
+    m_mainSplitter->setStretchFactor(1, 2);
+    m_mainSplitter->setStretchFactor(2, 5);
 
     QVBoxLayout *centralLayout = new QVBoxLayout;
     centralLayout->addWidget(m_searchLineEdit);
     centralLayout->addWidget(m_mainSplitter);
-
     QWidget *centralWidget = new QWidget(this);
     centralWidget->setLayout(centralLayout);
     setCentralWidget(centralWidget);
 
-    setWindowTitle("SCTweetAlchemy Paster");
-    resize(1600, 850); // This sets the initial size of the MainWindow
+    setWindowTitle("SCTweetAlchemy");
+    resize(1600, 850);
 }
 
 QWidget* MainWindow::createRightPanel()
@@ -192,48 +181,151 @@ QWidget* MainWindow::createRightPanel()
     return splitter;
 }
 
+// --- Setup QActions (primarily for non-menu global shortcuts) ---
+void MainWindow::setupActions()
+{
+    m_focusSearchAction = new QAction("Focus Search", this);
+    m_focusSearchAction->setShortcut(QKeySequence::Find);
+    m_focusSearchAction->setToolTip("Focus the search field (Ctrl+F)");
+    this->addAction(m_focusSearchAction); // Makes shortcut work globally for this window
+    connect(m_focusSearchAction, &QAction::triggered, this, &MainWindow::focusSearchField); // Connect here too for consistency
+
+
+    m_toggleFavoriteAction = new QAction("&Toggle Favorite", this); 
+    m_toggleFavoriteAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_D));
+    m_toggleFavoriteAction->setToolTip("Mark/Unmark selected tweet as favorite (Ctrl+D)");
+    this->addAction(m_toggleFavoriteAction); 
+    connect(m_toggleFavoriteAction, &QAction::triggered, this, &MainWindow::toggleCurrentTweetFavorite); // Connect here
+}
+
+// --- Setup Menu Bar ---
+void MainWindow::setupMenuBar()
+{
+    m_menuBar = menuBar();
+
+    // --- File Menu ---
+    m_fileMenu = m_menuBar->addMenu("&File");
+    m_newTweetAction = new QAction("&New Tweet...", this);
+    m_newTweetAction->setShortcut(QKeySequence::New);
+    m_fileMenu->addAction(m_newTweetAction);
+
+    m_saveAllAction = new QAction("&Save All Changes", this);
+    m_saveAllAction->setShortcut(QKeySequence::Save);
+    m_fileMenu->addAction(m_saveAllAction);
+
+    m_fileMenu->addSeparator();
+    m_exitAction = new QAction("E&xit", this);
+    m_exitAction->setShortcut(QKeySequence::Quit); // Standard quit shortcut
+    m_fileMenu->addAction(m_exitAction);
+
+    // --- Edit Menu ---
+    m_editMenu = m_menuBar->addMenu("&Edit");
+    m_editTweetAction = new QAction("&Edit Selected Tweet...", this);
+    m_editTweetAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_E));
+    m_editMenu->addAction(m_editTweetAction);
+
+    m_deleteTweetAction = new QAction("&Delete Selected Tweet", this);
+    m_deleteTweetAction->setShortcut(QKeySequence::Delete);
+    m_editMenu->addAction(m_deleteTweetAction);
+
+    m_editMenu->addSeparator();
+    m_editMenu->addAction(m_toggleFavoriteAction); // Add existing action to menu
+
+    m_editMenu->addSeparator();
+    m_copyCodeAction = new QAction("&Copy Code", this);
+    m_copyCodeAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));
+    m_editMenu->addAction(m_copyCodeAction);
+
+    // --- Help Menu ---
+    m_helpMenu = m_menuBar->addMenu("&Help");
+    m_aboutAction = new QAction("&About SCTweetAlchemy", this);
+    m_helpMenu->addAction(m_aboutAction);
+
+    QAction *aboutQtAction = new QAction("About &Qt", this);
+    m_helpMenu->addAction(aboutQtAction); // aboutQt is a static slot in QApplication
+
+    // Connect menu actions here
+    connect(m_newTweetAction, &QAction::triggered, this, &MainWindow::onFileNewTweet);
+    connect(m_saveAllAction, &QAction::triggered, this, &MainWindow::onFileSaveAllChanges);
+    connect(m_exitAction, &QAction::triggered, qApp, &QApplication::quit);
+    connect(m_editTweetAction, &QAction::triggered, this, &MainWindow::onEditTweet);
+    connect(m_deleteTweetAction, &QAction::triggered, this, &MainWindow::onEditDeleteTweet);
+    connect(m_copyCodeAction, &QAction::triggered, this, &MainWindow::onEditCopyCode);
+    // m_toggleFavoriteAction is already connected in connectSignals() if it's a global action
+    // or connect it here if it's purely menu-driven (but global shortcut is good)
+    connect(m_aboutAction, &QAction::triggered, this, &MainWindow::onHelpAbout);
+    connect(aboutQtAction, &QAction::triggered, qApp, &QApplication::aboutQt);
+}
+
 
 void MainWindow::connectSignals()
 {
     // Repository signals
     connect(m_tweetRepository, &TweetRepository::loadError, this, &MainWindow::handleRepositoryLoadError);
     connect(m_tweetRepository, &TweetRepository::tweetsLoaded, this, &MainWindow::handleTweetsLoaded);
+    connect(m_tweetRepository, &TweetRepository::tweetsModified, this, &MainWindow::handleTweetsModified);
 
     // Favorites manager signals
     connect(m_favoritesManager, &FavoritesManager::favoritesChanged, this, &MainWindow::handleFavoritesChanged);
 
     // UI Element signals
     connect(m_tweetListWidget, &QListWidget::currentItemChanged, this, &MainWindow::onTweetSelectionChanged);
-    // *** NEW CONNECTION for double-click ***
     connect(m_tweetListWidget, &QListWidget::itemDoubleClicked, this, &MainWindow::onTweetItemDoubleClicked);
-
+    connect(m_tweetListWidget, &QListWidget::customContextMenuRequested, this, &MainWindow::onTweetListContextMenuRequested);
     connect(m_searchLineEdit, &QLineEdit::textChanged, this, &MainWindow::onSearchTextChanged);
     connect(m_searchLineEdit, &SearchLineEdit::navigationKeyPressed, this, &MainWindow::onSearchNavigateKey);
-    
-    // Filter panel signals
     connect(m_filterPanelWidget, &FilterPanelWidget::filtersChanged, this, &MainWindow::applyAllFilters);
 
-    // Action signals
-    connect(m_focusSearchAction, &QAction::triggered, this, &MainWindow::focusSearchField);
-    connect(m_toggleFavoriteAction, &QAction::triggered, this, &MainWindow::toggleCurrentTweetFavorite);
+    // Note: m_focusSearchAction and m_toggleFavoriteAction are now connected in setupActions().
+    // No need to connect them again here.
 }
 
-void MainWindow::onTweetItemDoubleClicked(QListWidgetItem *item)
+void MainWindow::onTweetListContextMenuRequested(const QPoint &pos)
 {
-    if (!item) {
+    QListWidgetItem* itemUnderMouse = m_tweetListWidget->itemAt(pos);
+
+    QMenu contextMenu(this);
+
+    // Ensure actions exist (they should if setupMenuBar was called)
+    if (!m_editTweetAction || !m_deleteTweetAction || !m_toggleFavoriteAction) {
+        qWarning() << "Context menu actions not initialized!";
         return;
     }
-    QString tweetId = item->data(Qt::UserRole).toString();
-    if (tweetId.isEmpty()) {
-        qWarning() << "Double-clicked item has no tweet ID.";
-        return;
+
+    if (itemUnderMouse) {
+        // An item was right-clicked, make sure it's selected for actions
+        // (QListWidget usually handles selection on right-click before context menu if set up)
+        // If not, you might need: m_tweetListWidget->setCurrentItem(itemUnderMouse);
+
+        // Add actions relevant to a selected item
+        contextMenu.addAction(m_editTweetAction);
+        contextMenu.addAction(m_deleteTweetAction);
+        contextMenu.addAction(m_toggleFavoriteAction);
+        contextMenu.addSeparator(); 
+        // You could add "Copy Code" here too if m_copyCodeAction exists
+        if (m_copyCodeAction) {
+            contextMenu.addAction(m_copyCodeAction);
+        }
+
+        // The QAction's setEnabled(bool) state (updated by updateActionStates)
+        // should control if they appear grayed out.
+        // updateActionStates() is called on selection change, which is good.
+
+    } else {
+        // Right-clicked on empty area of the list widget
+        // You could add actions like "Add New Tweet..." here if desired
+        if (m_newTweetAction) { // Assuming m_newTweetAction is initialized
+             // contextMenu.addAction(m_newTweetAction);
+        }
+        // For now, let's keep it simple: context menu primarily for items.
     }
-    toggleFavoriteStatus(tweetId); // Use the new helper
+
+    if (!contextMenu.isEmpty()) {
+        contextMenu.exec(m_tweetListWidget->mapToGlobal(pos));
+    }
 }
 
-
-// --- Slot Implementations ---
-
+// --- Slot Implementations for Managers ---
 void MainWindow::handleRepositoryLoadError(const QString& title, const QString& message) {
     QMessageBox::critical(this, title, message);
 }
@@ -246,38 +338,170 @@ void MainWindow::handleTweetsLoaded(int count) {
         m_tweetRepository->getAllUniqueTechniqueTags(),
         m_tweetRepository->getAllUniqueUgens()
     );
-    applyAllFilters(); // Perform initial filtering and list population
+    applyAllFilters();
     if (m_tweetListWidget->count() > 0) {
        m_tweetListWidget->setCurrentRow(0);
     }
+    updateActionStates();
 }
 
 void MainWindow::handleFavoritesChanged() {
-    // Update favorite icons in the list
     for (int i = 0; i < m_tweetListWidget->count(); ++i) {
         QListWidgetItem* item = m_tweetListWidget->item(i);
         if (item) {
-            QString tweetId = item->data(Qt::UserRole).toString(); // Assuming ID is stored in UserRole
+            QString tweetId = item->data(Qt::UserRole).toString();
             updateFavoriteIcon(item, tweetId);
         }
     }
-    // Re-apply filters if "Favorites Only" is active
     if (m_filterPanelWidget->isFavoritesFilterActive()) {
         applyAllFilters();
     }
-    // Update metadata display if current tweet's favorite status changed
-    if (m_tweetListWidget->currentItem()) {
-        QString currentTweetId = m_tweetListWidget->currentItem()->data(Qt::UserRole).toString();
+    QListWidgetItem* currentItem = m_tweetListWidget->currentItem();
+    if (currentItem) {
+        QString currentTweetId = currentItem->data(Qt::UserRole).toString();
         const TweetData* td = m_tweetRepository->findTweetById(currentTweetId);
-        if (td) displayTweetDetails(td); // Refresh metadata, which includes favorite status
+        if (td) displayTweetDetails(td);
+    } else if (m_tweetListWidget->count() == 0) {
+        displayTweetDetails(nullptr);
     }
-
+    updateActionStates(); // Favorite status might affect actions
 }
 
+void MainWindow::handleTweetsModified()
+{
+    qInfo() << "MainWindow notified: Tweets modified in repository.";
+    if (m_filterPanelWidget && m_tweetRepository) {
+        m_filterPanelWidget->populateFilters(
+            m_tweetRepository->getAllUniqueAuthors(),
+            m_tweetRepository->getAllUniqueSonicTags(),
+            m_tweetRepository->getAllUniqueTechniqueTags(),
+            m_tweetRepository->getAllUniqueUgens()
+        );
+    }
+    applyAllFilters(); // This will repopulate the list and reselect if possible
+    updateActionStates();
+}
+
+
+// --- Slots for Menu Actions ---
+void MainWindow::onFileNewTweet()
+{
+    TweetEditDialog dialog(TweetEditDialog::Mode::Add, this);
+    if (m_tweetRepository) {
+        dialog.setExistingTweetIds(m_tweetRepository->getAllTweetIds());
+    }
+
+    if (dialog.exec() == QDialog::Accepted) {
+        TweetData newTweet = dialog.getTweetData();
+        if (m_tweetRepository && m_tweetRepository->addTweet(newTweet)) {
+            qInfo() << "New tweet added via dialog:" << newTweet.id;
+            // tweetsModified signal will refresh UI
+        } else {
+            QMessageBox::critical(this, "Error", "Failed to add the new tweet to the repository (e.g., ID conflict not caught by dialog).");
+        }
+    }
+}
+
+void MainWindow::onFileSaveAllChanges()
+{
+    if (m_tweetRepository) {
+        // The save path logic is now within TweetRepository
+        if (m_tweetRepository->saveTweetsToResource()) {
+            statusBar()->showMessage("Tweet collection saved successfully.", 3000);
+        } else {
+            // Error should be signaled by repository or handled there
+        }
+    }
+}
+
+void MainWindow::onEditTweet()
+{
+    QListWidgetItem* currentItem = m_tweetListWidget->currentItem();
+    if (!currentItem) {
+        // updateActionStates should prevent this if called correctly
+        QMessageBox::information(this, "Edit Tweet", "Please select a tweet to edit.");
+        return;
+    }
+    QString tweetId = currentItem->data(Qt::UserRole).toString();
+    const TweetData* tweetToEdit = m_tweetRepository->findTweetById(tweetId);
+
+    if (!tweetToEdit) {
+        QMessageBox::critical(this, "Error", "Could not find data for the selected tweet.");
+        return;
+    }
+
+    TweetEditDialog dialog(TweetEditDialog::Mode::Edit, this);
+    dialog.setTweetData(*tweetToEdit);
+    if (m_tweetRepository) {
+        dialog.setExistingTweetIds(m_tweetRepository->getAllTweetIds());
+    }
+
+    if (dialog.exec() == QDialog::Accepted) {
+        TweetData updatedTweet = dialog.getTweetData();
+        if (m_tweetRepository && m_tweetRepository->updateTweet(updatedTweet)) {
+            qInfo() << "Tweet updated via dialog:" << updatedTweet.id;
+            // tweetsModified signal will refresh UI
+        } else {
+            QMessageBox::critical(this, "Error", "Failed to update the tweet in the repository.");
+        }
+    }
+}
+
+void MainWindow::onEditDeleteTweet()
+{
+    QListWidgetItem* currentItem = m_tweetListWidget->currentItem();
+    if (!currentItem) {
+        QMessageBox::information(this, "Delete Tweet", "Please select a tweet to delete.");
+        return;
+    }
+    QString tweetId = currentItem->data(Qt::UserRole).toString();
+
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Confirm Delete",
+                                  QString("Are you sure you want to delete tweet '%1'?").arg(tweetId),
+                                  QMessageBox::Yes | QMessageBox::No);
+
+    if (reply == QMessageBox::Yes) {
+        if (m_tweetRepository && m_tweetRepository->deleteTweet(tweetId)) {
+            qInfo() << "Tweet deleted:" << tweetId;
+            // tweetsModified signal will refresh UI
+        } else {
+            QMessageBox::critical(this, "Error", "Failed to delete the tweet from the repository.");
+        }
+    }
+}
+
+void MainWindow::onEditCopyCode()
+{
+    QListWidgetItem* currentItem = m_tweetListWidget->currentItem();
+    if (!currentItem) return;
+    QString tweetId = currentItem->data(Qt::UserRole).toString();
+    const TweetData* tweet = m_tweetRepository->findTweetById(tweetId);
+    if (tweet) {
+        QClipboard *clipboard = QApplication::clipboard();
+        clipboard->setText(tweet->originalCode);
+        statusBar()->showMessage(QString("Code for '%1' copied!").arg(tweetId), 2000);
+    }
+}
+
+void MainWindow::onHelpAbout()
+{
+    QString aboutText = 
+        "<h2>SCTweetAlchemy</h2>" // Using an <h2> for the title
+        "<p>SuperCollider Tweet Browser</p>"
+        "<p>Version 0.3</p><br/>" // <br/> for a line break
+        "<p>Created by Kosmas Giannoutakis.<br/>"
+        "<a href=\"https://www.kosmasgiannoutakis.art/\">https://www.kosmasgiannoutakis.art/</a></p><br/>"
+        "<p>A tool to browse, manage, study and utilize SCTweets for live coding.</p>";
+
+    QMessageBox::about(this, "About SCTweetAlchemy", aboutText);
+}
+
+
+// --- Core UI Interaction Slots ---
 void MainWindow::applyAllFilters()
 {
     if (!m_tweetRepository || !m_tweetFilterEngine) return;
-
     FilterCriteria criteria;
     criteria.searchText = m_searchLineEdit->text();
     criteria.favoritesOnly = m_filterPanelWidget->isFavoritesFilterActive();
@@ -290,174 +514,156 @@ void MainWindow::applyAllFilters()
 
     const QVector<TweetData>& allTweets = m_tweetRepository->getAllTweets();
     m_currentlyDisplayedTweets = m_tweetFilterEngine->filterTweets(allTweets, criteria);
-    
     populateTweetList(m_currentlyDisplayedTweets);
     qInfo() << "Filters applied, list count:" << m_tweetListWidget->count();
 }
 
 void MainWindow::populateTweetList(const QVector<const TweetData*>& tweetsToDisplay) {
-    m_tweetListWidget->clear();
-    QString previousSelectedId;
-    if (m_tweetListWidget->property("selectedTweetId").isValid()) {
-        previousSelectedId = m_tweetListWidget->property("selectedTweetId").toString();
+    m_tweetListWidget->blockSignals(true); // Prevent selection signals during repopulation
+
+    QString previouslySelectedId;
+    QListWidgetItem* currentSelItem = m_tweetListWidget->currentItem();
+    if (currentSelItem) {
+        previouslySelectedId = currentSelItem->data(Qt::UserRole).toString();
+    } else if (m_tweetListWidget->property("selectedTweetId").isValid()){
+         previouslySelectedId = m_tweetListWidget->property("selectedTweetId").toString();
     }
 
 
-    QListWidgetItem* itemToSelect = nullptr;
+    m_tweetListWidget->clear();
+    QListWidgetItem* itemToSelectAgain = nullptr;
+
     for (const TweetData* tweet : tweetsToDisplay) {
         if (!tweet) continue;
-        QListWidgetItem* newItem = new QListWidgetItem(tweet->id, m_tweetListWidget); // Displaying ID for now
-        newItem->setData(Qt::UserRole, tweet->id); // Store ID for retrieval
+        QListWidgetItem* newItem = new QListWidgetItem(tweet->id, m_tweetListWidget);
+        newItem->setData(Qt::UserRole, tweet->id);
         updateFavoriteIcon(newItem, tweet->id);
-        if (tweet->id == previousSelectedId) {
-            itemToSelect = newItem;
+        if (tweet->id == previouslySelectedId) {
+            itemToSelectAgain = newItem;
         }
     }
 
-    if (itemToSelect) {
-        m_tweetListWidget->setCurrentItem(itemToSelect);
-    } else if (m_tweetListWidget->count() > 0) {
-        m_tweetListWidget->setCurrentRow(0);
-    } else {
-        displayTweetDetails(nullptr); // No items match, clear details
-    }
-}
+    m_tweetListWidget->blockSignals(false);
 
+    if (itemToSelectAgain) {
+        m_tweetListWidget->setCurrentItem(itemToSelectAgain);
+    } else if (m_tweetListWidget->count() > 0) {
+        m_tweetListWidget->setCurrentRow(0); // Select first item if previous is gone or none was selected
+    } else {
+        // No items in list, currentItemChanged might not fire if already null
+        displayTweetDetails(nullptr); // Explicitly clear details
+        onTweetSelectionChanged(nullptr, nullptr); // To ensure action states update
+    }
+    // onTweetSelectionChanged or setCurrentRow will trigger updateActionStates indirectly
+    // but if the selection doesn't change, we might need to call it explicitly.
+    // However, if list is empty and was not, selection *did* change to null.
+    updateActionStates(); // Ensure states are correct after list repopulation
+}
 
 void MainWindow::onTweetSelectionChanged(QListWidgetItem *current, QListWidgetItem *previous)
 {
     Q_UNUSED(previous);
     if (!current) {
         displayTweetDetails(nullptr);
-        m_tweetListWidget->setProperty("selectedTweetId", QVariant());
-        return;
+        m_tweetListWidget->setProperty("selectedTweetId", QVariant()); // Clear stored selection
+    } else {
+        QString selectedId = current->data(Qt::UserRole).toString();
+        m_tweetListWidget->setProperty("selectedTweetId", selectedId); // Store for repopulation
+        const TweetData* tweet = m_tweetRepository->findTweetById(selectedId);
+        displayTweetDetails(tweet);
     }
-    QString selectedId = current->data(Qt::UserRole).toString();
-    m_tweetListWidget->setProperty("selectedTweetId", selectedId); // Store for repopulation
-    const TweetData* tweet = m_tweetRepository->findTweetById(selectedId);
-    displayTweetDetails(tweet);
+    updateActionStates();
 }
 
-void MainWindow::onSearchTextChanged(const QString &text)
-{
-    applyAllFilters();
-}
+void MainWindow::onSearchTextChanged(const QString &text) { applyAllFilters(); }
 
-void MainWindow::onSearchNavigateKey(QKeyEvent *event)
-{
+void MainWindow::onSearchNavigateKey(QKeyEvent *event) {
     if (m_tweetListWidget && m_tweetListWidget->count() > 0) {
-        m_tweetListWidget->setFocus(); // Give focus to list
-        // QListWidget handles Up/Down navigation internally if it has focus
-        // No need to manually set current row unless it's for initial selection.
+        m_tweetListWidget->setFocus();
         if (!m_tweetListWidget->currentItem() && m_tweetListWidget->count() > 0) {
             m_tweetListWidget->setCurrentRow(0);
         }
     }
 }
 
-void MainWindow::focusSearchField()
-{
+void MainWindow::focusSearchField() {
     if (m_searchLineEdit) {
         m_searchLineEdit->setFocus();
         m_searchLineEdit->selectAll();
     }
 }
 
-void MainWindow::toggleCurrentTweetFavorite()
-{
+void MainWindow::toggleCurrentTweetFavorite() {
     QListWidgetItem* currentItem = m_tweetListWidget->currentItem();
-    if (!currentItem) {
-        qWarning() << "Cannot toggle favorite: No item selected for action.";
-        return;
-    }
+    if (!currentItem) return;
     QString tweetId = currentItem->data(Qt::UserRole).toString();
-    if (tweetId.isEmpty()) {
-        qWarning() << "Selected item for action has no tweet ID.";
-        return;
-    }
-    toggleFavoriteStatus(tweetId); // Use the new helper
+    if (tweetId.isEmpty()) return;
+    toggleFavoriteStatus(tweetId);
 }
 
-// --- New Helper Method to Centralize Toggle Logic ---
-void MainWindow::toggleFavoriteStatus(const QString& tweetId)
-{
-    // It's good practice to ensure tweetData exists, though for just toggling favorites,
-    // only the ID is strictly needed by FavoritesManager.
-    // If you needed other tweetData properties here, you'd fetch it:
-    // const TweetData* tweetData = m_tweetRepository->findTweetById(tweetId);
-    // if (!tweetData) {
-    //     qWarning() << "Cannot toggle favorite: Data not found for ID" << tweetId;
-    //     return;
-    // }
+void MainWindow::onTweetItemDoubleClicked(QListWidgetItem *item) {
+    if (!item) return;
+    QString tweetId = item->data(Qt::UserRole).toString();
+    if (tweetId.isEmpty()) return;
+    toggleFavoriteStatus(tweetId);
+}
 
+void MainWindow::toggleFavoriteStatus(const QString& tweetId) {
     if (m_favoritesManager->isFavorite(tweetId)) {
-        m_favoritesManager->removeFavorite(tweetId); // This will emit favoritesChanged
-        qInfo() << "Removed favorite (via helper):" << tweetId;
+        m_favoritesManager->removeFavorite(tweetId);
     } else {
-        m_favoritesManager->addFavorite(tweetId);    // This will emit favoritesChanged
-        qInfo() << "Added favorite (via helper):" << tweetId;
+        m_favoritesManager->addFavorite(tweetId);
     }
-    // The favoritesChanged signal from m_favoritesManager will trigger UI updates
-    // (icon updates, metadata refresh, potential list re-filtering)
-    // via the handleFavoritesChanged slot.
 }
-
 
 void MainWindow::updateFavoriteIcon(QListWidgetItem* item, const QString& tweetId) {
     if (!item || !m_favoritesManager) return;
-
     if (m_favoritesManager->isFavorite(tweetId)) {
-        // Try to load a specific star icon from resources.
-        // Fallback to a theme icon if your resource isn't found.
         QIcon starIcon(":/icons/star_filled.png");
-        if (starIcon.isNull()) { // Check if resource loaded
-            starIcon = QIcon::fromTheme("emblem-important", QIcon::fromTheme("emblem-favorite")); // Fallback
+        if (starIcon.isNull()) {
+            qWarning() << "Failed to load resource icon ':/icons/star_filled.png'. Using fallback.";
+            starIcon = QIcon::fromTheme("emblem-important", QIcon::fromTheme("emblem-favorite"));
         }
         item->setIcon(starIcon);
     } else {
-        // You could use an outline star here if you have one:
-        // QIcon outlineStarIcon(":/icons/star_outline.png");
-        // item->setIcon(outlineStarIcon.isNull() ? QIcon() : outlineStarIcon);
-        item->setIcon(QIcon()); // No icon for non-favorite
+        item->setIcon(QIcon());
     }
 }
 
-void MainWindow::displayTweetDetails(const TweetData* tweet)
-{
+void MainWindow::displayTweetDetails(const TweetData* tweet) {
     if (!m_codeTextEdit || !m_metadataTextEdit) return;
-
     if (tweet) {
         m_codeTextEdit->setText(tweet->originalCode);
-
         QString metadataString;
         metadataString += "ID: " + tweet->id + "\n";
         metadataString += "Author: " + tweet->author + "\n";
         metadataString += "Source: " + (!tweet->sourceUrl.isEmpty() ? tweet->sourceUrl : QStringLiteral("N/A")) + "\n";
         metadataString += "Date: " + tweet->publicationDate + "\n";
         metadataString += "Description: " + tweet->description + "\n\n";
-
-        if (!tweet->sonicTags.isEmpty()) {
-            metadataString += "Sonic Characteristics: " + tweet->sonicTags.join(", ") + "\n";
-        }
-        if (!tweet->techniqueTags.isEmpty()) {
-            metadataString += "Synthesis Techniques: " + tweet->techniqueTags.join(", ") + "\n";
-        }
-        if (!tweet->ugens.isEmpty()) {
-            metadataString += "UGens: " + tweet->ugens.join(", ") + "\n";
-        }
-        if (!tweet->genericTags.isEmpty()) {
-           metadataString += "Tags (Other): " + tweet->genericTags.join(", ") + "\n";
-        }
-        
-        metadataString += "\nFavorite: ";
-        metadataString += (m_favoritesManager && m_favoritesManager->isFavorite(tweet->id) ? QStringLiteral("Yes") : QStringLiteral("No"));
-        metadataString += QLatin1Char('\n');
+        if (!tweet->sonicTags.isEmpty()) metadataString += "Sonic Characteristics: " + tweet->sonicTags.join(", ") + "\n";
+        if (!tweet->techniqueTags.isEmpty()) metadataString += "Synthesis Techniques: " + tweet->techniqueTags.join(", ") + "\n";
+        if (!tweet->ugens.isEmpty()) metadataString += "UGens: " + tweet->ugens.join(", ") + "\n";
+        if (!tweet->genericTags.isEmpty()) metadataString += "Tags (Other): " + tweet->genericTags.join(", ") + "\n";
+        metadataString += QStringLiteral("\nFavorite: ") + (m_favoritesManager && m_favoritesManager->isFavorite(tweet->id) ? "Yes" : "No") + QStringLiteral("\n");
         m_metadataTextEdit->setText(metadataString);
-
     } else {
-        m_codeTextEdit->clear();
-        m_codeTextEdit->setPlaceholderText("Select a Tweet or adjust filters.");
-        m_metadataTextEdit->clear();
-        m_metadataTextEdit->setPlaceholderText("Select a Tweet to view its metadata.");
+        m_codeTextEdit->clear(); m_codeTextEdit->setPlaceholderText("Select a Tweet or adjust filters.");
+        m_metadataTextEdit->clear(); m_metadataTextEdit->setPlaceholderText("Select a Tweet to view its metadata.");
     }
+}
+
+void MainWindow::updateActionStates()
+{
+    bool itemSelected = (m_tweetListWidget && m_tweetListWidget->currentItem() != nullptr);
+
+    if(m_editTweetAction) m_editTweetAction->setEnabled(itemSelected);
+    if(m_deleteTweetAction) m_deleteTweetAction->setEnabled(itemSelected);
+    if(m_copyCodeAction) m_copyCodeAction->setEnabled(itemSelected);
+    if(m_toggleFavoriteAction) m_toggleFavoriteAction->setEnabled(itemSelected);
+    // m_saveAllAction could be enabled if there are unsaved changes (requires tracking)
+    // For now, always enabled or enable based on whether a user file path exists
+    if(m_saveAllAction && m_tweetRepository) {
+        m_saveAllAction->setEnabled(!m_tweetRepository->getCurrentResourcePath().startsWith(":/"));
+    }
+
 }

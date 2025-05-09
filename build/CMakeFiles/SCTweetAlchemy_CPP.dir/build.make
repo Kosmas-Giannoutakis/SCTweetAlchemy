@@ -189,10 +189,24 @@ CMakeFiles/SCTweetAlchemy_CPP.dir/mainwindow.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SCTweetAlchemy_CPP.dir/mainwindow.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/mainwindow.cpp -o CMakeFiles/SCTweetAlchemy_CPP.dir/mainwindow.cpp.s
 
+CMakeFiles/SCTweetAlchemy_CPP.dir/tweeteditdialog.cpp.o: CMakeFiles/SCTweetAlchemy_CPP.dir/flags.make
+CMakeFiles/SCTweetAlchemy_CPP.dir/tweeteditdialog.cpp.o: ../tweeteditdialog.cpp
+CMakeFiles/SCTweetAlchemy_CPP.dir/tweeteditdialog.cpp.o: CMakeFiles/SCTweetAlchemy_CPP.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/SCTweetAlchemy_CPP.dir/tweeteditdialog.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SCTweetAlchemy_CPP.dir/tweeteditdialog.cpp.o -MF CMakeFiles/SCTweetAlchemy_CPP.dir/tweeteditdialog.cpp.o.d -o CMakeFiles/SCTweetAlchemy_CPP.dir/tweeteditdialog.cpp.o -c /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/tweeteditdialog.cpp
+
+CMakeFiles/SCTweetAlchemy_CPP.dir/tweeteditdialog.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SCTweetAlchemy_CPP.dir/tweeteditdialog.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/tweeteditdialog.cpp > CMakeFiles/SCTweetAlchemy_CPP.dir/tweeteditdialog.cpp.i
+
+CMakeFiles/SCTweetAlchemy_CPP.dir/tweeteditdialog.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SCTweetAlchemy_CPP.dir/tweeteditdialog.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/tweeteditdialog.cpp -o CMakeFiles/SCTweetAlchemy_CPP.dir/tweeteditdialog.cpp.s
+
 CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.o: CMakeFiles/SCTweetAlchemy_CPP.dir/flags.make
 CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.o: SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp
 CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.o: CMakeFiles/SCTweetAlchemy_CPP.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.o -MF CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.o.d -o CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.o -c /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp
 
 CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.i: cmake_force
@@ -213,6 +227,7 @@ SCTweetAlchemy_CPP_OBJECTS = \
 "CMakeFiles/SCTweetAlchemy_CPP.dir/filterpanelwidget.cpp.o" \
 "CMakeFiles/SCTweetAlchemy_CPP.dir/tweetfilterengine.cpp.o" \
 "CMakeFiles/SCTweetAlchemy_CPP.dir/mainwindow.cpp.o" \
+"CMakeFiles/SCTweetAlchemy_CPP.dir/tweeteditdialog.cpp.o" \
 "CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.o"
 
 # External object files for target SCTweetAlchemy_CPP
@@ -226,6 +241,7 @@ SCTweetAlchemy_CPP: CMakeFiles/SCTweetAlchemy_CPP.dir/favoritesmanager.cpp.o
 SCTweetAlchemy_CPP: CMakeFiles/SCTweetAlchemy_CPP.dir/filterpanelwidget.cpp.o
 SCTweetAlchemy_CPP: CMakeFiles/SCTweetAlchemy_CPP.dir/tweetfilterengine.cpp.o
 SCTweetAlchemy_CPP: CMakeFiles/SCTweetAlchemy_CPP.dir/mainwindow.cpp.o
+SCTweetAlchemy_CPP: CMakeFiles/SCTweetAlchemy_CPP.dir/tweeteditdialog.cpp.o
 SCTweetAlchemy_CPP: CMakeFiles/SCTweetAlchemy_CPP.dir/SCTweetAlchemy_CPP_autogen/EWIEGA46WW/qrc_resources.cpp.o
 SCTweetAlchemy_CPP: CMakeFiles/SCTweetAlchemy_CPP.dir/build.make
 SCTweetAlchemy_CPP: /home/kosmas/Qt/6.9.0/gcc_64/lib/libQt6Widgets.so.6.9.0
@@ -234,7 +250,7 @@ SCTweetAlchemy_CPP: /usr/lib/x86_64-linux-gnu/libGLX.so
 SCTweetAlchemy_CPP: /usr/lib/x86_64-linux-gnu/libOpenGL.so
 SCTweetAlchemy_CPP: /home/kosmas/Qt/6.9.0/gcc_64/lib/libQt6Core.so.6.9.0
 SCTweetAlchemy_CPP: CMakeFiles/SCTweetAlchemy_CPP.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX executable SCTweetAlchemy_CPP"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX executable SCTweetAlchemy_CPP"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/SCTweetAlchemy_CPP.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

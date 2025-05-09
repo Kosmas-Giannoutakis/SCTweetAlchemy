@@ -321,6 +321,9 @@ CMakeFiles/SCTweetAlchemy_CPP.dir/tweetrepository.cpp.o: \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qbindingstorage.h \
  /usr/include/c++/11/chrono /usr/include/c++/11/ratio \
  /usr/include/c++/11/ctime \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSet \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qset.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qhash.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QFile \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qfile.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qfiledevice.h \
@@ -384,7 +387,6 @@ CMakeFiles/SCTweetAlchemy_CPP.dir/tweetrepository.cpp.o: \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qmap.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qshareddata_impl.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qset.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qhash.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qvarlengtharray.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/q23utility.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/q20utility.h \
@@ -399,5 +401,13 @@ CMakeFiles/SCTweetAlchemy_CPP.dir/tweetrepository.cpp.o: \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qregularexpression.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QDebug \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qdebug.h \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QSet \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qset.h
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QStandardPaths \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qstandardpaths.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QDir \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qdir.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qdirlisting.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qfile.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qfileinfo.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qtimezone.h \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QIODevice \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/qiodevice.h
