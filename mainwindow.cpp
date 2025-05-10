@@ -12,6 +12,16 @@
 #include <QDir>           
 #include <QClipboard>     
 #include <QMenu>          // For context menu
+#include <QToolButton>
+#include <QComboBox>
+#include <QGroupBox>
+#include <QCheckBox>
+#include <QSpinBox>      // For integer spin box
+#include <QDoubleSpinBox> // For double spin box
+#include <QLabel>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QFormLayout> // For layout within groupbox
 
 // --- Constructor ---
 MainWindow::MainWindow(QWidget *parent)
@@ -24,10 +34,15 @@ MainWindow::MainWindow(QWidget *parent)
     , m_codeTextEdit(nullptr)
     , m_metadataTextEdit(nullptr)
     , m_ndefDisplayPanel(nullptr)    
-    , m_ndefCodeTextEdit(nullptr)  
-    , m_ndefGenerator(nullptr)     
+    , m_ndefCodeTextEdit(nullptr)
+    , m_ndefGenerator(nullptr)
+    , m_ndefStyleComboBox(nullptr)   
     , m_focusSearchAction(nullptr) 
-    , m_toggleFavoriteAction(nullptr) 
+    , m_toggleFavoriteAction(nullptr)
+    , m_ndefAddReshapingCheckBox(nullptr)
+    , m_ndefSetFadeTimeCheckBox(nullptr)
+    , m_ndefFadeTimeLabel(nullptr)
+    , m_ndefFadeTimeSpinBox(nullptr)
     , m_settings(nullptr)
     , m_tweetRepository(nullptr)
     , m_favoritesManager(nullptr)
@@ -193,27 +208,150 @@ QWidget* MainWindow::createRightPanel()
 QWidget* MainWindow::createNdefPanel()
 {
     QWidget* panel = new QWidget(this);
-    QVBoxLayout* layout = new QVBoxLayout(panel);
-    layout->setContentsMargins(0, 2, 0, 0); 
-    layout->setSpacing(3);
+    QVBoxLayout* mainLayout = new QVBoxLayout(panel);
+    mainLayout->setContentsMargins(5, 5, 5, 5); // Added some top/bottom margin for the panel
+    mainLayout->setSpacing(6);
 
-    QLabel* titleLabel = new QLabel("Ndef Encapsulation", panel);
-    QFont titleFont = titleLabel->font();
-    titleFont.setBold(true);
-    titleLabel->setFont(titleFont);
+    // --- Style Selection ---
+    QHBoxLayout* styleLayout = new QHBoxLayout();
+    styleLayout->addWidget(new QLabel("Ndef Style:", panel));
+    m_ndefStyleComboBox = new QComboBox(panel);
+    m_ndefStyleComboBox->addItem("Simple Playable", QVariant::fromValue(NdefFormattingOptions::Style::SimplePlayable));
+    m_ndefStyleComboBox->addItem("Reformatted (AST - Basic)", QVariant::fromValue(NdefFormattingOptions::Style::ReformattedAST));
+    // Add more styles here later (e.g., NdefFormattingOptions::Style::ReformattedSynthDef)
+    connect(m_ndefStyleComboBox, &QComboBox::currentIndexChanged, this, &MainWindow::onNdefFormattingOptionsChanged);
+    styleLayout->addWidget(m_ndefStyleComboBox, 1); 
+    mainLayout->addLayout(styleLayout);
 
+    // --- Enhancements GroupBox ---
+    m_ndefEnhancementsGroup = new QGroupBox("Reformatted Ndef Options", panel);
+    // Using QVBoxLayout for more control over spacing and individual widget types than QFormLayout
+    QVBoxLayout* enhancementsLayout = new QVBoxLayout(m_ndefEnhancementsGroup);
+    enhancementsLayout->setSpacing(6); // Spacing between items in the group
+
+    m_ndefAddReshapingCheckBox = new QCheckBox("Add .reshaping_(\\expanding)", m_ndefEnhancementsGroup); // NEW
+    connect(m_ndefAddReshapingCheckBox, &QCheckBox::checkStateChanged, this, &MainWindow::onNdefFormattingOptionsChanged);
+    enhancementsLayout->addWidget(m_ndefAddReshapingCheckBox);
+
+    m_ndefAddSplayAzCheckBox = new QCheckBox("Wrap output with SplayAz", m_ndefEnhancementsGroup);
+    connect(m_ndefAddSplayAzCheckBox, &QCheckBox::checkStateChanged, this, &MainWindow::onNdefFormattingOptionsChanged);
+    enhancementsLayout->addWidget(m_ndefAddSplayAzCheckBox);
+    
+    // Layout for SplayAz channels
+    QHBoxLayout* splayChannelsLayout = new QHBoxLayout();
+    m_ndefSplayChannelsLabel = new QLabel("SplayAz Channels:", m_ndefEnhancementsGroup);
+    m_ndefSplayChannelsSpinBox = new QSpinBox(m_ndefEnhancementsGroup); // Integer for channels
+    m_ndefSplayChannelsSpinBox->setRange(1, 64); 
+    m_ndefSplayChannelsSpinBox->setValue(m_currentNdefOptions.splayAzChannels); 
+    connect(m_ndefSplayChannelsSpinBox, &QSpinBox::valueChanged, this, &MainWindow::onNdefFormattingOptionsChanged);
+    splayChannelsLayout->addWidget(m_ndefSplayChannelsLabel);
+    splayChannelsLayout->addWidget(m_ndefSplayChannelsSpinBox);
+    splayChannelsLayout->addStretch();
+    enhancementsLayout->addLayout(splayChannelsLayout); 
+
+    // Layout for Fade Time
+    m_ndefSetFadeTimeCheckBox = new QCheckBox("Set .fadeTime", m_ndefEnhancementsGroup); // NEW
+    connect(m_ndefSetFadeTimeCheckBox, &QCheckBox::checkStateChanged, this, &MainWindow::onNdefFormattingOptionsChanged);
+    enhancementsLayout->addWidget(m_ndefSetFadeTimeCheckBox);
+
+    QHBoxLayout* fadeTimeLayout = new QHBoxLayout();
+    m_ndefFadeTimeLabel = new QLabel("Fade Time (s):", m_ndefEnhancementsGroup); // NEW
+    m_ndefFadeTimeSpinBox = new QDoubleSpinBox(m_ndefEnhancementsGroup);         // NEW - QDoubleSpinBox
+    m_ndefFadeTimeSpinBox->setRange(0.01, 600.0); 
+    m_ndefFadeTimeSpinBox->setDecimals(2);
+    m_ndefFadeTimeSpinBox->setSingleStep(0.1);
+    m_ndefFadeTimeSpinBox->setValue(m_currentNdefOptions.fadeTimeValue); 
+    connect(m_ndefFadeTimeSpinBox, &QDoubleSpinBox::valueChanged, this, &MainWindow::onNdefFormattingOptionsChanged);
+    
+    fadeTimeLayout->addWidget(m_ndefFadeTimeLabel);
+    fadeTimeLayout->addWidget(m_ndefFadeTimeSpinBox);
+    fadeTimeLayout->addStretch();
+    enhancementsLayout->addLayout(fadeTimeLayout); 
+    
+    enhancementsLayout->addStretch(); // Add stretch at the bottom of the groupbox
+    m_ndefEnhancementsGroup->setLayout(enhancementsLayout);
+    mainLayout->addWidget(m_ndefEnhancementsGroup);
+
+    // --- Ndef Code Display ---
     m_ndefCodeTextEdit = new QTextEdit(this);
     m_ndefCodeTextEdit->setReadOnly(true); 
     m_ndefCodeTextEdit->setLineWrapMode(QTextEdit::WidgetWidth);
     m_ndefCodeTextEdit->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
     m_ndefCodeTextEdit->setObjectName("ndefCodeTextEdit");
     m_ndefCodeTextEdit->setPlaceholderText("Select a tweet to see its Ndef version.");
+    mainLayout->addWidget(m_ndefCodeTextEdit, 1); 
 
-    layout->addWidget(titleLabel);
-    layout->addWidget(m_ndefCodeTextEdit);
-
+    updateNdefEnhancementOptionsUI(); 
     return panel;
 }
+
+void MainWindow::onNdefFormattingOptionsChanged()
+{
+    // Read current selections from UI and update m_currentNdefOptions
+    if (m_ndefStyleComboBox) { // Check if UI elements are created
+        m_currentNdefOptions.style = m_ndefStyleComboBox->currentData().value<NdefFormattingOptions::Style>();
+    }
+    if (m_ndefAddReshapingCheckBox) { // NEW
+        m_currentNdefOptions.addReshapingExpanding = m_ndefAddReshapingCheckBox->isChecked();
+    }
+    if (m_ndefAddSplayAzCheckBox) {
+        m_currentNdefOptions.wrapWithSplayAz = m_ndefAddSplayAzCheckBox->isChecked();
+    }
+    if (m_ndefSplayChannelsSpinBox) {
+        m_currentNdefOptions.splayAzChannels = m_ndefSplayChannelsSpinBox->value();
+    }
+    if (m_ndefSetFadeTimeCheckBox) { // NEW
+        m_currentNdefOptions.setFadeTime = m_ndefSetFadeTimeCheckBox->isChecked();
+    }
+    if (m_ndefFadeTimeSpinBox) { // NEW
+        m_currentNdefOptions.fadeTimeValue = m_ndefFadeTimeSpinBox->value();
+    }
+
+
+    updateNdefEnhancementOptionsUI(); // Enable/disable group based on style
+
+    // Refresh the Ndef display for the currently selected tweet
+    QListWidgetItem* currentItem = m_tweetListWidget->currentItem();
+    const TweetData* tweet = nullptr;
+    if (currentItem) {
+        QString tweetId = currentItem->data(Qt::UserRole).toString();
+        tweet = m_tweetRepository->findTweetById(tweetId);
+    }
+    displayNdefCode(tweet); // Pass current tweet (or nullptr if none selected)
+}
+
+void MainWindow::updateNdefEnhancementOptionsUI() {
+    if (!m_ndefEnhancementsGroup || !m_ndefAddSplayAzCheckBox || 
+        !m_ndefSplayChannelsLabel || !m_ndefSplayChannelsSpinBox ||
+        !m_ndefSetFadeTimeCheckBox || !m_ndefFadeTimeLabel || !m_ndefFadeTimeSpinBox) {
+        // UI elements not fully created yet
+        return;
+    }
+
+    bool enableEnhancementsGroup = (m_currentNdefOptions.style == NdefFormattingOptions::Style::ReformattedAST);
+    m_ndefEnhancementsGroup->setEnabled(enableEnhancementsGroup);
+
+    // Enable/disable individual controls within the group only if the group itself is enabled
+    if (enableEnhancementsGroup) {
+        bool enableSplayChannels = m_ndefAddSplayAzCheckBox->isChecked();
+        m_ndefSplayChannelsLabel->setEnabled(enableSplayChannels);
+        m_ndefSplayChannelsSpinBox->setEnabled(enableSplayChannels);
+
+        bool enableFadeTimeControls = m_ndefSetFadeTimeCheckBox->isChecked();
+        m_ndefFadeTimeLabel->setEnabled(enableFadeTimeControls);
+        m_ndefFadeTimeSpinBox->setEnabled(enableFadeTimeControls);
+
+        // The .expand and .reshaping checkboxes are enabled/disabled with the group.
+    } else {
+        // If the main group is disabled, all its children should appear disabled too.
+        // But explicitly setting them ensures correct visual state if they were individually disabled before.
+        m_ndefSplayChannelsLabel->setEnabled(false);
+        m_ndefSplayChannelsSpinBox->setEnabled(false);
+        m_ndefFadeTimeLabel->setEnabled(false);
+        m_ndefFadeTimeSpinBox->setEnabled(false);
+    }
+}
+
 
 // --- Setup QActions ---
 void MainWindow::setupActions()
@@ -651,11 +789,20 @@ void MainWindow::displayNdefCode(const TweetData* tweet)
     if (!m_ndefCodeTextEdit || !m_ndefGenerator) return; 
 
     if (tweet) {
-        QString ndefCode = m_ndefGenerator->generateBasicNdef(tweet->originalCode, tweet->id);
+        // Pass the current options to the generator
+        QString ndefCode = m_ndefGenerator->generateNdef(tweet->originalCode, tweet->id, m_currentNdefOptions);
+        
+        // Update tooltip based on current style
+        if (m_currentNdefOptions.style == NdefFormattingOptions::Style::ReformattedAST) {
+             m_ndefCodeTextEdit->setToolTip("Ndef generated using Tree-sitter AST reconstruction (experimental formatting).");
+        } else {
+             m_ndefCodeTextEdit->setToolTip("Simple playable Ndef (minimal processing).");
+        }
         m_ndefCodeTextEdit->setText(ndefCode);
     } else {
         m_ndefCodeTextEdit->clear();
         m_ndefCodeTextEdit->setPlaceholderText("Select a tweet to see its Ndef version.");
+        m_ndefCodeTextEdit->setToolTip("");
     }
 }
 

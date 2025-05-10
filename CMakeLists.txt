@@ -1,43 +1,55 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(SCTweetAlchemy_CPP VERSION 0.1 LANGUAGES CXX)
+project(SCTweetAlchemy_CPP VERSION 0.1 LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# --- Find Qt ---
-# Find the QtWidgets component, which transitively includes Core and Gui
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
-# --- Qt Automatic Helpers ---
-# Enable AUTOMOC, AUTOUIC, AUTORCC for simplifying Qt development
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-# --- Add Executable ---
+# --- Tree-sitter Integration ---
+# Include directory for the Tree-sitter CORE API headers (from the runtime clone)
+include_directories(extern/tree-sitter-runtime/lib/include)
+
+# Include directory for the SC grammar's local headers (it might have its own tree_sitter/parser.h)
+# This is needed for SC's parser.c to find its includes if they are relative like "tree_sitter/parser.h"
+include_directories(extern/tree-sitter-supercollider/src) 
+
 add_executable(SCTweetAlchemy_CPP
     main.cpp
+    # ... (your existing .cpp and .h files for SCTweetAlchemy) ...
+    mainwindow.h mainwindow.cpp
     searchlineedit.h searchlineedit.cpp
     tweetdata.h 
     tweetrepository.h tweetrepository.cpp
     favoritesmanager.h favoritesmanager.cpp
     filterpanelwidget.h filterpanelwidget.cpp
     tweetfilterengine.h tweetfilterengine.cpp
-    mainwindow.h mainwindow.cpp
-    tweeteditdialog.h tweeteditdialog.cpp
+    tweeteditdialog.h tweeteditdialog.cpp 
     ndefgenerator.h ndefgenerator.cpp
+    sccodeprettyprinter.h sccodeprettyprinter.cpp
+    # sccodeprettyprinter.h sccodeprettyprinter.cpp # We will add this class next
+
+    # Tree-sitter runtime library source (compiles lib.c which includes the others from its own dir)
+    extern/tree-sitter-runtime/lib/src/lib.c 
+
+    # SuperCollider grammar parser and scanner sources
+    extern/tree-sitter-supercollider/src/parser.c
+    extern/tree-sitter-supercollider/src/scanner.c
+    
     resources.qrc
 )
 
-# --- Link Libraries ---
+# Optional: Suppress warnings for external C code
+set_source_files_properties(
+    extern/tree-sitter-runtime/lib/src/lib.c
+    extern/tree-sitter-supercollider/src/parser.c
+    extern/tree-sitter-supercollider/src/scanner.c
+    PROPERTIES COMPILE_FLAGS "-w" 
+)
+
 target_link_libraries(SCTweetAlchemy_CPP PRIVATE Qt6::Widgets)
-
-# --- Optional: Define location of SCTweets.json ---
-# This is tricky. Simplest for now: assume it's copied next to the executable.
-# More robust solutions involve resource files or install steps.
-# We'll handle finding it in the C++ code for now.
-
-# --- (Future) Add Tree-sitter ---
-# We will add sections here later to find/compile/link Tree-sitter
-# and the SuperCollider grammar.

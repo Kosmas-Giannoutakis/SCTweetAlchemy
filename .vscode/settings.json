@@ -4,6 +4,9 @@
         "string_view": "cpp",
         "hash_map": "cpp",
         "chrono": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "*.tcc": "cpp",
+        "string": "cpp",
+        "complex": "cpp"
     }
 }
