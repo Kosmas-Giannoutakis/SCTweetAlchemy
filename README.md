@@ -4,36 +4,32 @@ SCTweetAlchemy is a specialized utility for SuperCollider live coding performers
 
 *   **Browse and Filter:** Users can search for specific tweets by name and filter them using categories like Author, UGen type, Sonic Characteristic, and Synthesis Technique.
 *   **Favorites System:** Mark and quickly access preferred snippets.
-*   **View and Study:** The interface displays the original code, a Ndef-encapsulated version, and metadata (author, tags, description) for each tweet, making it easy to understand what each snippet does before using it.
-*   **Data Management:** Add new tweets, edit existing ones, and delete tweets from your collection. Changes are saved to a user-specific file.
+*   **View and Study:** The interface displays the original code, a Ndef-encapsulated version (with formatting options), and metadata (author, tags, description) for each tweet.
+*   **Data Management:** Add new tweets, edit existing ones, and delete tweets from your collection. Changes are saved to a user-specific file, preserving the original dataset.
 
 This tool serves as a practical library and performance aid for SuperCollider musicians, providing quick access to a diverse collection of sound-generating code snippets that can be rapidly deployed during live performances.
-
-## Planned Features
-
-*   Advanced reformatting of dense SCTweet code into more readable versions using Tree-sitter for live coding contexts.
-*   Options for Ndef generation (e.g., adding `.expand`, `.fadeTime`, `SplayAz`).
-*   Seamless integration with various live coding IDEs through automatic copy-paste functionality (platform permitting).
-*   MP3 preview playback for SCTweets.
 
 ## Dependencies
 
 *   **Qt 6 Development Libraries (Widgets module)**: The application is built using the Qt framework.
 *   **C++17 Compiler**: (e.g., GCC 7+, Clang 5+, MSVC 2017+)
 *   **CMake**: Version 3.16 or higher.
-*   **Git**: For cloning and managing submodules.
+*   **Git**: For cloning the repository and its submodules.
+*   **Submodules:** This project uses Git submodules to include:
+    *   The [Tree-sitter](https://github.com/tree-sitter/tree-sitter) parsing library runtime.
+    *   The [tree-sitter-supercollider](https://github.com/madskjeldgaard/tree-sitter-supercollider) grammar.
+    These are fetched automatically when cloning with the `--recurse-submodules` flag or by running `git submodule update --init --recursive`.
 
 ## Building from Source
 
-1.  **Clone the Repository:**
-    Open your terminal and clone the repository. It's recommended to clone with submodules, as this project uses them for the Tree-sitter library and its SuperCollider grammar.
+1.  **Clone the Repository (with Submodules):**
+    Open your terminal and clone the repository. The `--recurse-submodules` flag is important.
     ```bash
-    git clone --recurse-submodules https://github.com/your-username/SCTweetAlchemy_CPP_Project.git 
-    cd SCTweetAlchemy_CPP_Project
+    git clone --recurse-submodules https://github.com/Kosmas-Giannoutakis/SCTweetAlchemy.git
+    cd SCTweetAlchemy
     ```
-    (Replace `your-username/SCTweetAlchemy_CPP_Project.git` with the actual URL of your repository).
 
-    If you cloned without `--recurse-submodules`, navigate into the cloned directory and run:
+    If you have already cloned without `--recurse-submodules`, navigate into the cloned directory and run:
     ```bash
     git submodule update --init --recursive
     ```
@@ -57,9 +53,8 @@ This tool serves as a practical library and performance aid for SuperCollider mu
     *   **Windows (Visual Studio Generator Example):**
         ```bash
         # Ensure you are in a Developer Command Prompt for Visual Studio
-        # Adjust the CMAKE_PREFIX_PATH to your Qt6 installation directory (e.g., C:/Qt/6.x.y/msvc2019_64)
-        # Adjust the generator if needed (e.g., "Visual Studio 17 2022")
-        cmake -G "Visual Studio 16 2019" -A x64 -DCMAKE_PREFIX_PATH=C:/Qt/6.x.y/msvc2019_64 ..
+        # Adjust CMAKE_PREFIX_PATH (e.g., C:/Qt/6.x.y/msvc2019_64) and Generator if needed.
+        cmake -G "Visual Studio 17 2022" -A x64 -DCMAKE_PREFIX_PATH=C:/Qt/6.x.y/msvc2022_64 ..
         ```
     *   **Windows (MinGW Generator Example):**
         ```bash
@@ -72,36 +67,38 @@ This tool serves as a practical library and performance aid for SuperCollider mu
 4.  **Build the Project:**
     After CMake configuration is successful, compile the project:
     ```bash
-    cmake --build .
+    cmake --build . --config Release
     ```
-    For multi-core compilation (faster), you can often use:
-    *   Linux/macOS: `make -j$(nproc)` (or `make -jN` where N is number of cores)
-    *   Windows (Visual Studio): `cmake --build . --config Release` (or `Debug`)
-       Alternatively, open the generated `.sln` file in Visual Studio and build from there.
+    (Change `Release` to `Debug` for a debug build).
+    For multi-core compilation (faster) with Makefiles or Ninja, you can often append `-jN` (e.g., `make -j8` or `cmake --build . --config Release -- -j8`).
 
 5.  **Run the Application:**
-    The executable `SCTweetAlchemy_CPP` (or `SCTweetAlchemy_CPP.exe` on Windows) will be located in your `build` directory (or a subdirectory like `build/Release/` or `build/Debug/` for Visual Studio builds).
+    The executable `SCTweetAlchemy_CPP` (or `SCTweetAlchemy_CPP.exe` on Windows) will be located in your `build` directory (or a configuration-specific subdirectory like `build/Release/` for Visual Studio and some other generators).
     ```bash
-    # Linux/macOS
+    # Linux/macOS (if built directly in 'build')
     ./SCTweetAlchemy_CPP
 
-    # Windows (example)
+    # Windows (example, if built in 'build/Release')
     ./Release/SCTweetAlchemy_CPP.exe 
     ```
 
 ## Usage
 
 *   Launch the application.
-*   Use the search bar to find tweets by ID or keywords in their description/tags (future).
-*   Use the filter panel on the left to narrow down the list of tweets.
-*   Select a tweet from the middle list to view its original code, metadata, and Ndef-encapsulated version.
-*   Use `Ctrl+D` or the right-click context menu to mark/unmark tweets as favorites.
-*   Use the "File" and "Edit" menus to add, edit, or delete tweets from your collection. User-added tweets are saved to a local JSON file (typically in your user's application data directory).
+*   Use the search bar to find tweets by ID.
+*   Use the filter panel on the left to narrow down the list of tweets based on Author, Sonic Characteristic, Synthesis Technique, or UGen.
+*   Select a tweet from the middle list to view its original code, associated metadata, and an Ndef-encapsulated version.
+*   **Mark/Unmark Favorites:**
+    *   Double-click a tweet in the list.
+    *   Select a tweet and press `Ctrl+D` (or `Cmd+D` on macOS).
+    *   Right-click a tweet and select "Toggle Favorite" from the context menu.
+*   Use the "File" and "Edit" menus to add new tweets, edit existing tweet metadata/code, or delete tweets. User-added/modified tweets are saved to `SCTweets_user.json` in your user's application data directory.
+*   The Ndef panel has options to control the formatting of the generated Ndef string.
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit issues or pull requests. (Add more specific contribution guidelines if you have them).
+Please feel free to submit issues or pull requests.
 
 ## License
 
-(Specify your project's license here, e.g., MIT, GPLv3, etc.)
+This project is free software available under Version 3 the GNU General Public License. See [COPYING](COPYING) for details.
