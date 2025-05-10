@@ -286,6 +286,30 @@ mainwindow.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/mainwindow.cpp.s
 .PHONY : mainwindow.cpp.s
 
+ndefgenerator.o: ndefgenerator.cpp.o
+.PHONY : ndefgenerator.o
+
+# target to build an object file
+ndefgenerator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/ndefgenerator.cpp.o
+.PHONY : ndefgenerator.cpp.o
+
+ndefgenerator.i: ndefgenerator.cpp.i
+.PHONY : ndefgenerator.i
+
+# target to preprocess a source file
+ndefgenerator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/ndefgenerator.cpp.i
+.PHONY : ndefgenerator.cpp.i
+
+ndefgenerator.s: ndefgenerator.cpp.s
+.PHONY : ndefgenerator.s
+
+# target to generate assembly for a file
+ndefgenerator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SCTweetAlchemy_CPP.dir/build.make CMakeFiles/SCTweetAlchemy_CPP.dir/ndefgenerator.cpp.s
+.PHONY : ndefgenerator.cpp.s
+
 searchlineedit.o: searchlineedit.cpp.o
 .PHONY : searchlineedit.o
 
@@ -410,6 +434,9 @@ help:
 	@echo "... mainwindow.o"
 	@echo "... mainwindow.i"
 	@echo "... mainwindow.s"
+	@echo "... ndefgenerator.o"
+	@echo "... ndefgenerator.i"
+	@echo "... ndefgenerator.s"
 	@echo "... searchlineedit.o"
 	@echo "... searchlineedit.i"
 	@echo "... searchlineedit.s"

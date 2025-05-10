@@ -26,6 +26,7 @@ add_executable(SCTweetAlchemy_CPP
     tweetfilterengine.h tweetfilterengine.cpp
     mainwindow.h mainwindow.cpp
     tweeteditdialog.h tweeteditdialog.cpp
+    ndefgenerator.h ndefgenerator.cpp
     resources.qrc
 )
 

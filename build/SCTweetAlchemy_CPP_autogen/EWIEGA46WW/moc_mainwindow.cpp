@@ -53,9 +53,9 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         "toggleCurrentTweetFavorite",
         "onTweetItemDoubleClicked",
         "item",
+        "applyAllFilters",
         "onTweetListContextMenuRequested",
         "pos",
-        "applyAllFilters",
         "handleRepositoryLoadError",
         "title",
         "message",
@@ -92,12 +92,12 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         QtMocHelpers::SlotData<void(QListWidgetItem *)>(13, 2, QMC::AccessPrivate, QMetaType::Void, {{
             { 0x80000000 | 3, 14 },
         }}),
-        // Slot 'onTweetListContextMenuRequested'
-        QtMocHelpers::SlotData<void(const QPoint &)>(15, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { QMetaType::QPoint, 16 },
-        }}),
         // Slot 'applyAllFilters'
-        QtMocHelpers::SlotData<void()>(17, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(15, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onTweetListContextMenuRequested'
+        QtMocHelpers::SlotData<void(const QPoint &)>(16, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::QPoint, 17 },
+        }}),
         // Slot 'handleRepositoryLoadError'
         QtMocHelpers::SlotData<void(const QString &, const QString &)>(18, 2, QMC::AccessPrivate, QMetaType::Void, {{
             { QMetaType::QString, 19 }, { QMetaType::QString, 20 },
@@ -151,8 +151,8 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 3: _t->focusSearchField(); break;
         case 4: _t->toggleCurrentTweetFavorite(); break;
         case 5: _t->onTweetItemDoubleClicked((*reinterpret_cast< std::add_pointer_t<QListWidgetItem*>>(_a[1]))); break;
-        case 6: _t->onTweetListContextMenuRequested((*reinterpret_cast< std::add_pointer_t<QPoint>>(_a[1]))); break;
-        case 7: _t->applyAllFilters(); break;
+        case 6: _t->applyAllFilters(); break;
+        case 7: _t->onTweetListContextMenuRequested((*reinterpret_cast< std::add_pointer_t<QPoint>>(_a[1]))); break;
         case 8: _t->handleRepositoryLoadError((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
         case 9: _t->handleTweetsLoaded((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
         case 10: _t->handleFavoritesChanged(); break;

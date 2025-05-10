@@ -448,6 +448,7 @@ CMakeFiles/SCTweetAlchemy_CPP.dir/mainwindow.cpp.o: \
  /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/tweeteditdialog.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QDialog \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qdialog.h \
+ /home/kosmas/Documents/SuperCollider/SCTweetAlchemy/ndefgenerator.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QtWidgets \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QtWidgetsDepends \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QtCore \
@@ -1180,4 +1181,5 @@ CMakeFiles/SCTweetAlchemy_CPP.dir/mainwindow.cpp.o: \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/qwizard.h \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QStandardPaths \
  /home/kosmas/Qt/6.9.0/gcc_64/include/QtCore/QDir \
- /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/QClipboard
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtGui/QClipboard \
+ /home/kosmas/Qt/6.9.0/gcc_64/include/QtWidgets/QMenu

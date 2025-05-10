@@ -427,6 +427,12 @@
 			null
 		],
 		[
+			"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/ndefgenerator.h",
+			"MU",
+			"EWIEGA46WW/moc_ndefgenerator.cpp",
+			null
+		],
+		[
 			"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/searchlineedit.h",
 			"MU",
 			"EWIEGA46WW/moc_searchlineedit.cpp",
@@ -532,6 +538,11 @@
 		],
 		[
 			"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/mainwindow.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/ndefgenerator.cpp",
 			"MU",
 			null
 		],

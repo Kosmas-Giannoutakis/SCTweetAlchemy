@@ -14,6 +14,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/filterpanelwidget.cpp" "CMakeFiles/SCTweetAlchemy_CPP.dir/filterpanelwidget.cpp.o" "gcc" "CMakeFiles/SCTweetAlchemy_CPP.dir/filterpanelwidget.cpp.o.d"
   "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/main.cpp" "CMakeFiles/SCTweetAlchemy_CPP.dir/main.cpp.o" "gcc" "CMakeFiles/SCTweetAlchemy_CPP.dir/main.cpp.o.d"
   "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/mainwindow.cpp" "CMakeFiles/SCTweetAlchemy_CPP.dir/mainwindow.cpp.o" "gcc" "CMakeFiles/SCTweetAlchemy_CPP.dir/mainwindow.cpp.o.d"
+  "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/ndefgenerator.cpp" "CMakeFiles/SCTweetAlchemy_CPP.dir/ndefgenerator.cpp.o" "gcc" "CMakeFiles/SCTweetAlchemy_CPP.dir/ndefgenerator.cpp.o.d"
   "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/searchlineedit.cpp" "CMakeFiles/SCTweetAlchemy_CPP.dir/searchlineedit.cpp.o" "gcc" "CMakeFiles/SCTweetAlchemy_CPP.dir/searchlineedit.cpp.o.d"
   "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/tweeteditdialog.cpp" "CMakeFiles/SCTweetAlchemy_CPP.dir/tweeteditdialog.cpp.o" "gcc" "CMakeFiles/SCTweetAlchemy_CPP.dir/tweeteditdialog.cpp.o.d"
   "/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/tweetfilterengine.cpp" "CMakeFiles/SCTweetAlchemy_CPP.dir/tweetfilterengine.cpp.o" "gcc" "CMakeFiles/SCTweetAlchemy_CPP.dir/tweetfilterengine.cpp.o.d"
