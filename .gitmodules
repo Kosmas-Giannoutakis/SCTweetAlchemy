@@ -1,0 +1,6 @@
+[submodule "extern/tree-sitter-runtime"]
+	path = extern/tree-sitter-runtime
+	url = https://github.com/tree-sitter/tree-sitter.git
+[submodule "extern/tree-sitter-supercollider"]
+	path = extern/tree-sitter-supercollider
+	url = https://github.com/madskjeldgaard/tree-sitter-supercollider.git
