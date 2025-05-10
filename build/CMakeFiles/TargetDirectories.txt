@@ -1,4 +1,0 @@
-/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/CMakeFiles/SCTweetAlchemy_CPP.dir
-/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/CMakeFiles/edit_cache.dir
-/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/CMakeFiles/rebuild_cache.dir
-/home/kosmas/Documents/SuperCollider/SCTweetAlchemy/build/CMakeFiles/SCTweetAlchemy_CPP_autogen.dir
